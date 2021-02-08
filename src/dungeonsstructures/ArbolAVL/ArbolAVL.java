@@ -26,8 +26,7 @@ public class ArbolAVL {
     }
 
     // Método auxiliar que es utilizado para llamar recursivamente a los nodos correspondientes (izquierdo si es menor, derecha si es mayor).
-    private boolean insertarAux(NodoAVL nodo, NodoAVL padreNodo, Comparable elem, int altura) {
-        int balance;
+    private boolean insertarAux(NodoAVL nodo, NodoAVL nodoPadre, Comparable elem, int altura) {
         boolean exito = false;
         if (elem.compareTo(nodo.getElem()) < 0) {
             if (nodo.getIzquierdo() == null) {
@@ -50,46 +49,48 @@ public class ArbolAVL {
         }
         if (exito) {    // Si se pudo insertar un nuevo nodo (exito = true) debo checkear la altura y el balance de cada nodo a la vuelta de la recursión (y rotar si es necesario).
             nodo.recalcularAltura();
-            balance = calcularBalance(nodo);
-            if (balance > 1) {  // 'nodo' está inclinado a la izquierda.
-                int balanceHijo = calcularBalance(nodo.getIzquierdo());
-                if (balanceHijo >= 0) { // El hijo de 'nodo' está inclinado para el mismo lado que su padre.
-                    System.out.println("rotDer");
-                    NodoAVL h = rotarDerecha(nodo);
-                    cambiarRaiz(nodo,padreNodo,h,true);
-                    nodo.recalcularAltura();    // Luego de rotar debo volver a calcular la altura del nodo.
-                } else {    // El hijo de 'nodo' está inclinado para el lado contrario que su padre. Rotación doble Izq-Der.
-                    System.out.println("rotIzq-Der");
-                    NodoAVL h = rotarIzquierda(nodo.getIzquierdo());
-                    nodo.setIzquierdo(h);
-                    nodo.getIzquierdo().recalcularAltura();
-                    NodoAVL h2 = rotarDerecha(nodo);
+            balancear(nodo, nodoPadre);
+        }
+        return exito;
+    }
+
+    private void balancear (NodoAVL nodo, NodoAVL nodoPadre) {
+        int balance = calcularBalance(nodo);
+        if (balance > 1) {  // 'nodo' está inclinado a la izquierda.
+            int balanceHijo = calcularBalance(nodo.getIzquierdo());
+            if (balanceHijo >= 0) { // El hijo de 'nodo' está inclinado para el mismo lado que su padre. (izquierda)
+                System.out.println("rotDer");
+                NodoAVL h = rotarDerecha(nodo);
+                cambiarRaiz(nodo, nodoPadre, h);
+                nodo.recalcularAltura();    // Luego de rotar debo volver a calcular la altura del nodo.
+            } else {    // El hijo de 'nodo' está inclinado para el lado contrario que su padre. Rotación doble Izq-Der.
+                System.out.println("rotIzq-Der");
+                NodoAVL h = rotarIzquierda(nodo.getIzquierdo());
+                nodo.setIzquierdo(h);
+                NodoAVL h2 = rotarDerecha(nodo);
+                nodo.recalcularAltura();
+                cambiarRaiz(nodo, nodoPadre, h2);
+                h.recalcularAltura();
+            }
+        } else {
+            if (balance < -1) { // 'nodo' está inclinado a la derecha.
+                int balanceHijo = calcularBalance(nodo.getDerecho());
+                if (balanceHijo <= 0) { // El hijo de 'nodo' está inclinado para el mismo lado que su padre. (derecha)
+                    System.out.println("rotIzq");
+                    NodoAVL h = rotarIzquierda(nodo);
+                    cambiarRaiz(nodo, nodoPadre, h);
                     nodo.recalcularAltura();
-                    //cambiarRaiz(nodo,h2);
-                    padreNodo.setIzquierdo(h2);
-                }
-            } else {
-                if (balance < -1) { // 'nodo' está inclinado a la derecha.
-                    int balanceHijo = calcularBalance(nodo.getDerecho());
-                    if (balanceHijo <= 0) { // El hijo de 'nodo' está inclinado para el mismo lado que su padre.
-                        System.out.println("rotIzq");
-                        NodoAVL h = rotarIzquierda(nodo);
-                        cambiarRaiz(nodo,padreNodo,h,true);
-                        nodo.recalcularAltura();
-                    } else {    // El hijo de 'nodo' está inclinado para el lado contrario que su padre. Rotación doble Der-Izq.
-                        System.out.println("rotDer-Izq");
-                        NodoAVL h = rotarDerecha(nodo.getDerecho());
-                        nodo.setDerecho(h);
-                        nodo.getDerecho().recalcularAltura();
-                        NodoAVL h2 = rotarIzquierda(nodo);
-                        nodo.recalcularAltura();
-                        //cambiarRaiz(nodo,h2);
-                        padreNodo.setDerecho(h2);
-                    }
+                } else {    // El hijo de 'nodo' está inclinado para el lado contrario que su padre. Rotación doble Der-Izq.
+                    System.out.println("rotDer-Izq");
+                    NodoAVL h = rotarDerecha(nodo.getDerecho());
+                    nodo.setDerecho(h);
+                    NodoAVL h2 = rotarIzquierda(nodo);
+                    nodo.recalcularAltura();
+                    cambiarRaiz(nodo, nodoPadre, h2);
+                    h.recalcularAltura();
                 }
             }
         }
-        return exito;
     }
 
     // Método auxiliar que, dado un nodo, calcula el balance utilizando la altura de sus hijos.
@@ -101,6 +102,7 @@ public class ArbolAVL {
         if (nodo.getDerecho() != null) {
             alturaDer = nodo.getDerecho().getAltura();
         }
+        System.out.println("BALANCE DE " + nodo.getElem() + " ES " + (alturaIzq-alturaDer));
         return (alturaIzq - alturaDer);
     }
     
@@ -111,6 +113,7 @@ public class ArbolAVL {
         temp = h.getDerecho();
         h.setDerecho(nodo);
         nodo.setIzquierdo(temp);
+        nodo.recalcularAltura();
         return h;   // Devuelvo el nodo que va a subir.
     }
     
@@ -121,26 +124,108 @@ public class ArbolAVL {
         temp = h.getIzquierdo();
         h.setIzquierdo(nodo);
         nodo.setDerecho(temp);
+        nodo.recalcularAltura();
         return h;
     }
 
     // Luego de una rotación (Izq o Der) puede que tenga que cambiar la raíz del árbol.
-    private void cambiarRaiz(NodoAVL nodo, NodoAVL padreNodo, NodoAVL h, boolean simple) {
+    private void cambiarRaiz(NodoAVL nodo, NodoAVL padreNodo, NodoAVL h) {
         if (nodo == this.raiz) { // El nodo a balancear (o sea, "bajar") es la raiz.
             this.raiz = h;
         } else {
-            if (simple){    // Es inutil preguntar si es 'simple'?. No voy a llamar a cambiarRaiz a half-way una rotación doble. Pero quiza en una situación explota.
-                if (padreNodo.getDerecho().getElem() == nodo.getElem()){
+            if (padreNodo.getDerecho() != null) {
+                if (padreNodo.getDerecho().getElem() == nodo.getElem()) {
                     padreNodo.setDerecho(h);
-                } else {
-                    padreNodo.setIzquierdo(h);
                 }
+            } else {
+                padreNodo.setIzquierdo(h);
             }
         }
     }
-
+    
+    // TODO: Eliminar raíz.
     public boolean eliminar(Comparable elem) {
+        boolean exito = false;
+        if (this.raiz != null) {
+            exito = eliminarAux(this.raiz, null, elem, ' ');
+        }
+        return exito;
+    }
+    
+    private boolean eliminarAux(NodoAVL nodo, NodoAVL nodoPadre, Comparable elem, char lado){
+        boolean exito = false;
+        if (elem.compareTo(nodo.getElem()) == 0){
+            exito = true;
+            eliminarNodo(nodo,nodoPadre,lado);
+        } else {
+            if (elem.compareTo(nodo.getElem()) < 0) {
+                exito = eliminarAux(nodo.getIzquierdo(),nodo,elem,'I');
+            } else {
+                exito = eliminarAux(nodo.getDerecho(),nodo,elem,'D');
+            }
+        }
+        if (exito){
+            balancear(nodo,nodoPadre);
+        }
+        return exito;
+    }
 
+    private void eliminarNodo(NodoAVL nodo, NodoAVL nodoPadre, char lado) {
+        if (nodo.getAltura() == 0) {    // El nodo a eliminar es una hoja.
+            if (lado == 'I') {
+                nodoPadre.setIzquierdo(null);   // El nodo a eliminar es el hijo izquierdo de nodoPadre.
+            } else {
+                nodoPadre.setDerecho(null); // El nodo a eliminar es el hijo derecho de nodoPadre.
+            }
+        } else {    //El nodo a eliminar no es una hoja.
+            if (nodo.getDerecho() == null && nodo.getIzquierdo() != null) { // El nodo tiene UN subarbol a la izquierda.
+                if (lado == 'I') {
+                    nodoPadre.setIzquierdo(nodo.getIzquierdo());
+                } else {
+                    nodoPadre.setDerecho(nodo.getIzquierdo());
+                }
+            } else {
+                if (nodo.getDerecho() != null && nodo.getIzquierdo() == null) { // El nodo tiene UN subarbol a la derecha.
+                    if (lado == 'I') {
+                        nodoPadre.setIzquierdo(nodo.getDerecho());
+                    } else {
+                        nodoPadre.setDerecho(nodo.getDerecho());
+                    }
+                } else {    // El nodo tiene DOS subarboles.
+                    /*
+                        nodoASubir = Este nodo reemplaza al que voy a borrar.
+                        hiSubir = Hijo izquierdo de nodoASubir. (si no tiene es 'null')
+                     */
+                    NodoAVL nodoASubir, padreNodoASubir = null, hiSubir = null;
+                    nodoASubir = nodo.getIzquierdo();
+                    while (nodoASubir.getDerecho() != null) { // Busco el mayor valor de los que están a la Izq de 'nodo'. (o sea, busco el mayor menor a 'nodo').
+                        padreNodoASubir = nodoASubir;
+                        nodoASubir = nodoASubir.getDerecho();
+                        hiSubir = nodoASubir.getIzquierdo();
+                    }
+                    if (padreNodoASubir != null) {
+                        padreNodoASubir.setDerecho(null);  // Borro el nodo que subí.
+                        padreNodoASubir.recalcularAltura(); // Recalculo la altura del padre. (ahora sin 'nodoASubir')
+                    }
+                    if (hiSubir != null) {   // Si el nodo que subí tenía algo a la izq.
+                        hiSubir.setIzquierdo(nodo.getIzquierdo());
+                        hiSubir.recalcularAltura();
+                        balancear(hiSubir, nodoASubir);
+                    } else { // Si el nodo que subí no tenía algo a la izquierda.
+                        nodoASubir.setIzquierdo(nodo.getIzquierdo());
+                    }
+                    if (lado == 'I'){
+                        nodoPadre.setIzquierdo(nodoASubir);   // Coloco el nodo que voy a subir a la izquierda de su padre.
+                    } else {
+                        nodoPadre.setDerecho(nodoASubir);
+                    }
+                    nodoASubir.setDerecho(nodo.getDerecho());   // Al nodo que acabo de subir, le enlazo lo que estaba a la derecha del nodo que quité.
+                    nodoASubir.recalcularAltura();  // Recalculo su altura.
+                    nodoPadre.recalcularAltura();   // Recalculo la altura del padre.
+                    balancear(nodoASubir, nodoPadre);
+                }
+            }
+        }
     }
 
     public boolean pertenece(Comparable elemento) {

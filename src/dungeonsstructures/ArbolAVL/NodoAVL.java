@@ -38,6 +38,7 @@ public class NodoAVL {
         if (this.derecho != null) {
             altDer = this.derecho.altura;
         }
+        //System.out.println(elem + " Altura izquierdo: " +altIzq +", " + "Altura derecho: " +altDer);
         this.altura = (Math.max(altIzq, altDer) + 1);
     }
 
