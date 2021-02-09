@@ -10,22 +10,19 @@ public class test {
 
     public static void main(String[] args) {
         ArbolAVL arbolito = new ArbolAVL();
-        // Eliminar con cambio de raíz y rotaciones: izq-der(80), der(75).
+        // Eliminar sin cambio de raíz y rotaciones: der-izq(26).
         arbolito.insertar(75);
         arbolito.insertar(18);
         arbolito.insertar(80);
         arbolito.insertar(14);
-        arbolito.insertar(20);
+        arbolito.insertar(26);
         arbolito.insertar(77);
         arbolito.insertar(93);
-        arbolito.insertar(13);
-        arbolito.insertar(15);
         arbolito.insertar(25);
-        arbolito.insertar(78);
-        arbolito.insertar(16);
+        arbolito.insertar(79);
         System.out.println("Original: " + '\n' + arbolito.toString());
-        arbolito.eliminar(93);
-        System.out.println("Luego de eliminar el 93: " + '\n' + arbolito.toString());
+        arbolito.eliminar(14);
+        System.out.println("Luego de eliminar el 14: " + '\n' + arbolito.toString());
         
     }
     
@@ -167,7 +164,7 @@ public class test {
         System.out.println("Luego de eliminar el 25: " + '\n' + arbolito.toString());
     
     
-        // Eliminar con cambio de raíz y rotaciones: izq-der(80), izq(75).
+        // Eliminar con cambio de raíz y rotaciones: izq-der(80), der(75).
         arbolito.insertar(75);
         arbolito.insertar(18);
         arbolito.insertar(80);

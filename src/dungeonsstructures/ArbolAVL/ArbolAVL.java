@@ -136,13 +136,13 @@ public class ArbolAVL {
             if (padreNodo.getDerecho() != null) {
                 if (padreNodo.getDerecho().getElem() == nodo.getElem()) {
                     padreNodo.setDerecho(h);
+                } else {
+                    padreNodo.setIzquierdo(h);
                 }
-            } else {
-                padreNodo.setIzquierdo(h);
             }
         }
     }
-    
+
     // TODO: Eliminar raíz.
     public boolean eliminar(Comparable elem) {
         boolean exito = false;
