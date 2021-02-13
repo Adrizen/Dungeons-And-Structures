@@ -59,12 +59,12 @@ public class ArbolAVL {
         if (balance > 1) {  // 'nodo' está inclinado a la izquierda.
             int balanceHijo = calcularBalance(nodo.getIzquierdo());
             if (balanceHijo >= 0) { // El hijo de 'nodo' está inclinado para el mismo lado que su padre. (izquierda)
-                System.out.println("rotDer");
+                //System.out.println("rotDer");
                 NodoAVL h = rotarDerecha(nodo);
                 cambiarRaiz(nodo, nodoPadre, h);
                 nodo.recalcularAltura();    // Luego de rotar debo volver a calcular la altura del nodo.
             } else {    // El hijo de 'nodo' está inclinado para el lado contrario que su padre. Rotación doble Izq-Der.
-                System.out.println("rotIzq-Der");
+                //System.out.println("rotIzq-Der");
                 NodoAVL h = rotarIzquierda(nodo.getIzquierdo());
                 nodo.setIzquierdo(h);
                 NodoAVL h2 = rotarDerecha(nodo);
@@ -76,12 +76,12 @@ public class ArbolAVL {
             if (balance < -1) { // 'nodo' está inclinado a la derecha.
                 int balanceHijo = calcularBalance(nodo.getDerecho());
                 if (balanceHijo <= 0) { // El hijo de 'nodo' está inclinado para el mismo lado que su padre. (derecha)
-                    System.out.println("rotIzq");
+                    //System.out.println("rotIzq");
                     NodoAVL h = rotarIzquierda(nodo);
                     cambiarRaiz(nodo, nodoPadre, h);
                     nodo.recalcularAltura();
                 } else {    // El hijo de 'nodo' está inclinado para el lado contrario que su padre. Rotación doble Der-Izq.
-                    System.out.println("rotDer-Izq");
+                    //System.out.println("rotDer-Izq");
                     NodoAVL h = rotarDerecha(nodo.getDerecho());
                     nodo.setDerecho(h);
                     NodoAVL h2 = rotarIzquierda(nodo);
@@ -102,7 +102,7 @@ public class ArbolAVL {
         if (nodo.getDerecho() != null) {
             alturaDer = nodo.getDerecho().getAltura();
         }
-        System.out.println("BALANCE DE " + nodo.getElem() + " ES " + (alturaIzq-alturaDer));
+        //System.out.println("BALANCE DE " + nodo.getElem() + " ES " + (alturaIzq-alturaDer));
         return (alturaIzq - alturaDer);
     }
     
@@ -337,14 +337,14 @@ public class ArbolAVL {
         if (nodo != null) {
             cadenita += nodo.getElem() + " ";
             if (nodo.getIzquierdo() != null) {
-                cadenita += "HI: " + nodo.getIzquierdo().getElem() + " ";
+                cadenita += '\n' + " HI: " + nodo.getIzquierdo().getElem() + ". ";
             } else {
-                cadenita += "HI: - ";
+                cadenita += '\n' + " HI: - .";
             }
             if (nodo.getDerecho() != null) {
-                cadenita += "HD: " + nodo.getDerecho().getElem() + ".\n";
+                cadenita += '\n' + " HD: " + nodo.getDerecho().getElem() + ".\n";
             } else {
-                cadenita += "HD: - .\n";
+                cadenita += '\n' + " HD: - .\n";
             }
             cadenita += auxToString(nodo.getIzquierdo());
             cadenita += auxToString(nodo.getDerecho());

@@ -86,7 +86,7 @@ public class Cola {
             cadenita = "Cola vacia";
         } else {
             while (aux1 != null) {
-                cadenita = cadenita + aux1.getElemento() + " ";
+                cadenita = cadenita + aux1.getElemento() + ", ";
                 aux1 = aux1.getEnlace();
             }
         }

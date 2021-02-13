@@ -6,7 +6,7 @@ package dungeonsstructures.ColaPrioridad;
  * @author Guillermo Andrés Pereyra.
  */
 
-/* Se va a usar un arreglo para las 3 prioridades: Profesionales, aficionados y novatos. Ya que si las cantidad de
+/* Se va a usar un arreglo para las 3 prioridades: Profesionales, Aficionados y Novatos. Ya que si las cantidad de
    prioridades son pocas (como en este caso) es más eficiente hacer la ColaPrioridad con arreglo que con heap. */
 public class ColaPrioridad {
     private Cola[] arreglo = new Cola[3];

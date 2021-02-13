@@ -1,0 +1,6 @@
+Oribos;Ardenweald;500;
+Oribos;Maldraxxus;700;
+Oribos;Revendreth;300;
+Oribos;Las Fauces;1500;
+Revendreth;Castillo de Nathria;200;
+Las Fauces;Torghast;50;

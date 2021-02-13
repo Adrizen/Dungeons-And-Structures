@@ -2,7 +2,7 @@
 package dungeonsstructures;
 
 
-public class Item {
+public class Item implements Comparable <Item>{
     private String codigo;
     private String nombre;
     private int precio;
@@ -20,9 +20,22 @@ public class Item {
         this.copias = copias;
     }
     
+    @Override
+    public int compareTo(Item i){
+        return (this.codigo.compareTo(i.getCodigo()));
+    }
     
+    public String getCodigo(){
+        return this.codigo;
+    }
     
+    public int getPrecio(){
+        return precio;
+    }
     
+    public String toString(){
+        return ("Código: " + codigo + " - Nombre: " + nombre + " - Precio: " + precio + " - Puntos Ataque: " + puntosAtaque + " - Punto Defensa: " + puntosDefensa + " - Copias: " + copias);
+    }
     
     
     
