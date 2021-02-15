@@ -119,7 +119,7 @@ public class Lista {
             return "Lista vacia";
         } else {
             while (aux != null) {
-                cadenita += aux.getElemento().toString() + " ";
+                cadenita += aux.getElemento().toString() + " \n ";
                 aux = aux.getEnlace();
             }
         }

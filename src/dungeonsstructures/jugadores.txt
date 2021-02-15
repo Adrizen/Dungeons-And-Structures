@@ -1,3 +1,6 @@
 Adrizen;guerrero;profesional;
 Gops;guerrero;aficionado;
 Athemas;defensor;profesional;
+Hanum;defensor;profesional;
+Morpen;guerrero;profesional;
+Dou;defensor;novato;

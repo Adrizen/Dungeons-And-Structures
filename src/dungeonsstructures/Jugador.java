@@ -39,6 +39,10 @@ public class Jugador implements Comparable <Jugador>{
         this.equipo = e;
     }
     
+    public String getCategoria(){
+        return categoria;
+    }
+    
     public int getVecesDerrotado(){
         return this.vecesDerrotado;
     }
