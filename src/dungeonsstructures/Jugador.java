@@ -35,8 +35,16 @@ public class Jugador implements Comparable <Jugador>{
         return this.nombre;
     }
     
-    public void setEquipo(Equipo e){
-        this.equipo = e;
+    public String getTipo(){
+        return tipo;
+    }
+    
+     public Lista getItems(){
+        return items;
+    }
+    
+    public int getSalud(){
+        return salud;
     }
     
     public String getCategoria(){
@@ -49,6 +57,14 @@ public class Jugador implements Comparable <Jugador>{
     
     public int getBatallasGanadas(){
         return this.batallasGanadas;
+    }
+    
+    public void setSalud(int s){
+        this.salud = s;
+    }
+    
+    public void setEquipo(Equipo e){
+        this.equipo = e;
     }
 
     @Override

@@ -17,6 +17,10 @@ public class Equipo {
         this.jugadores = j;
     }
     
+    public Lista getJugadores(){
+        return jugadores;
+    }
+    
     public String toString(){
         return ("Categoría: " + categoria + ", Localización: " + localizacion + ", Jugadores:" + "\n" + " " + jugadores.toString());
     }

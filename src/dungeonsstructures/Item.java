@@ -33,6 +33,22 @@ public class Item implements Comparable <Item>{
         return precio;
     }
     
+    public int getPuntosAtaque(){
+        return puntosAtaque;
+    }
+    
+    public int getPuntosDefensa(){
+        return puntosDefensa;
+    }
+    
+    public int getCopias(){
+        return copias;
+    }
+    
+    public void setCopias(int c){
+        this.copias = c;
+    }
+    
     public String toString(){
         return ("Código: " + codigo + " - Nombre: " + nombre + " - Precio: " + precio + " - Puntos Ataque: " + puntosAtaque + " - Punto Defensa: " + puntosDefensa + " - Copias: " + copias);
     }

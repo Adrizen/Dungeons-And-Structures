@@ -11,6 +11,8 @@ public class Lista {
         this.cabecera = null;
     }
 
+    // Dado una posición y un objeto. Inserta el objeto en dicha posición
+    // Si puede insertar el objeto devuelve true, de lo contrario devuelve false.
     public boolean insertar(Object obj, int pos) {
         boolean bandera = false;
         if (pos >= 1 && pos <= longitud() + 1) {
@@ -30,6 +32,8 @@ public class Lista {
         return bandera;
     }
 
+    // Dada una posición, elimina el objeto en dicha posición.
+    // Si puede eliminar el objeto devuelve true, de lo contrario devuelve false.
     public boolean eliminar(int pos) {
         boolean bandera = false;
         if (pos >= 1 && pos <= longitud() && !esVacia()) {
@@ -48,6 +52,8 @@ public class Lista {
         return bandera;
     }
 
+    // Dada una posición, devuelve el objeto en dicha posición.
+    // Si tiene éxito devuelve el objeto, de lo contrario devuelve null.
     public Object recuperar(int pos) {
         if (pos < 1 || pos > longitud()) {
             return null;
@@ -55,12 +61,13 @@ public class Lista {
             Nodo aux = this.cabecera;
             for (int i = 1; i != pos; i++) {
                 aux = aux.getEnlace();
-
             }
             return aux.getElemento();
         }
     }
 
+    // Dado un objeto devuelve la posición de ese objeto en la lista.
+    // Si tiene éxito devuelve la posición, de lo contrario devuelve -1.
     public int localizar(Object obj) {
         int posicion = -1, longitud = longitud();
         boolean encontrado = false;
@@ -102,6 +109,7 @@ public class Lista {
         return clon;
     }
 
+    // Recorre la lista y devuelve su longitud.
     public int longitud() {
         int longitud = 0;
         Nodo aux = this.cabecera;
@@ -130,28 +138,6 @@ public class Lista {
         return cadenita;
     }
 
-    public Lista obtenerMultiplos(int num) {
-        Lista nueva = new Lista();
-        Nodo aux = this.cabecera, aux2 = null;
-        int cont = 1;
-
-        while (aux != null) {
-            if ((cont % num) == 0) {
-                if (nueva.cabecera == null) {
-                    Nodo nuevo = new Nodo(aux.getElemento(), null);
-                    nueva.cabecera = nuevo;
-                    aux2 = nueva.cabecera;
-                } else {
-                    Nodo nuevo = new Nodo(aux.getElemento(), null);
-                    aux2.setEnlace(nuevo);
-                    aux2 = aux2.getEnlace();
-                }
-            }
-            aux = aux.getEnlace();
-            cont++;
-        }
-        return nueva;
-    }
 
     public void eliminarApariciones(Object x) {
         Nodo aux = this.cabecera, aux2 = null;
