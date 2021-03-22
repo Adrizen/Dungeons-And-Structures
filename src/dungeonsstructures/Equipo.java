@@ -17,6 +17,10 @@ public class Equipo {
         this.jugadores = j;
     }
     
+    public String getNombre(){
+        return this.nombre;
+    }
+    
     public Lista getJugadores(){
         return jugadores;
     }

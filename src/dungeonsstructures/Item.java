@@ -37,8 +37,16 @@ public class Item implements Comparable <Item>{
         return puntosAtaque;
     }
     
+    public void setPuntosAtaque(int p){
+        this.puntosAtaque = p;
+    }
+    
     public int getPuntosDefensa(){
         return puntosDefensa;
+    }
+    
+    public void setPuntosDefensa(int p){
+        this.puntosDefensa = p;
     }
     
     public int getCopias(){

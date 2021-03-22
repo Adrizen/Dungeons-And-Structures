@@ -51,6 +51,10 @@ public class Jugador implements Comparable <Jugador>{
         return categoria;
     }
     
+    public int getDinero(){
+        return this.dinero;
+    }
+    
     public int getVecesDerrotado(){
         return this.vecesDerrotado;
     }
@@ -65,6 +69,18 @@ public class Jugador implements Comparable <Jugador>{
     
     public void setEquipo(Equipo e){
         this.equipo = e;
+    }
+    
+    public void setDinero(int d){
+        this.dinero = d;
+    }
+    
+    public void setVecesDerrotado(int v){
+        this.vecesDerrotado = v;
+    }
+    
+    public void setBatallasGanadas(int b){
+        this.batallasGanadas = b;
     }
 
     @Override

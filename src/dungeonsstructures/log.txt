@@ -1,0 +1,52 @@
+Jugador cargado: Nombre: ADRIZEN - Tipo: GUERRERO - Categoria: PROFESIONAL - Equipo: null
+Jugador cargado: Nombre: GOPS - Tipo: GUERRERO - Categoria: AFICIONADO - Equipo: null
+Jugador cargado: Nombre: ATHEMAS - Tipo: DEFENSOR - Categoria: PROFESIONAL - Equipo: null
+Jugador cargado: Nombre: HANUM - Tipo: DEFENSOR - Categoria: PROFESIONAL - Equipo: null
+Jugador cargado: Nombre: MORPEN - Tipo: GUERRERO - Categoria: PROFESIONAL - Equipo: null
+Jugador cargado: Nombre: DOU - Tipo: DEFENSOR - Categoria: NOVATO - Equipo: null
+Código: I001 - Nombre: A - Precio: 60 - Puntos Ataque: 70 - Punto Defensa: 122 - Copias: 1
+Código: I002 - Nombre: B - Precio: 160 - Puntos Ataque: 249 - Punto Defensa: 117 - Copias: 1
+Código: I003 - Nombre: C - Precio: 55 - Puntos Ataque: 62 - Punto Defensa: 60 - Copias: 1
+Código: I004 - Nombre: D - Precio: 55 - Puntos Ataque: 16 - Punto Defensa: 60 - Copias: 1
+Código: I005 - Nombre: E - Precio: 73 - Puntos Ataque: 57 - Punto Defensa: 0 - Copias: 1
+Localización cargada: Torghast
+Localización cargada: Castillo de Nathria
+Localización cargada: Maldraxxus
+Localización cargada: Oribos
+Localización cargada: Las Fauces
+Localización cargada: Ardenweald
+Localización cargada: Revendreth
+Equipo cargado: Mercedes AMG e-SportsCategoría: PROFESIONAL, Localización: CASTILLO DE NATHRIA, Jugadores:
+ Nombre: HANUM - Tipo: DEFENSOR - Categoria: PROFESIONAL - Equipo: null 
+ Nombre: ATHEMAS - Tipo: DEFENSOR - Categoria: PROFESIONAL - Equipo: null 
+ Nombre: ADRIZEN - Tipo: GUERRERO - Categoria: PROFESIONAL - Equipo: null 
+ 
+Equipo cargado: Scuderia Ferrari Sport ElettroniciCategoría: NOVATO, Localización: ORIBOS, Jugadores:
+ Nombre: DOU - Tipo: DEFENSOR - Categoria: NOVATO - Equipo: null 
+ Nombre: GOPS - Tipo: GUERRERO - Categoria: AFICIONADO - Equipo: null 
+ Nombre: MORPEN - Tipo: GUERRERO - Categoria: PROFESIONAL - Equipo: null 
+ 
+Camino cargado: Oribos - Ardenweald (500km)
+Camino cargado: Oribos - Maldraxxus (700km)
+Camino cargado: Oribos - Revendreth (300km)
+Camino cargado: Oribos - Las Fauces (1500km)
+Camino cargado: Revendreth - Castillo de Nathria (200km)
+Camino cargado: Las Fauces - Torghast (50km)
+-- Comienza una batalla entre Mercedes AMG e-Sports y Scuderia Ferrari Sport Elettronici --
+Mercedes AMG e-Sports ataca a Scuderia Ferrari Sport Elettronici
+ HANUM(154) ataca a DOU(360).(-206)
+ ATHEMAS(211) ataca a GOPS(125).(86)
+ ADRIZEN(373) ataca a MORPEN(150).(223)
+ADRIZEN derrotó a MORPEN
+Scuderia Ferrari Sport Elettronici ataca a Mercedes AMG e-Sports
+ DOU(131) ataca a HANUM(540).(-409)
+ GOPS(745) ataca a ATHEMAS(540).(205)
+GOPS derrotó a ATHEMAS
+ DOU(120) ataca a ADRIZEN(150).(-30)
+Mercedes AMG e-Sports ataca a Scuderia Ferrari Sport Elettronici
+ HANUM(89) ataca a DOU(360).(-271)
+ ADRIZEN(464) ataca a GOPS(125).(339)
+ADRIZEN derrotó a GOPS
+ ADRIZEN(671) ataca a DOU(360).(311)
+ADRIZEN derrotó a DOU
+Mercedes AMG e-Sports GANA LA BATALLA.
