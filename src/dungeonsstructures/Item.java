@@ -30,11 +30,15 @@ public class Item implements Comparable <Item>{
     }
     
     public int getPrecio(){
-        return precio;
+        return this.precio;
     }
     
     public int getPuntosAtaque(){
-        return puntosAtaque;
+        return this.puntosAtaque;
+    }
+    
+    public String getNombre(){
+        return this.nombre;
     }
     
     public void setPuntosAtaque(int p){

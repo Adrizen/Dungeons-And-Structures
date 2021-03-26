@@ -142,6 +142,36 @@ public class ArbolAVL {
             }
         }
     }
+    
+    // Dada una clave, retorna el objeto que tenga esa clave. Si no existe en el AVL, devuelve null.
+    public Object obtener(Comparable elem){
+        Object objeto = null;
+        if (this.raiz != null){
+            if (this.raiz.getElem().compareTo(elem) == 0){
+                objeto = this.raiz.getElem();
+            } else {
+                objeto = obtenerAux(this.raiz, elem);
+            }
+        }
+        return objeto;
+    }
+    
+    // Método privado auxiliar recursivo para buscar un objeto en el AVL dada una clave.
+    private Object obtenerAux(NodoAVL nodo, Comparable elem){
+        Object objeto = null;
+        if (nodo != null) {
+            if (nodo.getElem().compareTo(elem) == 0) {
+                objeto = nodo.getElem();
+            } else {
+                if (nodo.getElem().compareTo(elem) > 0) {
+                    objeto = obtenerAux(nodo.getIzquierdo(), elem);
+                } else {
+                    objeto = obtenerAux(nodo.getDerecho(), elem);
+                }
+            }
+        }
+        return objeto;
+    }
 
     // TODO: Eliminar raíz.
     public boolean eliminar(Comparable elem) {

@@ -2,7 +2,7 @@ package dungeonsstructures;
 
 import dungeonsstructures.Lista.Lista;
 
-public class Jugador implements Comparable <Jugador>{
+public class Jugador implements Comparable <Jugador> {
 
     private String nombre;
     private String tipo;
@@ -85,6 +85,6 @@ public class Jugador implements Comparable <Jugador>{
 
     @Override
     public String toString(){
-        return ("Nombre: " + nombre + " - Tipo: " + tipo + " - Categoria: " + categoria + " - Equipo: " + equipo);
+        return ("Nombre: " + nombre + " - Tipo: " + tipo + " - Categoria: " + categoria + " - Equipo: " + equipo.getNombre());
     }
 }
