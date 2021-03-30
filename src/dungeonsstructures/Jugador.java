@@ -2,7 +2,7 @@ package dungeonsstructures;
 
 import dungeonsstructures.Lista.Lista;
 
-public class Jugador implements Comparable <Jugador> {
+public class Jugador {
 
     private String nombre;
     private String tipo;
@@ -15,7 +15,7 @@ public class Jugador implements Comparable <Jugador> {
     private Equipo equipo; // Una vez creado el jugador, se lo ingresa a una cola y ahí se asigna el equipo.
 
     public Jugador(String nombre, String tipo, String categoria) {
-        this.nombre = nombre.toUpperCase();
+        this.nombre = nombre;
         this.tipo = tipo.toUpperCase();
         this.dinero = 0;
         this.items = new Lista();
@@ -26,10 +26,6 @@ public class Jugador implements Comparable <Jugador> {
         this.equipo = null;
     }
     
-    @Override
-    public int compareTo(Jugador j){
-        return (this.nombre.compareTo(j.getNombre()));
-    }
     
     public String getNombre(){
         return this.nombre;
@@ -45,6 +41,10 @@ public class Jugador implements Comparable <Jugador> {
     
     public int getSalud(){
         return salud;
+    }
+    
+    public Equipo getEquipo(){
+        return this.equipo;
     }
     
     public String getCategoria(){
@@ -73,6 +73,14 @@ public class Jugador implements Comparable <Jugador> {
     
     public void setDinero(int d){
         this.dinero = d;
+    }
+    
+    public void setCategoria(String c){
+        this.categoria = c;
+    }
+    
+    public void setTipo(String t){
+        this.tipo = t;
     }
     
     public void setVecesDerrotado(int v){

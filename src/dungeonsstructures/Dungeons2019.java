@@ -19,6 +19,10 @@ public class Dungeons2019 {
     
     static PrintWriter LOG;
     static int jugadoresEsperandoEquipo;
+    static ArbolAVL items, jugadores;
+    static Grafo mapa;
+    static HashMap equipos;
+    static Scanner sc = new Scanner(System.in);
     
     public static void main(String[] args) { //La idea es tener un .txt para cada elemento del proyecto. Jugadores, Items, Lugares, etc.
         crearLog();   // Creo el archivo LOG.txt
@@ -28,42 +32,334 @@ public class Dungeons2019 {
         
         // Items.
         Scanner datosItems = leerTxtItems();    // Leo el .txt de Items y devuelvo un tipo Scanner.
-        ArbolAVL items = crearItems(datosItems);    // Creo los items y los coloco en el AVL.
+        items = crearItems(datosItems);    // Creo los items y los coloco en el AVL.
         
         // Jugadores.
         Scanner datosJugadores = leerTxtJugadores();    // Leo el .txt de Jugadores y devuelvo un tipo Scanner.
-        ArbolAVL jugadores = crearJugadores(datosJugadores, armadoEquipos); // Creo los jugadores y los coloco en el AVL. También los pongo en la cola de prioridad.
+        jugadores = crearJugadores(datosJugadores, armadoEquipos); // Creo los jugadores y los coloco en el AVL. También los pongo en la cola de prioridad.
         
         // Mapa.
         Scanner datosMapa = leerTxtLocalizaciones();
         ArrayList localizaciones = new ArrayList(); // Para elegir aleatoriamente una localizacion al crear un equipo.
-        Grafo mapa = crearMapa(datosMapa, localizaciones);
+        mapa = crearMapa(datosMapa, localizaciones);
         
         // Equipos.
         Scanner nombreEquipos = leerTxtEquipos();
-        HashMap equipos = crearEquipos(armadoEquipos,localizaciones,nombreEquipos);
+        equipos = crearEquipos(armadoEquipos,localizaciones,nombreEquipos);
         
         // Caminos.
         Scanner datosCaminos = leerTxtCaminos();
         crearCaminos(datosCaminos,mapa);
         
-        Jugador gops = new Jugador("GOPS","",""); //(String nombre, String tipo, String categoria)
-        System.out.println(jugadores.obtener(gops).toString());
-        
         Equipo equipo1 = (Equipo) equipos.get("Mercedes AMG e-Sports");
         Equipo equipo2 = (Equipo) equipos.get("Scuderia Ferrari Sport Elettronici");
         administrarBatalla(equipo1,equipo2);
+        
+        menu();
         
         LOG.close();    // Cierro el LOG.txt
     }
     
     public static void menu(){
         boolean seguir = true;
+        char seleccion;
         while (seguir){
-            // Muchas weas.
+            System.out.println("--- Menú - Eliga una opción ---");
+            System.out.println("A. ABM de jugadores.");
+            System.out.println("B. ABM de items.");
+            
+            System.out.println("L. Mostrar sistema.");
+            System.out.println("Z. Salir del juego.");
+            seleccion = sc.next().charAt(0);
+            seleccion = Character.toUpperCase(seleccion);
+            seguir = !seleccionarOpcion(seleccion);
+        }
+    }
+
+    public static boolean seleccionarOpcion(char seleccion) {
+        boolean exito = false;
+        switch (seleccion) {
+            case 'A':
+                ABMJugador();
+                break;
+            case 'B':
+                ABMItem();
+                break;
+            case 'L':
+                mostrarSistema();
+                break;
+            case 'Z':
+                exito = true;
+                break;
+            default:
+                System.out.println("Selección no válida, elija una correcta.");
+        }
+        return exito;
+    }
+    
+    public static void ABMJugador() {
+        boolean seguir = true;
+        char seleccion;
+        while (seguir) {
+            System.out.println("A. Alta de un jugador.");
+            System.out.println("B. Baja de un jugador.");
+            System.out.println("C. Modificación de un jugador.");
+            
+            seleccion = sc.next().charAt(0);
+            seleccion = Character.toUpperCase(seleccion);
+            switch (seleccion) {
+                case 'A':
+                    System.out.println("-- Dar de alta a un jugador --");
+                    altaJugador();
+                    seguir = false;
+                    break;
+                case 'B':
+                    System.out.println("-- Dar de baja a un jugador --");
+                    bajaJugador();
+                    seguir = false;
+                    break;
+                case 'C':
+                    System.out.println("-- Modificar a un jugador --");
+                    modificarJugador();
+                    seguir = false;
+                    break;
+                default:
+                    System.out.println("Selección no válida, elija una correcta.");
+            }
         }
     }
     
+    public static void altaJugador(){
+        String nombre, tipo, categoria;
+        System.out.println("Ingrese el nombre del jugador");
+        nombre = sc.next();
+        nombre = nombre.toUpperCase();
+        if (!jugadores.pertenece(nombre)){
+            tipo = elegirTipoDeJugador();
+            categoria = elegirCategoriaDeJugador();
+            Jugador jugador = new Jugador(nombre,tipo,categoria);
+            jugadores.insertar(nombre,jugador);
+            System.out.println("Jugador " + nombre + " agregado con éxito.");
+            LOG.println("Agregado jugador " + nombre + ".");
+        } else {
+            System.out.println("El jugador " + nombre + " ya existe.");
+        }
+    }
+    
+    public static String elegirTipoDeJugador(){
+        String respuesta = "";
+        boolean seguir = true;
+        char seleccion;
+        System.out.println("Seleccione el tipo de jugador.");
+        System.out.println("A. Guerrero.");
+        System.out.println("B. Defensor.");
+        while (seguir){
+            seleccion = sc.next().charAt(0);
+            seleccion = Character.toUpperCase(seleccion);
+            switch (seleccion){
+                case 'A':
+                    respuesta = "GUERRERO";
+                    seguir = false;
+                    break;
+                case 'B':
+                    respuesta = "DEFENSOR";
+                    seguir = false;
+                    break;
+                default:
+                    System.out.println("Selección no válida, elija una correcta.");
+            }
+        }
+        return respuesta;
+    }
+    
+        public static String elegirCategoriaDeJugador(){
+        String respuesta = "";
+        boolean seguir = true;
+        char seleccion;
+        System.out.println("Seleccione la categoria del jugador.");
+        System.out.println("A. Novato.");
+        System.out.println("B. Aficionado.");
+        System.out.println("C. Profesional");
+        
+        while (seguir){
+            seleccion = sc.next().charAt(0);
+            seleccion = Character.toUpperCase(seleccion);
+            switch (seleccion){
+                case 'A':
+                    respuesta = "NOVATO";
+                    seguir = false;
+                    break;
+                case 'B':
+                    respuesta = "AFICIONADO";
+                    seguir = false;
+                    break;
+                case 'C':
+                    respuesta = "PROFESIONAL";
+                    seguir = false;
+                    break;
+                default:
+                    System.out.println("Selección no válida, elija una correcta.");
+            }
+        }
+        return respuesta;
+    }
+
+    public static void bajaJugador() {
+        String nombre;
+        System.out.println("Ingrese el nombre del jugador a eliminar.");
+        nombre = sc.next();
+        nombre = nombre.toUpperCase();
+        Jugador jugador = (Jugador) jugadores.obtener(nombre);
+        if (jugador != null){
+            jugadores.eliminar(jugador.getNombre());
+            Equipo equipoJugador = jugador.getEquipo();
+            equipos.remove(equipoJugador.getNombre());
+            System.out.println("Jugador " + nombre + " eliminado correctamente.");
+            LOG.println("Se eliminó al jugador " + nombre + ".");
+        } else {
+            System.out.println("Jugador " + nombre + " no existe.");
+        }
+    }
+    
+    public static void modificarJugador(){
+        String nombre;
+        boolean seguir = true;
+        System.out.println("Ingrese el nombre del jugador a modificar.");
+        nombre = sc.next();
+        nombre = nombre.toUpperCase();
+        Jugador jugador = (Jugador) jugadores.obtener(nombre);
+        if (jugador != null) {
+            System.out.println("¿Qué desea hacer con " + jugador.getNombre() + "?");
+            while (seguir) {
+                switch (menuModificarJugador()) {
+                    case 'A':
+                        String nuevoTipo = elegirTipoDeJugador();
+                        jugador.setTipo(nuevoTipo);
+                        break;
+                    case 'B':
+                        System.out.println("Ingrese la cantidad de dinero del jugador.");
+                        jugador.setDinero(sc.nextInt());
+                        break;
+                    case 'C':
+                        String nuevaCategoria = elegirCategoriaDeJugador();
+                        jugador.setCategoria(nuevaCategoria);
+                        break;
+                    case 'D':
+                        System.out.println("Ingrese la cantidad de veces derrotado del jugador");
+                        jugador.setVecesDerrotado(sc.nextInt());
+                        break;
+                    case 'E':
+                        System.out.println("Ingrese la cantidad de batallas ganadas del jugador");
+                        jugador.setBatallasGanadas(sc.nextInt());
+                        break;
+                    case 'Z':
+                        seguir = false;
+                }
+            }
+        } else {
+            System.out.println("Ese jugador no existe.");
+        }
+    }
+    
+    public static char menuModificarJugador(){
+        char seleccion;
+        System.out.println("A. Cambiar el tipo del jugador.");
+        System.out.println("B. Cambiar el dinero del jugador.");
+        System.out.println("C. Cambiar la categoria del jugador.");
+        System.out.println("D. Cambiar las veces derrotado del jugador.");
+        System.out.println("E. Cambiar las victorias del jugador.");
+        System.out.println("Z. Salir.");
+        seleccion = sc.next().charAt(0);
+        seleccion = Character.toUpperCase(seleccion);
+        return seleccion;
+    }
+
+    public static void ABMItem() {
+        boolean seguir = true;
+        char seleccion;
+        while (seguir) {
+            System.out.println("A. Alta de un item.");
+            System.out.println("B. Baja de un item.");
+            System.out.println("C. Modificación de un item.");
+
+            seleccion = sc.next().charAt(0);
+            seleccion = Character.toUpperCase(seleccion);
+            switch (seleccion) {
+                case 'A':
+                    System.out.println("-- Dar de alta a un item --");
+                    altaItem();
+                    seguir = false;
+                    break;
+                case 'B':
+                    System.out.println("-- Dar de baja a un item --");
+                    bajaItem();
+                    seguir = false;
+                    break;
+                case 'C':
+                    System.out.println("-- Modificar a un item --");
+                    modificarItem();
+                    seguir = false;
+                    break;
+                default:
+                    System.out.println("Selección no válida, elija una correcta.");
+            }
+        }
+    }
+
+    public static void altaItem() {
+        String codigo, nombre;
+        int precio, puntosAtaque, puntosDefensa, copias;
+        System.out.println("Ingrese el código del item.");
+        codigo = sc.next();
+        codigo = codigo.toUpperCase();
+        if (!items.pertenece(codigo)) {
+            System.out.println("Ingrese el nombre del item.");
+            nombre = sc.next();
+            System.out.println("Ingrese el precio del item.");
+            precio = sc.nextInt();
+            System.out.println("Ingrese los puntos de ataque del item.");
+            puntosAtaque = sc.nextInt();
+            System.out.println("Ingrese los puntos de defensa del item.");
+            puntosDefensa = sc.nextInt();
+            System.out.println("Ingrese las copias del item.");
+            copias = sc.nextInt();
+            Item item = new Item(codigo,nombre,precio,puntosAtaque,puntosDefensa,copias);
+            items.insertar(codigo, item);
+            System.out.println("Item " + nombre + " agregado con éxito.");
+            LOG.println("Agregado item " + nombre + ".");
+        } else {
+            System.out.println("El item " + codigo + " ya existe.");
+        }
+    }
+
+    public static void mostrarSistema() {
+        char seleccion;
+        System.out.println("-- DEBUG --");
+        System.out.println("A. Mostrar AVL de Jugadores.");
+        System.out.println("B. Mostrar Grafo (mapa).");
+        System.out.println("C. Mostrar AVL de Items.");
+        //TO DO: Seguir agregando.
+        seleccion = sc.next().charAt(0);
+        seleccion = Character.toUpperCase(seleccion);
+        switch (seleccion) {
+            case 'A':
+                System.out.println("AVL Jugadores: ");
+                System.out.println(jugadores.toString());
+                System.out.println("----------------");
+                break;
+            case 'B':
+                System.out.println("Grafo (mapa):");
+                System.out.println(mapa.toString());
+                System.out.println("----------------");
+                break;
+            case 'C':
+                System.out.println("AVL Items: ");
+                System.out.println(items.toString());
+                System.out.println("----------------");
+                break;
+        }
+    }
+
     // Creación del archivo LOG.
     public static void crearLog(){
         try {
@@ -260,11 +556,12 @@ public class Dungeons2019 {
         String nombre, tipo, categoria;
         while (datosJugadores.hasNext()) { //Iterar hasta que no haya más lineas de datos.
             nombre = datosJugadores.next();
+            nombre = nombre.toUpperCase();
             tipo = datosJugadores.next();
             categoria = datosJugadores.next();
             datosJugadores.nextLine();  // Bajo a la siguiente línea.
             Jugador jugador = new Jugador(nombre,tipo,categoria);
-            jugadores.insertar(jugador);    // Agrego al jugador al árbol AVL.
+            jugadores.insertar(nombre,jugador);    // Agrego al jugador al árbol AVL.
             armadoEquipos.insertar(jugador, categoria.toUpperCase());   // Agrego al jugador a la cola de espera para armar equipos.
             jugadoresEsperandoEquipo++;  // Contador que uso después, a la hora de crear equipos.
             LOG.println("Jugador cargado: " + nombre);
@@ -349,7 +646,7 @@ public class Dungeons2019 {
     }
     
     public static ArbolAVL crearItems(Scanner datosItems){
-        ArbolAVL items = new ArbolAVL();
+        items = new ArbolAVL();
         String codigo, nombre;
         int precio, puntosAtaque, puntosDefensa, copias;
         while (datosItems.hasNext()){
@@ -360,7 +657,7 @@ public class Dungeons2019 {
             puntosDefensa = Integer.parseInt(datosItems.next());
             copias = Integer.parseInt(datosItems.next());
             Item item = new Item(codigo,nombre,precio,puntosAtaque,puntosDefensa,copias);
-            items.insertar(item);   // Agrego el item al árbol AVL.
+            items.insertar(codigo,item);   // Agrego el item al árbol AVL.
             datosItems.nextLine();  // Bajo a la siguiente línea.
             LOG.println(item.toString());
         }

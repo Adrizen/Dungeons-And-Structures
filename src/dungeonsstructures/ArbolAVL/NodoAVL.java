@@ -6,24 +6,26 @@ package dungeonsstructures.ArbolAVL;
  * @author Guillermo Andrés Pereyra.
  */
 public class NodoAVL {
-    private Comparable elem;
+    private Comparable clave;
+    private Object objeto;
     private int altura;
     private NodoAVL izquierdo;
     private NodoAVL derecho;
     
-    public NodoAVL(Comparable e, NodoAVL i, NodoAVL d){
-        elem = e;
+    public NodoAVL(Comparable c, Object o, NodoAVL i, NodoAVL d){
+        clave = c;
+        objeto = o;
         izquierdo = i;
         derecho = d;
         altura = 0;
     }
     
-    public Comparable getElem(){
-        return elem;
+    public Comparable getClave(){
+        return clave;
     }
     
-    public void setElem(Comparable e){
-        this.elem = e;
+    public Object getObjeto(){
+        return objeto;
     }
     
     public int getAltura(){
