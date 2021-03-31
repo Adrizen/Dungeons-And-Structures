@@ -21,13 +21,14 @@ public class Dungeons2019 {
     static int jugadoresEsperandoEquipo;
     static ArbolAVL items, jugadores;
     static Grafo mapa;
-    static HashMap equipos;
+    static HashMap equipos, codigosItems;
+    static ColaPrioridad armadoEquipos;
     static Scanner sc = new Scanner(System.in);
     
     public static void main(String[] args) { //La idea es tener un .txt para cada elemento del proyecto. Jugadores, Items, Lugares, etc.
         crearLog();   // Creo el archivo LOG.txt
         
-        ColaPrioridad armadoEquipos = new ColaPrioridad();  // "Cola de prioridad para los jugadores esperando entrar en un equipo."
+        armadoEquipos = new ColaPrioridad();  // "Cola de prioridad para los jugadores esperando entrar en un equipo."
         jugadoresEsperandoEquipo = 0;    // Cantidad de jugadores a la espera de formar parte de un equipo.
         
         // Items.
@@ -50,6 +51,8 @@ public class Dungeons2019 {
         // Caminos.
         Scanner datosCaminos = leerTxtCaminos();
         crearCaminos(datosCaminos,mapa);
+        
+        LOG.flush();    // Flush luego de cargar los .txt
         
         Equipo equipo1 = (Equipo) equipos.get("Mercedes AMG e-Sports");
         Equipo equipo2 = (Equipo) equipos.get("Scuderia Ferrari Sport Elettronici");
@@ -81,9 +84,11 @@ public class Dungeons2019 {
         switch (seleccion) {
             case 'A':
                 ABMJugador();
+                LOG.flush();
                 break;
             case 'B':
                 ABMItem();
+                LOG.flush();
                 break;
             case 'L':
                 mostrarSistema();
@@ -97,6 +102,7 @@ public class Dungeons2019 {
         return exito;
     }
     
+    // Método para seleccionar qué se desea hacer a algún jugador/jugadores.
     public static void ABMJugador() {
         boolean seguir = true;
         char seleccion;
@@ -104,23 +110,23 @@ public class Dungeons2019 {
             System.out.println("A. Alta de un jugador.");
             System.out.println("B. Baja de un jugador.");
             System.out.println("C. Modificación de un jugador.");
-            
+            System.out.println("Z. Salir.");
             seleccion = sc.next().charAt(0);
             seleccion = Character.toUpperCase(seleccion);
             switch (seleccion) {
                 case 'A':
                     System.out.println("-- Dar de alta a un jugador --");
                     altaJugador();
-                    seguir = false;
                     break;
                 case 'B':
                     System.out.println("-- Dar de baja a un jugador --");
                     bajaJugador();
-                    seguir = false;
                     break;
                 case 'C':
                     System.out.println("-- Modificar a un jugador --");
                     modificarJugador();
+                    break;
+                case 'Z':
                     seguir = false;
                     break;
                 default:
@@ -129,12 +135,13 @@ public class Dungeons2019 {
         }
     }
     
+    // Agregar manualmente a un jugador pidiendo sus datos individualmente.
     public static void altaJugador(){
         String nombre, tipo, categoria;
         System.out.println("Ingrese el nombre del jugador");
         nombre = sc.next();
         nombre = nombre.toUpperCase();
-        if (!jugadores.pertenece(nombre)){
+        if (!jugadores.pertenece(nombre)){  // Si no existe en el AVL pido sus datos y lo agrego.
             tipo = elegirTipoDeJugador();
             categoria = elegirCategoriaDeJugador();
             Jugador jugador = new Jugador(nombre,tipo,categoria);
@@ -172,7 +179,7 @@ public class Dungeons2019 {
         return respuesta;
     }
     
-        public static String elegirCategoriaDeJugador(){
+    public static String elegirCategoriaDeJugador(){
         String respuesta = "";
         boolean seguir = true;
         char seleccion;
@@ -180,7 +187,6 @@ public class Dungeons2019 {
         System.out.println("A. Novato.");
         System.out.println("B. Aficionado.");
         System.out.println("C. Profesional");
-        
         while (seguir){
             seleccion = sc.next().charAt(0);
             seleccion = Character.toUpperCase(seleccion);
@@ -204,6 +210,7 @@ public class Dungeons2019 {
         return respuesta;
     }
 
+    // Eliminar a un jugador del sistema.
     public static void bajaJugador() {
         String nombre;
         System.out.println("Ingrese el nombre del jugador a eliminar.");
@@ -211,9 +218,17 @@ public class Dungeons2019 {
         nombre = nombre.toUpperCase();
         Jugador jugador = (Jugador) jugadores.obtener(nombre);
         if (jugador != null){
-            jugadores.eliminar(jugador.getNombre());
-            Equipo equipoJugador = jugador.getEquipo();
-            equipos.remove(equipoJugador.getNombre());
+            jugadores.eliminar(nombre); // Elimino al jugador del AVL.
+            Equipo equipoJugador = jugador.getEquipo(); // Obtengo el equipo del jugador.
+            equipos.remove(equipoJugador.getNombre()); // Su equipo ya no está completo y no puede pelear con otros equipos. Lo quito del HashMap.
+            Lista listaJugadores = equipoJugador.getJugadores();
+            for (int i = 0; i < 2; i++) {   // Los dos jugadores que quedaban se quedan sin equipo y vuelven a la cola de prioridad.
+                Jugador auxJugador = (Jugador) listaJugadores.recuperar(i);
+                auxJugador.setEquipo(null);
+                jugadoresEsperandoEquipo++;
+                String categoria = auxJugador.getCategoria();
+                armadoEquipos.insertar(auxJugador, categoria);  // Agrego al jugador a la cola de prioridad.
+            }
             System.out.println("Jugador " + nombre + " eliminado correctamente.");
             LOG.println("Se eliminó al jugador " + nombre + ".");
         } else {
@@ -229,31 +244,42 @@ public class Dungeons2019 {
         nombre = nombre.toUpperCase();
         Jugador jugador = (Jugador) jugadores.obtener(nombre);
         if (jugador != null) {
-            System.out.println("¿Qué desea hacer con " + jugador.getNombre() + "?");
+            System.out.println("¿Qué desea hacer con " + nombre + "?");
             while (seguir) {
                 switch (menuModificarJugador()) {
                     case 'A':
                         String nuevoTipo = elegirTipoDeJugador();
                         jugador.setTipo(nuevoTipo);
+                        LOG.println("Jugador " + nombre + " cambió su tipo a " + nuevoTipo);
                         break;
                     case 'B':
                         System.out.println("Ingrese la cantidad de dinero del jugador.");
-                        jugador.setDinero(sc.nextInt());
+                        int dinero = sc.nextInt();
+                        jugador.setDinero(dinero);
+                        LOG.println("Jugador " + nombre + " cambió su dinero a " + dinero);
                         break;
                     case 'C':
                         String nuevaCategoria = elegirCategoriaDeJugador();
                         jugador.setCategoria(nuevaCategoria);
+                        LOG.println("Jugador " + nombre + " cambió su categoría a " + nuevaCategoria);
                         break;
                     case 'D':
                         System.out.println("Ingrese la cantidad de veces derrotado del jugador");
-                        jugador.setVecesDerrotado(sc.nextInt());
+                        int vecesDerrotado = sc.nextInt();
+                        jugador.setVecesDerrotado(vecesDerrotado);
+                        LOG.println("Jugador " + nombre + " cambió su cantidad de derrotas a " + vecesDerrotado);
                         break;
                     case 'E':
                         System.out.println("Ingrese la cantidad de batallas ganadas del jugador");
-                        jugador.setBatallasGanadas(sc.nextInt());
+                        int batallasGanadas = sc.nextInt();
+                        jugador.setBatallasGanadas(batallasGanadas);
+                        LOG.println("Jugador " + nombre + " cambió su cantidad de victorias a " + batallasGanadas);
                         break;
                     case 'Z':
                         seguir = false;
+                        break;
+                    default:
+                        System.out.println("Selección no válida, seleccione una correcta.");
                 }
             }
         } else {
@@ -261,6 +287,7 @@ public class Dungeons2019 {
         }
     }
     
+    // Menú para listar las modificaciones posibles a un jugador.
     public static char menuModificarJugador(){
         char seleccion;
         System.out.println("A. Cambiar el tipo del jugador.");
@@ -274,6 +301,7 @@ public class Dungeons2019 {
         return seleccion;
     }
 
+    // Método para seleccionar qué se desea hacer a algún item.
     public static void ABMItem() {
         boolean seguir = true;
         char seleccion;
@@ -281,23 +309,23 @@ public class Dungeons2019 {
             System.out.println("A. Alta de un item.");
             System.out.println("B. Baja de un item.");
             System.out.println("C. Modificación de un item.");
-
+            System.out.println("Z. Salir.");
             seleccion = sc.next().charAt(0);
             seleccion = Character.toUpperCase(seleccion);
             switch (seleccion) {
                 case 'A':
                     System.out.println("-- Dar de alta a un item --");
                     altaItem();
-                    seguir = false;
                     break;
                 case 'B':
                     System.out.println("-- Dar de baja a un item --");
                     bajaItem();
-                    seguir = false;
                     break;
                 case 'C':
                     System.out.println("-- Modificar a un item --");
                     modificarItem();
+                    break;
+                case 'Z':
                     seguir = false;
                     break;
                 default:
@@ -306,13 +334,14 @@ public class Dungeons2019 {
         }
     }
 
+    // Agregar manualmente un item pidiendo sus datos individualmente.
     public static void altaItem() {
         String codigo, nombre;
         int precio, puntosAtaque, puntosDefensa, copias;
         System.out.println("Ingrese el código del item.");
         codigo = sc.next();
         codigo = codigo.toUpperCase();
-        if (!items.pertenece(codigo)) {
+        if (!codigosItems.containsKey(codigo)) {
             System.out.println("Ingrese el nombre del item.");
             nombre = sc.next();
             System.out.println("Ingrese el precio del item.");
@@ -324,39 +353,131 @@ public class Dungeons2019 {
             System.out.println("Ingrese las copias del item.");
             copias = sc.nextInt();
             Item item = new Item(codigo,nombre,precio,puntosAtaque,puntosDefensa,copias);
-            items.insertar(codigo, item);
-            System.out.println("Item " + nombre + " agregado con éxito.");
-            LOG.println("Agregado item " + nombre + ".");
+            Lista lista = (Lista) items.obtener(precio);
+            // Como los items se ordenan por precio y puede haber más de un item con el mismo valor, en cada nodo del AVL Items se guarda una lista...
+            // que contiene los items de dicho precio.
+            if (lista == null) {    // No existe un item con ese precio. Creo una lista nueva.
+                lista = new Lista();
+                lista.insertar(item, 1);
+                items.insertar(precio, lista);  // Agrego la lista (con el único item) al AVL.
+            } else {    // Ya existía un item con ese precio. Agrego el item nuevo a la lista existente.
+                lista.insertar(item, 1);
+            }
+            codigosItems.put(codigo, item); // Agrego el item al HashMap.
+            System.out.println("Item código " + codigo + " agregado con éxito.");
+            LOG.println("Agregado item código " + nombre + ".");
         } else {
             System.out.println("El item " + codigo + " ya existe.");
         }
     }
-
+    
+    public static void bajaItem(){
+        String codigo;
+        System.out.println("Ingrese el código del item a eliminar.");
+        codigo = sc.next();
+        codigo = codigo.toUpperCase();
+        Item item = (Item) codigosItems.get(codigo);
+        if (item != null){
+            int precio = item.getPrecio();
+            Lista lista = (Lista) items.obtener(precio);
+            lista.eliminar(item);
+            if (lista.esVacia()){   // No quedan items con ese precio, elimino la lista vacia.
+                items.eliminar(precio);
+            }
+            codigosItems.remove(codigo);    // Elimino el item del HashMap.
+            System.out.println("Item código " + codigo + " removido con éxito.");
+            LOG.println("Removido item código " + codigo + ".");
+        } else {
+            System.out.println("El item con el código " + codigo + " no existe.");
+        }
+    }
+    
+    public static void modificarItem(){
+        String codigo;
+        boolean seguir = true;
+        System.out.println("Ingrese el código del item a modificar.");
+        codigo = sc.next();
+        codigo = codigo.toUpperCase();
+        Item item = (Item) codigosItems.get(codigo);
+        if (item != null){
+            System.out.println("¿Qué desea hacer con el item código " + codigo + "?");
+            while (seguir){
+                switch (menuModificarItem()){
+                    case 'A':
+                        System.out.println("Ingrese el nuevo nombre para el item.");
+                        String nuevoNombre = sc.next();
+                        item.setNombre(nuevoNombre);
+                        LOG.println("Item código " + codigo + " cambió su nombre a " + nuevoNombre);
+                        break;
+                    case 'B':
+                        System.out.println("Ingrese los puntos de ataque del item.");
+                        int puntosAtaque = sc.nextInt();
+                        item.setPuntosAtaque(puntosAtaque);
+                        LOG.println("Item código " + codigo + " cambió sus puntos de ataque a " + puntosAtaque);
+                        break;
+                    case 'C':
+                        System.out.println("Ingrese los puntos de defensa del item.");
+                        int puntosDefensa = sc.nextInt();
+                        item.setPuntosDefensa(puntosDefensa);
+                        LOG.println("Item código " + codigo + " cambió sus puntos de ataque a " + puntosDefensa);
+                        break;
+                    case 'Z':
+                        seguir = false;
+                        break;
+                    default:
+                        System.out.println("Selección no válida, seleccione una correcta.");
+                }
+            }
+        }
+    }
+    
+    // Menú para listar las modificaciones posibles a un item.
+    public static char menuModificarItem() {
+        char seleccion;
+        System.out.println("A. Cambiar el nombre a un item.");
+        System.out.println("B. Cambiar los puntos de ataque de un item.");
+        System.out.println("C. Cambiar los puntos de defensa de un item.");
+        System.out.println("D. Cambiar la cantidad de copias de un item.");
+        System.out.println("Z. Salir");
+        seleccion = sc.next().charAt(0);
+        seleccion = Character.toUpperCase(seleccion);
+        return seleccion;
+    }
+    
     public static void mostrarSistema() {
         char seleccion;
+        boolean seguir = true;
         System.out.println("-- DEBUG --");
         System.out.println("A. Mostrar AVL de Jugadores.");
-        System.out.println("B. Mostrar Grafo (mapa).");
-        System.out.println("C. Mostrar AVL de Items.");
+        System.out.println("B. Mostrar AVL de Items.");
+        System.out.println("C. Mostrar Grafo (mapa).");
+        System.out.println("Z. Salir.");
         //TO DO: Seguir agregando.
         seleccion = sc.next().charAt(0);
         seleccion = Character.toUpperCase(seleccion);
-        switch (seleccion) {
-            case 'A':
-                System.out.println("AVL Jugadores: ");
-                System.out.println(jugadores.toString());
-                System.out.println("----------------");
-                break;
-            case 'B':
-                System.out.println("Grafo (mapa):");
-                System.out.println(mapa.toString());
-                System.out.println("----------------");
-                break;
-            case 'C':
-                System.out.println("AVL Items: ");
-                System.out.println(items.toString());
-                System.out.println("----------------");
-                break;
+        while (seguir) {
+            switch (seleccion) {
+                case 'A':
+                    System.out.println("AVL Jugadores: ");
+                    System.out.println(jugadores.toString());
+                    System.out.println("----------------");
+                    break;
+                case 'C':
+                    System.out.println("Grafo (mapa):");
+                    System.out.println(mapa.toString());
+                    System.out.println("----------------");
+                    break;
+                case 'B':
+                    System.out.println("AVL Items: ");
+                    System.out.println(items.toString());
+                    System.out.println("----------------");
+                    break;
+                case 'Z':
+                    seguir = false;
+                    break;
+                default:
+                    System.out.println("Selección no válida, seleccione una correcta.");
+            }
         }
     }
 
@@ -582,7 +703,7 @@ public class Dungeons2019 {
     }
     
     public static HashMap crearEquipos(ColaPrioridad armadoEquipos, ArrayList localizaciones, Scanner nombreEquipos){
-        HashMap equipos = new HashMap();
+        equipos = new HashMap();
         while (jugadoresEsperandoEquipo >= 3){ // Si hay 3 o más jugadores esperando, se arma un equipo.
             Lista listaJugadores = new Lista();
             String nombreEquipo, categoria = "", localizacion;
@@ -647,6 +768,7 @@ public class Dungeons2019 {
     
     public static ArbolAVL crearItems(Scanner datosItems){
         items = new ArbolAVL();
+        codigosItems = new HashMap();
         String codigo, nombre;
         int precio, puntosAtaque, puntosDefensa, copias;
         while (datosItems.hasNext()){
@@ -657,7 +779,15 @@ public class Dungeons2019 {
             puntosDefensa = Integer.parseInt(datosItems.next());
             copias = Integer.parseInt(datosItems.next());
             Item item = new Item(codigo,nombre,precio,puntosAtaque,puntosDefensa,copias);
-            items.insertar(codigo,item);   // Agrego el item al árbol AVL.
+            Lista lista = (Lista) items.obtener(precio);
+            if (lista == null) {    // No existe un item con ese precio.
+                lista = new Lista();
+                lista.insertar(item, 1);
+                items.insertar(precio, lista);
+            } else {    // Ya existía un item con ese precio.
+                lista.insertar(item, 1);
+            }
+            codigosItems.put(codigo, item); // Agrego el item al HashMap.
             datosItems.nextLine();  // Bajo a la siguiente línea.
             LOG.println(item.toString());
         }

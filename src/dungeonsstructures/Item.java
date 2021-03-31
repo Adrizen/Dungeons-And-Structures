@@ -36,6 +36,10 @@ public class Item {
         return this.nombre;
     }
     
+    public void setNombre(String n){
+        this.nombre = n;
+    }
+    
     public void setPuntosAtaque(int p){
         this.puntosAtaque = p;
     }

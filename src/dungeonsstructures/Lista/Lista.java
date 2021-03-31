@@ -51,6 +51,27 @@ public class Lista {
         }
         return bandera;
     }
+    
+    // Método para eliminar un nodo dado un objeto, sin saber en qué posición está.
+    // Si se puede eliminar el nodo, devuelve true. Si no devuelve false.
+    public boolean eliminar(Object obj){
+        Nodo nodito = this.cabecera, padreNodito = null;
+        boolean exito = false;
+        while (nodito != null && !exito){
+            if (nodito.getElemento().equals(obj)){
+                exito = true;
+                if (padreNodito == null){   // El nodo a eliminar es la cabecera de la lista.
+                    this.cabecera = nodito.getEnlace();
+                } else {    // El nodo a eliminar no es la cabecera de la lista.
+                    padreNodito.setEnlace(nodito.getEnlace());
+                }
+            } else {
+                padreNodito = nodito;
+                nodito = nodito.getEnlace();
+            }
+        }
+        return exito;
+    }
 
     // Dada una posición, devuelve el objeto en dicha posición.
     // Si tiene éxito devuelve el objeto, de lo contrario devuelve null.

@@ -26,9 +26,9 @@ public class ArbolAVL {
     }
 
     // Método auxiliar que es utilizado para llamar recursivamente a los nodos correspondientes (izquierdo si es menor, derecha si es mayor).
-    private boolean insertarAux(NodoAVL nodo, NodoAVL nodoPadre, Comparable clave, Object objeto,int altura) {
+    private boolean insertarAux(NodoAVL nodo, NodoAVL nodoPadre, Comparable clave, Object objeto, int altura) {
         boolean exito = false;
-        if (clave.compareTo(nodo.getClave()) < 0) { // Aquííííííí
+        if (clave.compareTo(nodo.getClave()) <= 0) {
             if (nodo.getIzquierdo() == null) {
                 NodoAVL nuevo = new NodoAVL(clave, objeto, null, null);
                 nodo.setIzquierdo(nuevo);
