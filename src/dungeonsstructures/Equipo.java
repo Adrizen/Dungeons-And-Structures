@@ -21,10 +21,14 @@ public class Equipo {
         return this.nombre;
     }
     
-    public Lista getJugadores(){
+    public Lista getJugadores() {
         return jugadores;
     }
     
+    public void setCategoria(String c){
+        this.categoria = c;
+    }
+
     public String toString(){
         return ("Categoría: " + categoria + ", Localización: " + localizacion + ", Jugadores:" + "\n" + " " + jugadores.toString());
     }

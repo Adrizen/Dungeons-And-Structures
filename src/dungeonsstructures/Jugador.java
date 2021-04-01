@@ -93,6 +93,12 @@ public class Jugador {
 
     @Override
     public String toString(){
-        return ("Nombre: " + nombre + " - Tipo: " + tipo + " - Categoria: " + categoria + " - Equipo: " + equipo.getNombre());
+        String salida = "Nombre: " + nombre + " - Tipo: " + tipo + " - Categoria: " + categoria + " - Equipo: ";
+        if (equipo != null){
+            salida = salida + equipo.getNombre();
+        } else {
+            salida = salida + "No tiene";
+        }
+        return salida;
     }
 }
