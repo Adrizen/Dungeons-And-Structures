@@ -4,5 +4,5 @@ Athemas;defensor;profesional;
 Hanum;defensor;profesional;
 Morpen;guerrero;profesional;
 Dou;defensor;novato;
-Knekro;guerrero;profesional;
-Sorrow;defensor;profesional;
+Kenkro;guerrero;novato;
+Sorrow;defensor;novato;

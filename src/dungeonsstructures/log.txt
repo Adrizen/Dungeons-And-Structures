@@ -9,8 +9,8 @@ Jugador cargado: ATHEMAS
 Jugador cargado: HANUM
 Jugador cargado: MORPEN
 Jugador cargado: DOU
-Jugador cargado: DICKS
-Jugador cargado: SHAFT
+Jugador cargado: KNEKRO
+Jugador cargado: SORROW
 Localización cargada: TORGHAST
 Localización cargada: CASTILLO DE NATHRIA
 Localización cargada: MALDRAXXUS
@@ -18,12 +18,12 @@ Localización cargada: ORIBOS
 Localización cargada: LAS FAUCES
 Localización cargada: ARDENWEALD
 Localización cargada: REVENDRETH
-Equipo cargado: Mercedes AMG e-Sports Categoría: PROFESIONAL, Localización: LAS FAUCES, Jugadores:
+Equipo cargado: Mercedes AMG e-Sports Categoría: PROFESIONAL, Localización: REVENDRETH, Jugadores:
  Nombre: HANUM - Tipo: DEFENSOR - Categoria: PROFESIONAL - Equipo: Mercedes AMG e-Sports 
  Nombre: ATHEMAS - Tipo: DEFENSOR - Categoria: PROFESIONAL - Equipo: Mercedes AMG e-Sports 
  Nombre: ADRIZEN - Tipo: GUERRERO - Categoria: PROFESIONAL - Equipo: Mercedes AMG e-Sports 
  
-Equipo cargado: Scuderia Ferrari Sport Elettronici Categoría: NOVATO, Localización: ORIBOS, Jugadores:
+Equipo cargado: Scuderia Ferrari Sport Elettronici Categoría: NOVATO, Localización: LAS FAUCES, Jugadores:
  Nombre: DOU - Tipo: DEFENSOR - Categoria: NOVATO - Equipo: Scuderia Ferrari Sport Elettronici 
  Nombre: GOPS - Tipo: GUERRERO - Categoria: AFICIONADO - Equipo: Scuderia Ferrari Sport Elettronici 
  Nombre: MORPEN - Tipo: GUERRERO - Categoria: PROFESIONAL - Equipo: Scuderia Ferrari Sport Elettronici 
@@ -34,30 +34,31 @@ Camino cargado: ORIBOS - REVENDRETH (300kms)
 Camino cargado: ORIBOS - LAS FAUCES (1500kms)
 Camino cargado: REVENDRETH - CASTILLO DE NATHRIA (200kms)
 Camino cargado: LAS FAUCES - TORGHAST (50kms)
+
 -- Comienza una batalla entre Mercedes AMG e-Sports y Scuderia Ferrari Sport Elettronici --
-Mercedes AMG e-Sports ataca a Scuderia Ferrari Sport Elettronici
- HANUM(102) ataca a DOU(360).(-258)
- ATHEMAS(140) ataca a GOPS(125).(15)
- ADRIZEN(607) ataca a MORPEN(150).(457)
+>Mercedes AMG e-Sports ataca a Scuderia Ferrari Sport Elettronici<
+ HANUM(175) ataca a DOU(360). (-185) total ataque.
+ ATHEMAS(166) ataca a GOPS(125). (41) total ataque.
+ ADRIZEN(390) ataca a MORPEN(150). (240) total ataque.
 ADRIZEN derrotó a MORPEN
-Scuderia Ferrari Sport Elettronici ataca a Mercedes AMG e-Sports
- DOU(54) ataca a HANUM(540).(-486)
- GOPS(746) ataca a ATHEMAS(540).(206)
+>Scuderia Ferrari Sport Elettronici ataca a Mercedes AMG e-Sports<
+ DOU(86) ataca a HANUM(540). (-454) total ataque.
+ GOPS(617) ataca a ATHEMAS(540). (77) total ataque.
+ DOU(75) ataca a ADRIZEN(150). (-75) total ataque.
+>Mercedes AMG e-Sports ataca a Scuderia Ferrari Sport Elettronici<
+ HANUM(173) ataca a DOU(360). (-187) total ataque.
+ ATHEMAS(141) ataca a GOPS(125). (16) total ataque.
+ ADRIZEN(396) ataca a DOU(360). (36) total ataque.
+>Scuderia Ferrari Sport Elettronici ataca a Mercedes AMG e-Sports<
+ DOU(105) ataca a HANUM(540). (-435) total ataque.
+ GOPS(591) ataca a ATHEMAS(540). (51) total ataque.
 GOPS derrotó a ATHEMAS
- DOU(146) ataca a ADRIZEN(150).(-4)
-Mercedes AMG e-Sports ataca a Scuderia Ferrari Sport Elettronici
- HANUM(121) ataca a DOU(360).(-239)
- ADRIZEN(654) ataca a GOPS(125).(529)
-ADRIZEN derrotó a GOPS
- ADRIZEN(371) ataca a DOU(360).(11)
-Scuderia Ferrari Sport Elettronici ataca a Mercedes AMG e-Sports
- DOU(87) ataca a HANUM(540).(-453)
- DOU(100) ataca a ADRIZEN(150).(-50)
- DOU(98) ataca a ADRIZEN(150).(-52)
-LA BATALLA TERMINA EN EMPATE
-Agregado jugador XDDDDDDDDDDDDDD.
-Equipo cargado: masidmas Categoría: NOVATO, Localización: LAS FAUCES, Jugadores:
- Nombre: SHAFT - Tipo: DEFENSOR - Categoria: NOVATO - Equipo: masidmas 
- Nombre: DICKS - Tipo: DEFENSOR - Categoria: NOVATO - Equipo: masidmas 
- Nombre: XDDDDDDDDDDDDDD - Tipo: GUERRERO - Categoria: PROFESIONAL - Equipo: masidmas 
- 
+ DOU(145) ataca a ADRIZEN(150). (-5) total ataque.
+-- LA BATALLA TERMINA EN EMPATE --
+Jugador HANUM terminó la pelea con 100 puntos de salud.
+Jugador DOU terminó la pelea con 64 puntos de salud.
+Jugador ATHEMAS terminó la pelea con -28 puntos de salud.
+Jugador GOPS terminó la pelea con 43 puntos de salud.
+Jugador ADRIZEN terminó la pelea con 100 puntos de salud.
+Jugador MORPEN terminó la pelea con -140 puntos de salud.
+----------------- Fin de batalla -----------------

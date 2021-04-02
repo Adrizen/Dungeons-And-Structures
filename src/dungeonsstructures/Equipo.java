@@ -21,6 +21,14 @@ public class Equipo {
         return this.nombre;
     }
     
+    public String getCategoria(){
+        return this.categoria;
+    }
+    
+    public String getLocalizacion(){
+        return this.localizacion;
+    }
+    
     public Lista getJugadores() {
         return jugadores;
     }

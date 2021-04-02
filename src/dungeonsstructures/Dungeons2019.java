@@ -60,6 +60,8 @@ public class Dungeons2019 {
         Equipo equipo2 = (Equipo) equipos.get("Scuderia Ferrari Sport Elettronici");
         administrarBatalla(equipo1,equipo2);
         
+        LOG.flush();
+        
         menu();
         
         LOG.close();    // Cierro el LOG.txt
@@ -76,6 +78,7 @@ public class Dungeons2019 {
             System.out.println("C. ABM Locaciones.");
             System.out.println("D. (Nope) Alta de un jugador en la cola de espera por un equipo.");
             System.out.println("E. Creación automática de un equipo.");
+            System.out.println("F. Crear una batalla entre dos equipos.");
             
             System.out.println("L. Mostrar sistema.");
             System.out.println("Z. Salir del juego.");
@@ -103,6 +106,9 @@ public class Dungeons2019 {
                 break;
             case 'E':
                 crearEquipos(null);
+                break;
+            case 'F':
+                crearBatalla();
                 break;
             case 'L':
                 mostrarSistema();
@@ -603,10 +609,64 @@ public class Dungeons2019 {
         }
     }
     
+    public static void crearBatalla(){
+        String nombreEquipo1, nombreEquipo2;
+        System.out.println("Escriba el nombre de ambos equipos a pelear.");
+        System.out.println("Equipos en el sistema: " + equipos.keySet().toString());
+        System.out.println("Nombre del equipo1: ");
+        nombreEquipo1 = sc.next();
+        System.out.println("Nombre del equipo2: ");
+        nombreEquipo2 = sc.next();
+        if (!nombreEquipo1.equals(nombreEquipo2)) {
+            Equipo equipo1 = (Equipo) equipos.get(nombreEquipo1);
+            Equipo equipo2 = (Equipo) equipos.get(nombreEquipo2);
+            if (equipo1 != null && equipo2 != null) {
+                String localizacionEquipo1, localizacionEquipo2;
+                localizacionEquipo1 = equipo1.getLocalizacion();
+                localizacionEquipo2 = equipo2.getLocalizacion();
+                if (localizacionEquipo1.equals(localizacionEquipo2)) {
+                    String categoriaEquipo1 = equipo1.getCategoria();
+                    String categoriaEquipo2 = equipo1.getCategoria();
+                    int puntuacionCategoriaEquipo1 = obtenerPuntuacionCategoria(categoriaEquipo1);
+                    int puntuacionCategoriaEquipo2 = obtenerPuntuacionCategoria(categoriaEquipo2);
+                    if (puntuacionCategoriaEquipo1 <= puntuacionCategoriaEquipo2) {  // El equipo1 tiene menor o igual categoría al equipo2. Equipo1 empieza la pelea.
+                        administrarBatalla(equipo1, equipo2);
+                    } else {    // El equipo2 tiene menor categoría al equipo1. Equipo2 empieza la pelea.
+                        administrarBatalla(equipo2, equipo1);
+                    }
+                } else {
+                    System.out.println("Los equipos no están en la misma localización.");
+                }
+            } else {
+                System.out.println("Al menos uno de los equipos ingresado no es válido..");
+            }
+        } else {
+            System.out.println("¡No se puede crear una batalla entre el mismo equipo >:( !");
+        }
+    }
+
+    public static int obtenerPuntuacionCategoria(String categoria){
+        int puntuacion = -1;
+        switch (categoria) {
+            case "NOVATO":
+                puntuacion = 1;
+                break;
+            case "AFICIONADO":
+                puntuacion = 2;
+                break;
+            case "PROFESIONAL":
+                puntuacion = 3;
+                break;
+        }
+        return puntuacion;
+    }
+    
     // Método principal que controla la batalla entre dos equipos.
     // Siempre comienza el 1° jugador del equipo1 (tiene <= categoria al equipo2).
     public static void administrarBatalla(Equipo equipo1, Equipo equipo2) {  
         String nombreEquipo1 = equipo1.getNombre(), nombreEquipo2 = equipo2.getNombre();
+        LOG.println();
+        System.out.println("-- Comienza una batalla entre " + nombreEquipo1 + " y " + nombreEquipo2 + " --");
         LOG.println("-- Comienza una batalla entre " + nombreEquipo1 + " y " + nombreEquipo2 + " --");
         int cantidadAtaques = 0, derrotadosEquipo1 = 0, derrotadosEquipo2 = 0;
         Lista listaJE1 = equipo1.getJugadores(), listaJE2 = equipo2.getJugadores(); // listaJE1 o listaJE2 = Lista de Jugadores del Equipo n.
@@ -614,27 +674,31 @@ public class Dungeons2019 {
         // Si un equipo es derrotado o si se llega a 4 instancias de ataques (que son 2 rondas), la pelea termina.
         while ((derrotadosEquipo1 != 3) && (derrotadosEquipo2 != 3) && cantidadAtaques < 4) { 
             if (cantidadAtaques % 2 == 0) { // Ataca el equipo1 al equipo2.
-                LOG.println(nombreEquipo1 + " ataca a " + nombreEquipo2);
+                LOG.println(">" + nombreEquipo1 + " ataca a " + nombreEquipo2 + "<");
                 derrotadosEquipo2 = pelear(listaJE1, listaJE2, derrotadosEquipo2);
             } else {    // Ataca el equipo2 al equipo1.
-                LOG.println(nombreEquipo2 + " ataca a " + nombreEquipo1);
+                LOG.println(">" + nombreEquipo2 + " ataca a " + nombreEquipo1 + "<");
                 derrotadosEquipo1 = pelear(listaJE2, listaJE1, derrotadosEquipo1); 
             }
             cantidadAtaques++;
         }
         // Dependiendo del resultado de la pelea se reparten las distintas recompensas a los equipos.
         if (derrotadosEquipo2 == 3) {
-            LOG.println(nombreEquipo1 + " GANA LA BATALLA.");
+            System.out.println("-- " + nombreEquipo1 + " GANA LA BATALLA." + " --");
+            LOG.println("-- " + nombreEquipo1 + " GANA LA BATALLA." + " --");
             repartirRecompensas(listaJE1, listaJE2, 1000, -500);
         } else {
             if (derrotadosEquipo1 == 3) {
-                LOG.println(nombreEquipo2 + " GANA LA BATALLA.");
+                System.out.println("-- " + nombreEquipo2 + " GANA LA BATALLA." + " --");
+                LOG.println("-- " + nombreEquipo2 + " GANA LA BATALLA." + " --");
                 repartirRecompensas(listaJE2, listaJE1, 1000, -500);
             } else {
-                LOG.println("LA BATALLA TERMINA EN EMPATE");
+                System.out.println("-- " + "LA BATALLA TERMINA EN EMPATE" + " --");
+                LOG.println("-- " + "LA BATALLA TERMINA EN EMPATE" + " --");
                 repartirRecompensas(listaJE1, listaJE2, 500, 500);
             }
         }
+        LOG.println("----------------- Fin de batalla -----------------");
     }
 
     // listaJE1 ataca a la listaJE2 que se defiende. Devuelve la cantidad de jugadores que listaJE1 derrotó de listaJE2.
@@ -648,7 +712,7 @@ public class Dungeons2019 {
                 int puntosDefensa = calcularPuntosDefensa(jugadorEquipo2);
                 double valorAleatorio = 0.5 + (1.5 - 0.5) * r.nextDouble(); // Valor aleatorio para el ataque.
                 int totalAtaque = (int) (puntosAtaque * valorAleatorio);    // El ataque se ve afectado por un valor aleatorio entre 0,5 y 1,5.
-                LOG.println(" " + jugadorEquipo1.getNombre() + "(" + totalAtaque + ")" + " ataca a " + jugadorEquipo2.getNombre() + "(" + puntosDefensa + ")" + ".(" + (totalAtaque - puntosDefensa) + ")");
+                LOG.println(" " + jugadorEquipo1.getNombre() + "(" + totalAtaque + ")" + " ataca a " + jugadorEquipo2.getNombre() + "(" + puntosDefensa + ")" + ". (" + (totalAtaque - puntosDefensa) + ") total ataque.");
                 if (totalAtaque > puntosDefensa) {  // Ataque exitoso.
                     jugadorEquipo2.setSalud(jugadorEquipo2.getSalud() - (totalAtaque - puntosDefensa)); // Se resta la salud perdida al atacado.
                     if (jugadorEquipo2.getSalud() <= 0) {    // jugadorEquipo1 derrotó al jugadorEquipo2.
@@ -671,6 +735,8 @@ public class Dungeons2019 {
         for (int i = 1; i < longitud + 1; i++) {
             Jugador jugadorGanador = (Jugador) listaJE1.recuperar(i);   // Obtengo un jugador de la lista de ganadores.
             Jugador jugadorPerdedor = (Jugador) listaJE2.recuperar(i);  // Obtengo un jugador de la lista de perdedores.
+            LOG.println("Jugador " +jugadorGanador.getNombre() + " terminó la pelea con " + jugadorGanador.getSalud() + " puntos de salud.");
+            LOG.println("Jugador " +jugadorPerdedor.getNombre() + " terminó la pelea con " + jugadorPerdedor.getSalud() + " puntos de salud.");
             jugadorGanador.setDinero(jugadorGanador.getDinero() + cantidadGanador);       // Actualizar dinero ganador.
             jugadorPerdedor.setDinero(jugadorPerdedor.getDinero() + cantidadPerdedor);    // Actualizar dinero perdedor.
             jugadorGanador.setSalud(100);   // Luego de la pelea, todos los jugadores recuperan su salud.
@@ -708,7 +774,7 @@ public class Dungeons2019 {
             puntosAtaque = 25;
         }
         puntosAtaque = puntosAtaque + (puntosAtaque * devolverMultiplicador(jugador.getCategoria()));
-        puntosAtaque = puntosAtaque + calcularStatsItems(itemsDelJugador,'A');
+        puntosAtaque = puntosAtaque + calcularStatsItems(itemsDelJugador,'A',jugador.getNombre());
         return puntosAtaque;
     }
     
@@ -721,11 +787,11 @@ public class Dungeons2019 {
             puntosDefensa = 25;
         }
         puntosDefensa = puntosDefensa + (puntosDefensa * devolverMultiplicador(jugador.getCategoria()));
-        puntosDefensa = puntosDefensa + calcularStatsItems(itemsDelJugador, 'D');
+        puntosDefensa = puntosDefensa + calcularStatsItems(itemsDelJugador, 'D', jugador.getNombre());
         return puntosDefensa;
     }
 
-    private static int calcularStatsItems(Lista itemsDelJugador, char tipoStats) {
+    private static int calcularStatsItems(Lista itemsDelJugador, char tipoStats, String nombreJugador) {
         int stats = 0;
         if (itemsDelJugador != null) {
             int longitud = itemsDelJugador.longitud();
@@ -733,7 +799,7 @@ public class Dungeons2019 {
                 if (tipoStats == 'A') {  // La estadistica de interés es el ataque que dan los items.
                     Item item = (Item) itemsDelJugador.recuperar(i);
                     stats = stats + item.getPuntosAtaque();
-                    desgastarItems(item,itemsDelJugador);   // Desgastar items del jugador que ataca.
+                    desgastarItems(item,itemsDelJugador,nombreJugador);   // Desgastar items del jugador que ataca.
                 } else {    // La estadistica de interés es la defensa que dan los items.
                     stats = stats + ((Item) itemsDelJugador.recuperar(i)).getPuntosDefensa();
                 }
@@ -743,14 +809,14 @@ public class Dungeons2019 {
     }
     
     // Utilizado para desgastar los items luego de atacar con ellos.
-    private static void desgastarItems(Item item, Lista itemsDelJugador){
+    private static void desgastarItems(Item item, Lista itemsDelJugador, String nombreJugador){
         int longitudLista = itemsDelJugador.longitud();
         for (int i = 0; i < longitudLista; i++) {
             item.setPuntosAtaque(item.getPuntosAtaque() - 10);
             item.setPuntosDefensa(item.getPuntosDefensa() - 10);
             if (item.getPuntosAtaque() <= 0 && item.getPuntosDefensa() <= 0){   // Si el item tiene 0 de ataque y defensa, debo quitarlo.
                 itemsDelJugador.eliminar(i); // Quito el item de la lista.
-                LOG.println("Un jugador nazi descartó" + item.getNombre());
+                LOG.println(nombreJugador + " descartó " + item.getNombre());
             }
         }
     }
