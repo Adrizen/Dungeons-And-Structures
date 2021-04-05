@@ -72,6 +72,19 @@ public class Lista {
         }
         return exito;
     }
+    
+    // Dado un objeto, devuelve true si el objeto está en la lista. De lo contrario devuelve false.
+    public boolean pertenece(Object obj){
+        boolean exito = false;
+        Nodo nodo = this.cabecera;
+        while (!exito && nodo != null){
+            if (nodo.getElemento().equals(obj)){
+                exito = true;
+            }
+            nodo = nodo.getEnlace();
+        }
+        return exito;
+    }
 
     // Dada una posición, devuelve el objeto en dicha posición.
     // Si tiene éxito devuelve el objeto, de lo contrario devuelve null.
@@ -148,13 +161,9 @@ public class Lista {
             return "Lista vacia";
         } else {
             while (aux != null) {
-                cadenita += aux.getElemento().toString() + " \n ";
+                cadenita += aux.getElemento().toString() + "\n";
                 aux = aux.getEnlace();
             }
-        }
-        while (aux != null) {
-            cadenita += aux.getElemento().toString() + " ";
-            aux = aux.getEnlace();
         }
         return cadenita;
     }

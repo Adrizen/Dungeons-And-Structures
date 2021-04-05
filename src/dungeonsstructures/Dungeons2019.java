@@ -2,7 +2,7 @@ package dungeonsstructures;
 
 import dungeonsstructures.ArbolAVL.ArbolAVL;
 import dungeonsstructures.ColaPrioridad.ColaPrioridad;
-import dungeonsstructures.Grafo.Grafo;
+import dungeonsstructures.Grafo.*;
 import dungeonsstructures.Lista.Lista;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -56,9 +56,9 @@ public class Dungeons2019 {
         
         LOG.flush();    // Flush luego de cargar los .txt
         
-        Equipo equipo1 = (Equipo) equipos.get("Mercedes AMG e-Sports");
-        Equipo equipo2 = (Equipo) equipos.get("Scuderia Ferrari Sport Elettronici");
-        administrarBatalla(equipo1,equipo2);
+//        Equipo equipo1 = (Equipo) equipos.get("Mercedes AMG e-Sports");
+//        Equipo equipo2 = (Equipo) equipos.get("Scuderia Ferrari Sport Elettronici");
+//        administrarBatalla(equipo1,equipo2);
         
         LOG.flush();
         
@@ -79,6 +79,10 @@ public class Dungeons2019 {
             System.out.println("D. (Nope) Alta de un jugador en la cola de espera por un equipo.");
             System.out.println("E. Creación automática de un equipo.");
             System.out.println("F. Crear una batalla entre dos equipos.");
+            System.out.println("G. Consultar sobre un equipo.");
+            System.out.println("H. Consultar sobre items.");
+            System.out.println("I. Consultar sobre jugadores.");
+            System.out.println("J. Consultar sobre locaciones.");
             
             System.out.println("L. Mostrar sistema.");
             System.out.println("Z. Salir del juego.");
@@ -109,6 +113,18 @@ public class Dungeons2019 {
                 break;
             case 'F':
                 crearBatalla();
+                break;
+            case 'G':
+                consultarEquipo();
+                break;
+            case 'H':
+                consultarItems();
+                break;
+            case 'I':
+                consultarJugadores();
+                break;
+            case 'J':
+                consultarLocaciones();
                 break;
             case 'L':
                 mostrarSistema();
@@ -644,7 +660,7 @@ public class Dungeons2019 {
             System.out.println("¡No se puede crear una batalla entre el mismo equipo >:( !");
         }
     }
-
+    
     public static int obtenerPuntuacionCategoria(String categoria){
         int puntuacion = -1;
         switch (categoria) {
@@ -819,6 +835,198 @@ public class Dungeons2019 {
                 LOG.println(nombreJugador + " descartó " + item.getNombre());
             }
         }
+    }
+    
+    public static void consultarEquipo(){
+        String nombre;
+        System.out.println("Equipos en el sistema: " + equipos.keySet().toString());
+        System.out.println("Ingrese el nombre del equipo.");
+        nombre = sc.next();
+        Equipo equipo = (Equipo) equipos.get(nombre);
+        if (equipo != null){
+            System.out.println(equipo.toString());
+        } else {
+            System.out.println("Ese equipo no existe.");
+        }
+    }
+    
+    public static void consultarItems(){
+        char seleccion;
+        boolean seguir = true;
+        Lista lista;
+        while (seguir) {
+            System.out.println("Consultar sobre items: ");
+            System.out.println("A. Dado un monto de dinero mostrar todos los items que puede comprar el jugador.");
+            System.out.println("B. Dado un rango de dinero mostrar todos los items que puede comprar el jugador.");
+            System.out.println("C. Dado un código de un item, mostrar sus atributos.");
+            System.out.println("Z. Salir.");
+            seleccion = sc.next().charAt(0);
+            seleccion = Character.toUpperCase(seleccion);
+            switch (seleccion) {
+                case 'A':
+                    System.out.println("Ingrese el monto.");
+                    int monto = sc.nextInt();
+                    lista = items.listarRango(0, monto);
+                    System.out.println(lista.toString());
+                    break;
+                case 'B':
+                    System.out.println("Ingrese el monto mínimo.");
+                    int montoMinimo = sc.nextInt();
+                    System.out.println("Ingrese el monto máximo.");
+                    int montoMaximo = sc.nextInt();
+                    lista = items.listarRango(montoMinimo,montoMaximo);
+                    System.out.println(lista.toString());
+                    break;
+                case 'C':
+                    System.out.println("Ingrese el código del item.");
+                    String codigo = sc.next();
+                    codigo = codigo.toUpperCase();
+                    mostrarAtributosItem(codigo);
+                    break;
+                case 'Z':
+                    seguir = false;
+            }
+        }
+    }
+
+    public static void mostrarAtributosItem(String codigo){
+        Item item = (Item) codigosItems.get(codigo);
+        if (item != null){
+            System.out.println(item.toString());
+        } else {
+            System.out.println("El item con el código " + codigo + " no existe.");
+        }
+    }
+    
+    public static void consultarJugadores() {
+        char seleccion;
+        boolean seguir = true;
+        String nombre;
+        while (seguir) {
+            System.out.println("Consultar sobre jugadores: ");
+            System.out.println("A. Dado un nombre de usuario, mostrar todos sus atributos.");
+            System.out.println("B. Dada una subcadena, mostrar todos los nombres de usuarios que comienzan con esa subcadena.");
+            System.out.println("Z. Salir.");
+            seleccion = sc.next().charAt(0);
+            seleccion = Character.toUpperCase(seleccion);
+            switch (seleccion) {
+                case 'A':
+                    System.out.println("Ingrese el nombre del jugador.");
+                    nombre = sc.next();
+                    nombre = nombre.toUpperCase();
+                    mostrarAtributosJugador(nombre);
+                    break;
+                case 'B':
+                    System.out.println("Ingrese la subcadena.");
+                    nombre = sc.next();
+                    nombre = nombre.toUpperCase();
+                    listarJugadoresSubcadena(nombre);
+                    break;
+                case 'Z':
+                    seguir = false;
+            }
+        }
+    }
+    
+    public static void mostrarAtributosJugador(String nombre){
+        Jugador jugador = (Jugador) jugadores.obtener(nombre);
+        if (jugador != null){
+            System.out.println(jugador.toString());
+        } else {
+            System.out.println("Ese jugador no existe.");
+        }
+    }
+    
+    public static void listarJugadoresSubcadena(String subcadena){
+        Lista lista = jugadores.listar();
+        int longitud = lista.longitud();
+        String respuesta = "";
+        for (int i = 1; i <= longitud; i++) {
+            Jugador jugador = (Jugador) lista.recuperar(i);
+            String nombre = jugador.getNombre();
+            if (nombre.startsWith(subcadena)){
+                respuesta = nombre + " - " + respuesta;
+            }
+        }
+        if (!respuesta.equals("")){
+            System.out.println("Nombre de jugadores que comienzan con " + subcadena + ": " + respuesta);
+        } else {
+            System.out.println("No se encontraron jugadores que empiecen con la subcadena " + subcadena);
+        }
+    }
+
+    public static void consultarLocaciones() {
+        boolean seguir = true;
+        char seleccion;
+        String locacionA, locacionB;
+        Lista lista;
+        while (seguir) {
+            System.out.println("Consultar sobre locaciones: ");
+            System.out.println("A. Dado una locación, mostrar a cuales puede moverse un equipo después de ganar una batalla allí");
+            System.out.println("B. Obtener el camino para ir desde A hasta B en la menor distancia posible.");
+            System.out.println("C. Obtener el camino que llegue de A a B pasando por la mínima cantidad de locaciones.");
+            System.out.println("D. Obtener todos los caminos para llegar de A a B con menos de una cantidad X de km dada.");
+            System.out.println("E. Obtener el camino para llegar de A a B que pase por menos locaciones y que no pase por una locación C dada.");
+            System.out.println("Z. Salir.");
+            seleccion = sc.next().charAt(0);
+            seleccion = Character.toUpperCase(seleccion);
+            switch (seleccion) {
+                case 'A':
+                    System.out.println("Ingrese el nombre de la locación.");
+                    locacionA = sc.next();
+                    locacionA = locacionA.toUpperCase();
+                    listarUbicacionesAdyacentes(locacionA);
+                    break;
+                case 'B':
+                    System.out.println("Ingrese el nombre de la locación A.");
+                    locacionA = sc.next();
+                    locacionA = locacionA.toUpperCase();
+                    System.out.println("Ingrese el nombre de la locación B.");
+                    locacionB = sc.next();
+                    locacionB = locacionB.toUpperCase();
+                    lista = mapa.encontrarCaminoMenosDistancia(locacionA,locacionB);
+                    System.out.println("El camino más corto de " + locacionA + " hasta " + locacionB + " es: ");
+                    mostrarCamino(lista);
+                    break;
+                case 'C':
+                    System.out.println("Ingrese el nombre de la locación A.");
+                    locacionA = sc.next();
+                    locacionA = locacionA.toUpperCase();
+                    System.out.println("Ingrese el nombre de la locación B.");
+                    locacionB = sc.next();
+                    locacionB = locacionB.toUpperCase();
+                    lista = mapa.encontrarCaminoMenosLocaciones(locacionA,locacionB,null);
+                    System.out.println(lista.toString());
+                    break;
+                case 'Z':
+                    seguir = false;
+            }
+        }
+    }
+    
+    public static void mostrarCamino(Lista lista){
+        int longitud = lista.longitud();
+        for (int i = longitud; i > 1; i--) {
+            System.out.print(lista.recuperar(i) + " - ");
+        }
+        System.out.println();
+        System.out.println("Con una longitud total de: " + lista.recuperar(1) + "kms.");
+        System.out.println();
+    }
+
+    public static void listarUbicacionesAdyacentes(String nombreLocacion) {
+        Lista lista = mapa.ubicacionesAdyacentes(nombreLocacion);
+        int longitud = lista.longitud();
+        if (!lista.esVacia()) {
+            System.out.print("Desde " + nombreLocacion + " se puede ir a: ");
+            for (int i = 1; i <= longitud; i++) {
+                NodoVert nodo = (NodoVert) lista.recuperar(i);
+                System.out.print(nodo.getElem() + " - ");
+            }
+        } else {
+            System.out.print("No hay locaciones adyacentes a " + nombreLocacion);
+        }
+        System.out.println();
     }
 
     // Devuelve el multiplicador correspondiete a la categoría de un jugador.

@@ -302,7 +302,7 @@ public class ArbolAVL {
     private void auxListar(Lista lista, NodoAVL nodo) {
         if (nodo != null) {
             auxListar(lista, nodo.getDerecho());
-            lista.insertar(nodo.getClave(), 1);
+            lista.insertar(nodo.getObjeto(), 1);
             auxListar(lista, nodo.getIzquierdo());
         }
     }
@@ -321,7 +321,7 @@ public class ArbolAVL {
         if (nodo != null) {
             if (nodo.getClave().compareTo(min) >= 0 && nodo.getClave().compareTo(max) <= 0) {
                 auxListarRango(min, max, nodo.getIzquierdo(), lista);
-                lista.insertar(nodo.getClave(), lista.longitud() + 1);
+                lista.insertar(nodo.getObjeto(), lista.longitud() + 1);
                 auxListarRango(min, max, nodo.getDerecho(), lista);
             } else {
                 if (nodo.getIzquierdo() != null) {
