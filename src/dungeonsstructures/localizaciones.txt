@@ -16,3 +16,5 @@ Estrecho de Tiragarde;
 Fuerte Libre;
 Drustvar;
 Valle Canto Tormenta;
+Mecandria;
+Darnassus;

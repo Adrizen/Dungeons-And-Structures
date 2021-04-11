@@ -1,8 +1,29 @@
-Código: I001 - Nombre: A - Precio: 60 - Puntos Ataque: 10 - Punto Defensa: 10 - Copias: 1
-Código: I002 - Nombre: B - Precio: 160 - Puntos Ataque: 249 - Punto Defensa: 117 - Copias: 1
-Código: I003 - Nombre: C - Precio: 55 - Puntos Ataque: 62 - Punto Defensa: 60 - Copias: 1
-Código: I004 - Nombre: D - Precio: 55 - Puntos Ataque: 16 - Punto Defensa: 60 - Copias: 1
-Código: I005 - Nombre: E - Precio: 73 - Puntos Ataque: 57 - Punto Defensa: 0 - Copias: 1
+Código: I001 - Nombre: Fauce del Maldito - Precio: 1000 - Puntos Ataque: 50 - Punto Defensa: 70 - Copias: 5
+Código: I002 - Nombre: Apocalipsis - Precio: 1000 - Puntos Ataque: 100 - Punto Defensa: 30 - Copias: 5
+Código: I003 - Nombre: Hojas del Príncipe Caído - Precio: 1000 - Puntos Ataque: 100 - Punto Defensa: 30 - Copias: 5
+Código: I004 - Nombre: Hojas Gemelas del Impostor - Precio: 800 - Puntos Ataque: 100 - Punto Defensa: 30 - Copias: 4
+Código: I005 - Nombre: Hojas de Guerra Aldrachi - Precio: 800 - Puntos Ataque: 50 - Punto Defensa: 30 - Copias: 4
+Código: I006 - Nombre: Guadaña de Elune - Precio: 300 - Puntos Ataque: 70 - Punto Defensa: 30 - Copias: 3
+Código: I007 - Nombre: Garras de Ursoc - Precio: 300 - Puntos Ataque: 30 - Punto Defensa: 70 - Copias: 3
+Código: I008 - Nombre: Aluneth - Precio: 700 - Puntos Ataque: 80 - Punto Defensa: 10 - Copias: 5
+Código: I009 - Nombre: Ébano Glacial - Precio: 700 - Puntos Ataque: 80 - Punto Defensa: 10 - Copias: 5
+Código: I010 - Nombre: Crematoria - Precio: 900 - Puntos Ataque: 100 - Punto Defensa: 30 - Copias: 1
+Código: I011 - Nombre: Mano de Plata - Precio: 900 - Puntos Ataque: 30 - Punto Defensa: 100 - Copias: 1
+Código: I012 - Nombre: Veraguardia - Precio: 900 - Puntos Ataque: 10 - Punto Defensa: 100 - Copias: 1
+Código: I013 - Nombre: Xal'atath - Precio: 600 - Puntos Ataque: 70 - Punto Defensa: 10 - Copias: 3
+Código: I014 - Nombre: Secretos del Vacío - Precio: 600 - Puntos Ataque: 10 - Punto Defensa: 10 - Copias: 3
+Código: I015 - Nombre: Cólera de la Luz - Precio: 600 - Puntos Ataque: 50 - Punto Defensa: 50 - Copias: 3
+Código: I016 - Nombre: Martillo Maldito - Precio: 100 - Puntos Ataque: 80 - Punto Defensa: 20 - Copias: 1
+Código: I017 - Nombre: Escudo de la Reina del Mar - Precio: 100 - Puntos Ataque: 90 - Punto Defensa: 10 - Copias: 1
+Código: I018 - Nombre: Escama del Guardián de la Tierra - Precio: 200 - Puntos Ataque: 90 - Punto Defensa: 10 - Copias: 2
+Código: I019 - Nombre: Furia de Odyn - Precio: 200 - Puntos Ataque: 70 - Punto Defensa: 20 - Copias: 2
+Código: I020 - Nombre: Cólera de Helya - Precio: 200 - Puntos Ataque: 70 - Punto Defensa: 20 - Copias: 2
+Código: I021 - Nombre: Defensor Argenta - Precio: 150 - Puntos Ataque: 10 - Punto Defensa: 70 - Copias: 3
+Código: I022 - Nombre: Égida de Gran Mariscal - Precio: 950 - Puntos Ataque: 20 - Punto Defensa: 90 - Copias: 3
+Código: I023 - Nombre: Escudo con runas de los Illidari - Precio: 850 - Puntos Ataque: 20 - Punto Defensa: 80 - Copias: 3
+Código: I024 - Nombre: Sulfuras, Mano de Ragnaros - Precio: 9999 - Puntos Ataque: 101 - Punto Defensa: 101 - Copias: 1
+Código: I025 - Nombre: Agonía de Sombras - Precio: 9999 - Puntos Ataque: 101 - Punto Defensa: 101 - Copias: 1
+Código: I026 - Nombre: Atiesh, gran báculo del Guardián - Precio: 9999 - Puntos Ataque: 101 - Punto Defensa: 101 - Copias: 1
 Jugador cargado: ADRIZEN
 Jugador cargado: GOPS
 Jugador cargado: ATHEMAS
@@ -11,6 +32,10 @@ Jugador cargado: MORPEN
 Jugador cargado: DOU
 Jugador cargado: KENKRO
 Jugador cargado: SORROW
+Jugador cargado: DEYVEA
+Jugador cargado: DAMAARD
+Jugador cargado: AVELAINE
+Jugador cargado: CORALINE
 Localización cargada: TORGHAST
 Localización cargada: CASTILLO DE NATHRIA
 Localización cargada: MALDRAXXUS
@@ -29,15 +54,27 @@ Localización cargada: ESTRECHO DE TIRAGARDE
 Localización cargada: FUERTE LIBRE
 Localización cargada: DRUSTVAR
 Localización cargada: VALLE CANTO TORMENTA
-Equipo cargado: Mercedes AMG e-Sports Categoría: PROFESIONAL, Localización: LAS FAUCES, Jugadores:
- Nombre: HANUM - Tipo: DEFENSOR - Categoria: PROFESIONAL - Equipo: Mercedes AMG e-Sports
-Nombre: ATHEMAS - Tipo: DEFENSOR - Categoria: PROFESIONAL - Equipo: Mercedes AMG e-Sports
-Nombre: ADRIZEN - Tipo: GUERRERO - Categoria: PROFESIONAL - Equipo: Mercedes AMG e-Sports
+Localización cargada: MECANDRIA
+Localización cargada: DARNASSUS
+Equipo cargado: Mercedes AMG Petronas e-Sports Categoría: PROFESIONAL, Localización: TEATRO DEL DOLOR, Jugadores:
+Nombre: HANUM - Tipo: DEFENSOR - Categoria: PROFESIONAL - Victorias: 0 - Equipo: Mercedes AMG Petronas e-Sports
+Nombre: ATHEMAS - Tipo: DEFENSOR - Categoria: PROFESIONAL - Victorias: 0 - Equipo: Mercedes AMG Petronas e-Sports
+Nombre: ADRIZEN - Tipo: GUERRERO - Categoria: PROFESIONAL - Victorias: 0 - Equipo: Mercedes AMG Petronas e-Sports
 
-Equipo cargado: Scuderia Ferrari Sport Elettronici Categoría: NOVATO, Localización: TEATRO DEL DOLOR, Jugadores:
- Nombre: DOU - Tipo: DEFENSOR - Categoria: NOVATO - Equipo: Scuderia Ferrari Sport Elettronici
-Nombre: GOPS - Tipo: GUERRERO - Categoria: AFICIONADO - Equipo: Scuderia Ferrari Sport Elettronici
-Nombre: MORPEN - Tipo: GUERRERO - Categoria: PROFESIONAL - Equipo: Scuderia Ferrari Sport Elettronici
+Equipo cargado: Scuderia Ferrari Sport Elettronici Categoría: AFICIONADO, Localización: ARDENWEALD, Jugadores:
+Nombre: GOPS - Tipo: GUERRERO - Categoria: AFICIONADO - Victorias: 0 - Equipo: Scuderia Ferrari Sport Elettronici
+Nombre: DEYVEA - Tipo: GUERRERO - Categoria: PROFESIONAL - Victorias: 0 - Equipo: Scuderia Ferrari Sport Elettronici
+Nombre: MORPEN - Tipo: GUERRERO - Categoria: PROFESIONAL - Victorias: 0 - Equipo: Scuderia Ferrari Sport Elettronici
+
+Equipo cargado: Red Bull e-Sport Division Categoría: PROFESIONAL, Localización: BORALUS, Jugadores:
+Nombre: CORALINE - Tipo: DEFENSOR - Categoria: AFICIONADO - Victorias: 0 - Equipo: Red Bull e-Sport Division
+Nombre: AVELAINE - Tipo: GUERRERO - Categoria: AFICIONADO - Victorias: 0 - Equipo: Red Bull e-Sport Division
+Nombre: DAMAARD - Tipo: GUERRERO - Categoria: AFICIONADO - Victorias: 0 - Equipo: Red Bull e-Sport Division
+
+Equipo cargado: AlphaTauri Strategie Elettroniche Categoría: NOVATO, Localización: CASTILLO DE NATHRIA, Jugadores:
+Nombre: SORROW - Tipo: DEFENSOR - Categoria: NOVATO - Victorias: 0 - Equipo: AlphaTauri Strategie Elettroniche
+Nombre: KENKRO - Tipo: GUERRERO - Categoria: NOVATO - Victorias: 0 - Equipo: AlphaTauri Strategie Elettroniche
+Nombre: DOU - Tipo: DEFENSOR - Categoria: NOVATO - Victorias: 0 - Equipo: AlphaTauri Strategie Elettroniche
 
 Camino cargado: ORIBOS - ARDENWEALD (500kms)
 Camino cargado: ORIBOS - MALDRAXXUS (100kms)
@@ -61,3 +98,287 @@ Camino cargado: BORALUS - VALLE CANTO TORMENTA (100kms)
 Camino cargado: ESTRECHO DE TIRAGARDE - FUERTE LIBRE (50kms)
 Camino cargado: DRUSTVAR - ESTRECHO DE TIRAGARDE (50kms)
 Camino cargado: ESTRECHO DE TIRAGARDE - VALLE CANTO TORMENTA (50kms)
+Camino cargado: DARNASSUS - VENTORMENTA (4000kms)
+Camino cargado: DARNASSUS - EXODAR (400kms)
+Camino cargado: BORALUS - FORJAZ (10kms)
+Camino cargado: BORALUS - EXODAR (10kms)
+Camino cargado: MECANDRIA - DRUSTVAR (150kms)
+Camino cargado: MECANDRIA - ESTRECHO DE TIRAGARDE (150kms)
+Camino cargado: MECANDRIA - VALLE CANTO TORMENTA (150kms)
+
+-- Comienza una batalla entre Mercedes AMG Petronas e-Sports y Scuderia Ferrari Sport Elettronici --
+>Mercedes AMG Petronas e-Sports ataca a Scuderia Ferrari Sport Elettronici<
+ HANUM(222) ataca a GOPS(125). (97) total ataque.
+ ATHEMAS(114) ataca a DEYVEA(150). (-36) total ataque.
+ ADRIZEN(810) ataca a MORPEN(150). (660) total ataque.
+ADRIZEN derrotó a MORPEN
+>Scuderia Ferrari Sport Elettronici ataca a Mercedes AMG Petronas e-Sports<
+ GOPS(707) ataca a HANUM(540). (167) total ataque.
+GOPS derrotó a HANUM
+ DEYVEA(669) ataca a ATHEMAS(540). (129) total ataque.
+DEYVEA derrotó a ATHEMAS
+ GOPS(614) ataca a ADRIZEN(150). (464) total ataque.
+GOPS derrotó a ADRIZEN
+-- Scuderia Ferrari Sport Elettronici GANA LA BATALLA. --
+Jugador GOPS terminó la pelea con 3 puntos de salud.
+Jugador HANUM terminó la pelea con -67 puntos de salud.
+Jugador DEYVEA terminó la pelea con 100 puntos de salud.
+Jugador ATHEMAS terminó la pelea con -29 puntos de salud.
+Jugador MORPEN terminó la pelea con -560 puntos de salud.
+Jugador ADRIZEN terminó la pelea con -364 puntos de salud.
+----------------- Fin de batalla -----------------
+
+-- Comienza una batalla entre Mercedes AMG Petronas e-Sports y Scuderia Ferrari Sport Elettronici --
+>Mercedes AMG Petronas e-Sports ataca a Scuderia Ferrari Sport Elettronici<
+ HANUM(141) ataca a GOPS(125). (16) total ataque.
+ ATHEMAS(154) ataca a DEYVEA(150). (4) total ataque.
+ ADRIZEN(614) ataca a MORPEN(150). (464) total ataque.
+ADRIZEN derrotó a MORPEN
+>Scuderia Ferrari Sport Elettronici ataca a Mercedes AMG Petronas e-Sports<
+ GOPS(631) ataca a HANUM(540). (91) total ataque.
+ DEYVEA(706) ataca a ATHEMAS(540). (166) total ataque.
+DEYVEA derrotó a ATHEMAS
+ GOPS(746) ataca a ADRIZEN(150). (596) total ataque.
+GOPS derrotó a ADRIZEN
+>Mercedes AMG Petronas e-Sports ataca a Scuderia Ferrari Sport Elettronici<
+ HANUM(76) ataca a GOPS(125). (-49) total ataque.
+ HANUM(101) ataca a DEYVEA(150). (-49) total ataque.
+ HANUM(102) ataca a GOPS(125). (-23) total ataque.
+>Scuderia Ferrari Sport Elettronici ataca a Mercedes AMG Petronas e-Sports<
+ GOPS(374) ataca a HANUM(540). (-166) total ataque.
+ DEYVEA(560) ataca a HANUM(540). (20) total ataque.
+DEYVEA derrotó a HANUM
+-- Scuderia Ferrari Sport Elettronici GANA LA BATALLA. --
+Jugador GOPS terminó la pelea con 84 puntos de salud.
+Jugador HANUM terminó la pelea con -11 puntos de salud.
+Jugador DEYVEA terminó la pelea con 96 puntos de salud.
+Jugador ATHEMAS terminó la pelea con -66 puntos de salud.
+Jugador MORPEN terminó la pelea con -364 puntos de salud.
+Jugador ADRIZEN terminó la pelea con -496 puntos de salud.
+----------------- Fin de batalla -----------------
+
+-- Comienza una batalla entre Mercedes AMG Petronas e-Sports y Scuderia Ferrari Sport Elettronici --
+>Mercedes AMG Petronas e-Sports ataca a Scuderia Ferrari Sport Elettronici<
+ HANUM(143) ataca a GOPS(125). (18) total ataque.
+ ATHEMAS(200) ataca a DEYVEA(150). (50) total ataque.
+ ADRIZEN(736) ataca a MORPEN(150). (586) total ataque.
+ADRIZEN derrotó a MORPEN
+>Scuderia Ferrari Sport Elettronici ataca a Mercedes AMG Petronas e-Sports<
+ GOPS(420) ataca a HANUM(540). (-120) total ataque.
+ DEYVEA(845) ataca a ATHEMAS(540). (305) total ataque.
+DEYVEA derrotó a ATHEMAS
+ GOPS(587) ataca a ADRIZEN(150). (437) total ataque.
+GOPS derrotó a ADRIZEN
+>Mercedes AMG Petronas e-Sports ataca a Scuderia Ferrari Sport Elettronici<
+ HANUM(215) ataca a GOPS(125). (90) total ataque.
+HANUM derrotó a GOPS
+ HANUM(131) ataca a DEYVEA(150). (-19) total ataque.
+ HANUM(143) ataca a DEYVEA(150). (-7) total ataque.
+>Scuderia Ferrari Sport Elettronici ataca a Mercedes AMG Petronas e-Sports<
+ DEYVEA(722) ataca a HANUM(540). (182) total ataque.
+DEYVEA derrotó a HANUM
+-- Scuderia Ferrari Sport Elettronici GANA LA BATALLA. --
+Jugador GOPS terminó la pelea con -8 puntos de salud.
+Jugador HANUM terminó la pelea con -82 puntos de salud.
+Jugador DEYVEA terminó la pelea con 50 puntos de salud.
+Jugador ATHEMAS terminó la pelea con -205 puntos de salud.
+Jugador MORPEN terminó la pelea con -486 puntos de salud.
+Jugador ADRIZEN terminó la pelea con -337 puntos de salud.
+----------------- Fin de batalla -----------------
+
+-- Comienza una batalla entre Mercedes AMG Petronas e-Sports y Scuderia Ferrari Sport Elettronici --
+>Mercedes AMG Petronas e-Sports ataca a Scuderia Ferrari Sport Elettronici<
+ HANUM(147) ataca a GOPS(125). (22) total ataque.
+ ATHEMAS(92) ataca a DEYVEA(150). (-58) total ataque.
+ ADRIZEN(666) ataca a MORPEN(150). (516) total ataque.
+ADRIZEN derrotó a MORPEN
+>Scuderia Ferrari Sport Elettronici ataca a Mercedes AMG Petronas e-Sports<
+ GOPS(571) ataca a HANUM(540). (31) total ataque.
+ DEYVEA(613) ataca a ATHEMAS(540). (73) total ataque.
+ GOPS(510) ataca a ADRIZEN(150). (360) total ataque.
+GOPS derrotó a ADRIZEN
+>Mercedes AMG Petronas e-Sports ataca a Scuderia Ferrari Sport Elettronici<
+ HANUM(98) ataca a GOPS(125). (-27) total ataque.
+ ATHEMAS(79) ataca a DEYVEA(150). (-71) total ataque.
+ HANUM(82) ataca a GOPS(125). (-43) total ataque.
+>Scuderia Ferrari Sport Elettronici ataca a Mercedes AMG Petronas e-Sports<
+ GOPS(356) ataca a HANUM(540). (-184) total ataque.
+ DEYVEA(824) ataca a ATHEMAS(540). (284) total ataque.
+DEYVEA derrotó a ATHEMAS
+ GOPS(458) ataca a HANUM(540). (-82) total ataque.
+-- LA BATALLA TERMINA EN EMPATE --
+Jugador HANUM terminó la pelea con 69 puntos de salud.
+Jugador GOPS terminó la pelea con 78 puntos de salud.
+Jugador ATHEMAS terminó la pelea con -257 puntos de salud.
+Jugador DEYVEA terminó la pelea con 100 puntos de salud.
+Jugador ADRIZEN terminó la pelea con -260 puntos de salud.
+Jugador MORPEN terminó la pelea con -416 puntos de salud.
+----------------- Fin de batalla -----------------
+
+-- Comienza una batalla entre Mercedes AMG Petronas e-Sports y Scuderia Ferrari Sport Elettronici --
+>Mercedes AMG Petronas e-Sports ataca a Scuderia Ferrari Sport Elettronici<
+ HANUM(137) ataca a GOPS(125). (12) total ataque.
+ ATHEMAS(100) ataca a DEYVEA(150). (-50) total ataque.
+ ADRIZEN(487) ataca a MORPEN(150). (337) total ataque.
+ADRIZEN derrotó a MORPEN
+>Scuderia Ferrari Sport Elettronici ataca a Mercedes AMG Petronas e-Sports<
+ GOPS(578) ataca a HANUM(540). (38) total ataque.
+ DEYVEA(794) ataca a ATHEMAS(540). (254) total ataque.
+DEYVEA derrotó a ATHEMAS
+ GOPS(315) ataca a ADRIZEN(150). (165) total ataque.
+GOPS derrotó a ADRIZEN
+>Mercedes AMG Petronas e-Sports ataca a Scuderia Ferrari Sport Elettronici<
+ HANUM(98) ataca a GOPS(125). (-27) total ataque.
+ HANUM(103) ataca a DEYVEA(150). (-47) total ataque.
+ HANUM(133) ataca a GOPS(125). (8) total ataque.
+>Scuderia Ferrari Sport Elettronici ataca a Mercedes AMG Petronas e-Sports<
+ GOPS(255) ataca a HANUM(540). (-285) total ataque.
+ DEYVEA(468) ataca a HANUM(540). (-72) total ataque.
+ GOPS(563) ataca a HANUM(540). (23) total ataque.
+-- LA BATALLA TERMINA EN EMPATE --
+Jugador HANUM terminó la pelea con 39 puntos de salud.
+Jugador GOPS terminó la pelea con 80 puntos de salud.
+Jugador ATHEMAS terminó la pelea con -154 puntos de salud.
+Jugador DEYVEA terminó la pelea con 100 puntos de salud.
+Jugador ADRIZEN terminó la pelea con -65 puntos de salud.
+Jugador MORPEN terminó la pelea con -237 puntos de salud.
+----------------- Fin de batalla -----------------
+
+-- Comienza una batalla entre Mercedes AMG Petronas e-Sports y Scuderia Ferrari Sport Elettronici --
+>Mercedes AMG Petronas e-Sports ataca a Scuderia Ferrari Sport Elettronici<
+ HANUM(145) ataca a GOPS(125). (20) total ataque.
+ ATHEMAS(172) ataca a DEYVEA(150). (22) total ataque.
+ ADRIZEN(713) ataca a MORPEN(150). (563) total ataque.
+ADRIZEN derrotó a MORPEN
+>Scuderia Ferrari Sport Elettronici ataca a Mercedes AMG Petronas e-Sports<
+ GOPS(285) ataca a HANUM(540). (-255) total ataque.
+ DEYVEA(639) ataca a ATHEMAS(540). (99) total ataque.
+ GOPS(405) ataca a ADRIZEN(150). (255) total ataque.
+GOPS derrotó a ADRIZEN
+>Mercedes AMG Petronas e-Sports ataca a Scuderia Ferrari Sport Elettronici<
+ HANUM(189) ataca a GOPS(125). (64) total ataque.
+ ATHEMAS(145) ataca a DEYVEA(150). (-5) total ataque.
+ HANUM(101) ataca a GOPS(125). (-24) total ataque.
+>Scuderia Ferrari Sport Elettronici ataca a Mercedes AMG Petronas e-Sports<
+ GOPS(455) ataca a HANUM(540). (-85) total ataque.
+ DEYVEA(776) ataca a ATHEMAS(540). (236) total ataque.
+DEYVEA derrotó a ATHEMAS
+ GOPS(632) ataca a HANUM(540). (92) total ataque.
+-- LA BATALLA TERMINA EN EMPATE --
+Jugador HANUM terminó la pelea con 8 puntos de salud.
+Jugador GOPS terminó la pelea con 16 puntos de salud.
+Jugador ATHEMAS terminó la pelea con -235 puntos de salud.
+Jugador DEYVEA terminó la pelea con 78 puntos de salud.
+Jugador ADRIZEN terminó la pelea con -155 puntos de salud.
+Jugador MORPEN terminó la pelea con -463 puntos de salud.
+----------------- Fin de batalla -----------------
+
+-- Comienza una batalla entre Mercedes AMG Petronas e-Sports y Scuderia Ferrari Sport Elettronici --
+>Mercedes AMG Petronas e-Sports ataca a Scuderia Ferrari Sport Elettronici<
+ HANUM(104) ataca a GOPS(125). (-21) total ataque.
+ ATHEMAS(97) ataca a DEYVEA(150). (-53) total ataque.
+ ADRIZEN(513) ataca a MORPEN(150). (363) total ataque.
+ADRIZEN derrotó a MORPEN
+>Scuderia Ferrari Sport Elettronici ataca a Mercedes AMG Petronas e-Sports<
+ GOPS(270) ataca a HANUM(540). (-270) total ataque.
+ DEYVEA(347) ataca a ATHEMAS(540). (-193) total ataque.
+ GOPS(358) ataca a ADRIZEN(150). (208) total ataque.
+GOPS derrotó a ADRIZEN
+>Mercedes AMG Petronas e-Sports ataca a Scuderia Ferrari Sport Elettronici<
+ HANUM(82) ataca a GOPS(125). (-43) total ataque.
+ ATHEMAS(185) ataca a DEYVEA(150). (35) total ataque.
+ HANUM(88) ataca a GOPS(125). (-37) total ataque.
+>Scuderia Ferrari Sport Elettronici ataca a Mercedes AMG Petronas e-Sports<
+ GOPS(439) ataca a HANUM(540). (-101) total ataque.
+ DEYVEA(647) ataca a ATHEMAS(540). (107) total ataque.
+DEYVEA derrotó a ATHEMAS
+ GOPS(393) ataca a HANUM(540). (-147) total ataque.
+-- LA BATALLA TERMINA EN EMPATE --
+Jugador HANUM terminó la pelea con 100 puntos de salud.
+Jugador GOPS terminó la pelea con 100 puntos de salud.
+Jugador ATHEMAS terminó la pelea con -7 puntos de salud.
+Jugador DEYVEA terminó la pelea con 65 puntos de salud.
+Jugador ADRIZEN terminó la pelea con -108 puntos de salud.
+Jugador MORPEN terminó la pelea con -263 puntos de salud.
+----------------- Fin de batalla -----------------
+
+-- Comienza una batalla entre Mercedes AMG Petronas e-Sports y Scuderia Ferrari Sport Elettronici --
+>Mercedes AMG Petronas e-Sports ataca a Scuderia Ferrari Sport Elettronici<
+ HANUM(101) ataca a GOPS(125). (-24) total ataque.
+ ATHEMAS(81) ataca a DEYVEA(150). (-69) total ataque.
+ ADRIZEN(838) ataca a MORPEN(150). (688) total ataque.
+ADRIZEN derrotó a MORPEN
+>Scuderia Ferrari Sport Elettronici ataca a Mercedes AMG Petronas e-Sports<
+ GOPS(539) ataca a HANUM(540). (-1) total ataque.
+ DEYVEA(674) ataca a ATHEMAS(540). (134) total ataque.
+DEYVEA derrotó a ATHEMAS
+ GOPS(681) ataca a ADRIZEN(150). (531) total ataque.
+GOPS derrotó a ADRIZEN
+>Mercedes AMG Petronas e-Sports ataca a Scuderia Ferrari Sport Elettronici<
+ HANUM(134) ataca a GOPS(125). (9) total ataque.
+ HANUM(129) ataca a DEYVEA(150). (-21) total ataque.
+ HANUM(216) ataca a GOPS(125). (91) total ataque.
+HANUM derrotó a GOPS
+>Scuderia Ferrari Sport Elettronici ataca a Mercedes AMG Petronas e-Sports<
+ DEYVEA(808) ataca a HANUM(540). (268) total ataque.
+DEYVEA derrotó a HANUM
+-- Scuderia Ferrari Sport Elettronici GANA LA BATALLA. --
+Jugador GOPS terminó la pelea con 0 puntos de salud.
+Jugador HANUM terminó la pelea con -168 puntos de salud.
+Jugador DEYVEA terminó la pelea con 100 puntos de salud.
+Jugador ATHEMAS terminó la pelea con -34 puntos de salud.
+Jugador MORPEN terminó la pelea con -588 puntos de salud.
+Jugador ADRIZEN terminó la pelea con -431 puntos de salud.
+----------------- Fin de batalla -----------------
+
+-- Comienza una batalla entre Mercedes AMG Petronas e-Sports y Scuderia Ferrari Sport Elettronici --
+>Mercedes AMG Petronas e-Sports ataca a Scuderia Ferrari Sport Elettronici<
+ HANUM(185) ataca a GOPS(125). (60) total ataque.
+ ATHEMAS(179) ataca a DEYVEA(150). (29) total ataque.
+ ADRIZEN(550) ataca a MORPEN(150). (400) total ataque.
+ADRIZEN derrotó a MORPEN
+>Scuderia Ferrari Sport Elettronici ataca a Mercedes AMG Petronas e-Sports<
+ GOPS(453) ataca a HANUM(540). (-87) total ataque.
+ DEYVEA(404) ataca a ATHEMAS(540). (-136) total ataque.
+ GOPS(563) ataca a ADRIZEN(150). (413) total ataque.
+GOPS derrotó a ADRIZEN
+>Mercedes AMG Petronas e-Sports ataca a Scuderia Ferrari Sport Elettronici<
+ HANUM(171) ataca a GOPS(125). (46) total ataque.
+HANUM derrotó a GOPS
+ ATHEMAS(96) ataca a DEYVEA(150). (-54) total ataque.
+ HANUM(203) ataca a DEYVEA(150). (53) total ataque.
+>Scuderia Ferrari Sport Elettronici ataca a Mercedes AMG Petronas e-Sports<
+ DEYVEA(723) ataca a HANUM(540). (183) total ataque.
+DEYVEA derrotó a HANUM
+ DEYVEA(728) ataca a ATHEMAS(540). (188) total ataque.
+DEYVEA derrotó a ATHEMAS
+-- Scuderia Ferrari Sport Elettronici GANA LA BATALLA. --
+Jugador GOPS terminó la pelea con -6 puntos de salud.
+Jugador HANUM terminó la pelea con -83 puntos de salud.
+Jugador DEYVEA terminó la pelea con 18 puntos de salud.
+Jugador ATHEMAS terminó la pelea con -88 puntos de salud.
+Jugador MORPEN terminó la pelea con -300 puntos de salud.
+Jugador ADRIZEN terminó la pelea con -313 puntos de salud.
+----------------- Fin de batalla -----------------
+
+-- Comienza una batalla entre Mercedes AMG Petronas e-Sports y Scuderia Ferrari Sport Elettronici --
+>Mercedes AMG Petronas e-Sports ataca a Scuderia Ferrari Sport Elettronici<
+ HANUM(138) ataca a GOPS(125). (13) total ataque.
+ ATHEMAS(115) ataca a DEYVEA(150). (-35) total ataque.
+ ADRIZEN(886) ataca a MORPEN(150). (736) total ataque.
+ADRIZEN derrotó a MORPEN
+>Scuderia Ferrari Sport Elettronici ataca a Mercedes AMG Petronas e-Sports<
+ GOPS(699) ataca a HANUM(540). (159) total ataque.
+GOPS derrotó a HANUM
+ DEYVEA(806) ataca a ATHEMAS(540). (266) total ataque.
+DEYVEA derrotó a ATHEMAS
+ GOPS(395) ataca a ADRIZEN(150). (245) total ataque.
+GOPS derrotó a ADRIZEN
+-- Scuderia Ferrari Sport Elettronici GANA LA BATALLA. --
+Jugador GOPS terminó la pelea con 87 puntos de salud.
+Jugador HANUM terminó la pelea con -59 puntos de salud.
+Jugador DEYVEA terminó la pelea con 100 puntos de salud.
+Jugador ATHEMAS terminó la pelea con -166 puntos de salud.
+Jugador MORPEN terminó la pelea con -636 puntos de salud.
+Jugador ADRIZEN terminó la pelea con -145 puntos de salud.
+----------------- Fin de batalla -----------------

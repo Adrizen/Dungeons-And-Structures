@@ -55,11 +55,13 @@ public class Dungeons2019 {
         crearCaminos(datosCaminos);
         
         LOG.flush();    // Flush luego de cargar los .txt
-        
-//        Equipo equipo1 = (Equipo) equipos.get("Mercedes AMG e-Sports");
-//        Equipo equipo2 = (Equipo) equipos.get("Scuderia Ferrari Sport Elettronici");
-//        administrarBatalla(equipo1,equipo2);
-        
+
+        for (int i = 0; i < 10; i++) {
+            Equipo equipo1 = (Equipo) equipos.get("Mercedes AMG Petronas e-Sports");
+            Equipo equipo2 = (Equipo) equipos.get("Scuderia Ferrari Sport Elettronici");
+            administrarBatalla(equipo1, equipo2);
+        }
+
         LOG.flush();
         
         menu();
@@ -83,7 +85,7 @@ public class Dungeons2019 {
             System.out.println("H. Consultar sobre items.");
             System.out.println("I. Consultar sobre jugadores.");
             System.out.println("J. Consultar sobre locaciones.");
-            
+            System.out.println("K. Consultas generales.");
             System.out.println("L. Mostrar sistema.");
             System.out.println("Z. Salir del juego.");
             seleccion = sc.next().charAt(0);
@@ -125,6 +127,9 @@ public class Dungeons2019 {
                 break;
             case 'J':
                 consultarLocaciones();
+                break;
+            case 'K':
+                consultasGenerales();
                 break;
             case 'L':
                 mostrarSistema();
@@ -885,6 +890,9 @@ public class Dungeons2019 {
                     break;
                 case 'Z':
                     seguir = false;
+                    break;
+                default:
+                    System.out.println("Selección no válida, elija una correcta.");
             }
         }
     }
@@ -924,6 +932,9 @@ public class Dungeons2019 {
                     break;
                 case 'Z':
                     seguir = false;
+                    break;
+                default:
+                    System.out.println("Selección no válida, elija una correcta.");
             }
         }
     }
@@ -984,9 +995,9 @@ public class Dungeons2019 {
                     System.out.println("Ingrese el nombre de la locación B.");
                     locacionB = sc.next();
                     locacionB = locacionB.toUpperCase();
-                    lista = mapa.encontrarCaminoMenosDistancia(locacionA,locacionB);
+                    lista = mapa.encontrarCamino(locacionA, locacionB, 'D', -1, null);
                     System.out.println("El camino más corto de " + locacionA + " hasta " + locacionB + " es: ");
-                    mostrarCamino(lista);
+                    mostrarCamino(lista, 'D');
                     break;
                 case 'C':
                     System.out.println("Ingrese el nombre de la locación A.");
@@ -995,23 +1006,64 @@ public class Dungeons2019 {
                     System.out.println("Ingrese el nombre de la locación B.");
                     locacionB = sc.next();
                     locacionB = locacionB.toUpperCase();
-                    lista = mapa.encontrarCaminoMenosLocaciones(locacionA,locacionB,null);
-                    System.out.println(lista.toString());
+                    lista = mapa.encontrarCamino(locacionA, locacionB, 'L', -1, null);
+                    System.out.println("El camino de " + locacionA + " hasta " + locacionB + " que pasa por menos locaciones es: ");
+                    mostrarCamino(lista, 'L');
+                    break;
+                case 'D':
+                    System.out.println("Ingrese el nombre de la locación A.");
+                    locacionA = sc.next();
+                    locacionA = locacionA.toUpperCase();
+                    System.out.println("Ingrese el nombre de la locación B.");
+                    locacionB = sc.next();
+                    locacionB = locacionB.toUpperCase();
+                    System.out.println("Ingrese la cantidad máxima de kms.");
+                    int maximo = sc.nextInt();
+                    lista = mapa.encontrarCamino(locacionA, locacionB, 'D', maximo,null);
+                    System.out.println("El camino más corto de " + locacionA + " hasta " + locacionB + " es: ");
+                    mostrarCamino(lista,'D');
+                    break;
+                case 'E':
+                    System.out.println("Ingrese el nombre de la locación A.");
+                    locacionA = sc.next();
+                    locacionA = locacionA.toUpperCase();
+                    System.out.println("Ingrese el nombre de la locación B.");
+                    locacionB = sc.next();
+                    locacionB = locacionB.toUpperCase();
+                    System.out.println("Ingrese la locación prohibida.");
+                    String locacionC = sc.next();
+                    locacionC = locacionC.toUpperCase();
+                    lista = mapa.encontrarCamino(locacionA, locacionB, 'L', -1, locacionC);
+                    System.out.println("El camino de " + locacionA + " hasta " + locacionB + " que pasa por menos locaciones y no pasa por " + locacionC + " es: ");
+                    mostrarCamino(lista, 'L');
                     break;
                 case 'Z':
                     seguir = false;
+                    break;
+                default:
+                    System.out.println("Selección no válida, elija una correcta.");
             }
         }
     }
     
-    public static void mostrarCamino(Lista lista){
+    public static void mostrarCamino(Lista lista, char letra){
         int longitud = lista.longitud();
-        for (int i = longitud; i > 1; i--) {
-            System.out.print(lista.recuperar(i) + " - ");
+        if (!lista.esVacia()) {
+            for (int i = longitud; i > 1; i--) {
+                System.out.print(lista.recuperar(i) + " - ");
+            }
+            System.out.println();
+            switch (letra){
+                case 'D':
+                    System.out.println("Con una longitud total de: " + lista.recuperar(1) + " kms.");
+                    break;
+                case 'L':
+                    System.out.println("Pasando por: " + lista.recuperar(1) + " locaciones.");
+                    break;
+            }
+        } else {
+            System.out.println("No se pudo encontrar un camino que cumpla esa condición.");
         }
-        System.out.println();
-        System.out.println("Con una longitud total de: " + lista.recuperar(1) + "kms.");
-        System.out.println();
     }
 
     public static void listarUbicacionesAdyacentes(String nombreLocacion) {
@@ -1027,6 +1079,48 @@ public class Dungeons2019 {
             System.out.print("No hay locaciones adyacentes a " + nombreLocacion);
         }
         System.out.println();
+    }
+    
+    public static void consultasGenerales() {
+        char seleccion;
+        boolean seguir = true;
+        while (seguir) {
+            System.out.println("Consultas generales: ");
+            System.out.println("A. Mostrar un ranking de los jugadores con más batallas individuales ganadas.");
+            System.out.println("B. Mostrar un listado de todos los ítems de los que hay sólo uno disponible.");
+            System.out.println("Z. Salir.");
+            seleccion = sc.next().charAt(0);
+            seleccion = Character.toUpperCase(seleccion);
+            switch (seleccion){
+                case 'A':
+                    rankingJugadores();
+                    break;
+                case 'B':
+                    mostrarItemsCopia();
+                    break;
+                case 'Z':
+                    seguir = false;
+                    break;
+                default:
+                    System.out.println("Selección no válida, elija una correcta.");
+            }
+        }
+    }
+    
+    public static void rankingJugadores(){
+        ArbolAVL ranking = jugadores.ranking();
+        Lista lista = ranking.listar();
+        System.out.println("Top 3 jugadores con más victorias: ");
+        for (int i = 1; i <= 3; i++) {
+            Jugador jugador = (Jugador) lista.recuperar(i);
+            System.out.println(jugador.getNombre() + ": " + jugador.getBatallasGanadas());
+        }
+    }
+    
+    public static void mostrarItemsCopia(){
+        Lista lista = items.listarItemsCopia();
+        System.out.println("Listado items con una sola copia: ");
+        System.out.println(lista.toString());
     }
 
     // Devuelve el multiplicador correspondiete a la categoría de un jugador.

@@ -6,3 +6,7 @@ Morpen;guerrero;profesional;
 Dou;defensor;novato;
 Kenkro;guerrero;novato;
 Sorrow;defensor;novato;
+Deyvea;guerrero;profesional;
+Damaard;guerrero;aficionado;
+Avelaine;guerrero;aficionado;
+Coraline;defensor;aficionado;

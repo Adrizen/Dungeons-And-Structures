@@ -1,5 +1,7 @@
 package dungeonsstructures.ArbolAVL;
 
+import dungeonsstructures.Item;
+import dungeonsstructures.Jugador;
 import dungeonsstructures.Lista.*;
 
 /**
@@ -301,9 +303,46 @@ public class ArbolAVL {
 
     private void auxListar(Lista lista, NodoAVL nodo) {
         if (nodo != null) {
-            auxListar(lista, nodo.getDerecho());
-            lista.insertar(nodo.getObjeto(), 1);
             auxListar(lista, nodo.getIzquierdo());
+            lista.insertar(nodo.getObjeto(), 1);
+            auxListar(lista, nodo.getDerecho());
+        }
+    }
+    
+    public ArbolAVL ranking(){
+        ArbolAVL ranking = new ArbolAVL();
+        auxRanking(ranking, this.raiz);
+        return ranking;
+    }
+    
+    private void auxRanking(ArbolAVL arbol, NodoAVL nodo){
+        if (nodo != null){
+            Jugador jugador = (Jugador) nodo.getObjeto();
+            int victorias = jugador.getBatallasGanadas();
+            arbol.insertar(victorias, jugador);
+            auxRanking(arbol, nodo.getIzquierdo());
+            auxRanking(arbol, nodo.getDerecho());
+        }
+    }
+    
+    public Lista listarItemsCopia(){
+        Lista lista = new Lista();
+        auxListarItemsCopia(lista,this.raiz);
+        return lista;
+    }
+    
+    private void auxListarItemsCopia(Lista lista, NodoAVL nodo){
+        if (nodo != null){
+            Lista listaAux = (Lista) nodo.getObjeto();
+            int longitud = listaAux.longitud();
+            for (int i = 1; i <= longitud; i++) {
+                Item item = (Item) listaAux.recuperar(i);
+                if (item.getCopias() == 1) {
+                    lista.insertar(item, 1);
+                }
+            }
+            auxListarItemsCopia(lista,nodo.getIzquierdo());
+            auxListarItemsCopia(lista,nodo.getDerecho());
         }
     }
 
@@ -372,6 +411,7 @@ public class ArbolAVL {
         this.raiz = null;
     }
 
+    @Override
     public String toString() {
         return (auxToString(this.raiz));
     }

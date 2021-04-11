@@ -38,7 +38,7 @@ public class Equipo {
     }
 
     public String toString(){
-        return ("Categoría: " + categoria + ", Localización: " + localizacion + ", Jugadores:" + "\n" + " " + jugadores.toString());
+        return ("Categoría: " + categoria + ", Localización: " + localizacion + ", Jugadores:" + "\n" + jugadores.toString());
     }
     
     

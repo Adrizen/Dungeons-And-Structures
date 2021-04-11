@@ -172,33 +172,49 @@ public class Grafo {
         return exito;
     }
     
-    public Lista encontrarCaminoMenosDistancia(Object origen, Object destino) {
+    public Lista encontrarCamino(Object origen, Object destino, char letra, int maximo, Object locacionProhibida) {
         NodoVert nodoVerticeOrigen = ubicarVertice(origen);
         NodoVert nodoVerticeDestino = ubicarVertice(destino);
         Lista visitados = new Lista(), camino = new Lista();
+        int[] valorMaximo = new int[1];
         if (nodoVerticeOrigen != null && nodoVerticeDestino != null) {
-            int[] aux = new int[1];
-            aux[0] = 999999;
-            camino = auxEncontrarCaminoMenosDistancia(nodoVerticeOrigen, destino, camino, visitados, 0, aux);
-            camino.insertar(aux[0], 1);
+            if (maximo == -1) {
+                valorMaximo[0] = 999999999;
+            } else {
+                valorMaximo[0] = maximo;
+            }
+            if (locacionProhibida != null){
+                visitados.insertar(locacionProhibida, 1);
+            }
+            camino = auxEncontrarCamino(nodoVerticeOrigen, destino, camino, visitados, 0, valorMaximo, letra);
+            if (locacionProhibida != null){
+                camino.eliminar(locacionProhibida);
+            }
+            if (!camino.esVacia()) {
+                camino.insertar(valorMaximo[0], 1);
+            }
         }
         return camino;
     }
 
-    private Lista auxEncontrarCaminoMenosDistancia(NodoVert nodo, Object destino, Lista camino, Lista visitados, int distanciaAcumulada, int[] distanciaMaxima) {
+    private Lista auxEncontrarCamino(NodoVert nodo, Object destino, Lista camino, Lista visitados, int acumulador, int[] valorMaximo, char letra) {
         if (nodo != null) {
             if (!visitados.pertenece(nodo.getElem())) {
                 if (nodo.getElem().equals(destino)) {
-                    if (distanciaAcumulada < distanciaMaxima[0]) {
+                    if (acumulador < valorMaximo[0]) {
                         camino = visitados.clone();
                         camino.insertar(nodo.getElem(), 1);
-                        distanciaMaxima[0] = distanciaAcumulada;
+                        valorMaximo[0] = acumulador;
                     }
                 } else {
                     visitados.insertar(nodo.getElem(), 1);
                     NodoAdy siguiente = nodo.getPrimerAdy();
                     while (siguiente != null) {
-                        camino = auxEncontrarCaminoMenosDistancia(siguiente.getVertice(), destino, camino, visitados, distanciaAcumulada + siguiente.getEtiqueta(), distanciaMaxima);
+                        if (letra == 'D'){
+                            camino = auxEncontrarCamino(siguiente.getVertice(), destino, camino, visitados, acumulador + siguiente.getEtiqueta(), valorMaximo, letra);
+                        } else {
+                            camino = auxEncontrarCamino(siguiente.getVertice(), destino, camino, visitados, acumulador + 1, valorMaximo, letra);
+                        }
                         siguiente = siguiente.getSigAdyacente();
                     }
                     visitados.eliminar(nodo.getElem());
@@ -208,42 +224,6 @@ public class Grafo {
         return camino;
     }
     
-    public Lista encontrarCaminoMenosLocaciones(Object origen, Object destino, Object locacionProhibida) {
-        NodoVert nodoVerticeOrigen = ubicarVertice(origen);
-        NodoVert nodoVerticeDestino = ubicarVertice(destino);
-        Lista visitados = new Lista(), camino = new Lista();
-        if (nodoVerticeOrigen != null && nodoVerticeDestino != null) {
-            int[] aux = new int[1];
-            aux[0] = 999999999;
-            camino = auxEncontrarCaminoMenosLocaciones(nodoVerticeOrigen, destino, camino, visitados, 0, aux);
-            camino.insertar(aux[0], 1);
-        }
-        return camino;
-    }
-
-    private Lista auxEncontrarCaminoMenosLocaciones(NodoVert nodo, Object destino, Lista camino, Lista visitados, int locacionesAcumuladas, int[] locacionesMaximas) {
-        if (nodo != null) {
-            if (!visitados.pertenece(nodo.getElem())) {
-                if (nodo.getElem().equals(destino)) {
-                    if (locacionesAcumuladas < locacionesMaximas[0] ) {
-                        camino = visitados.clone();
-                        camino.insertar(nodo.getElem(), 1);
-                        locacionesMaximas[0] = locacionesAcumuladas;
-                    }
-                } else {
-                    visitados.insertar(nodo.getElem(), 1);
-                    NodoAdy siguiente = nodo.getPrimerAdy();
-                    while (siguiente != null) {
-                        camino = auxEncontrarCaminoMenosLocaciones(siguiente.getVertice(), destino, camino, visitados, locacionesAcumuladas + 1 , locacionesMaximas);
-                        siguiente = siguiente.getSigAdyacente();
-                    }
-                    visitados.eliminar(nodo.getElem());
-                }
-            }
-        }
-        return camino;
-    }
-
 
     public Lista listarEnProfundidad(){
         Lista visitados = new Lista();
