@@ -1,4 +1,3 @@
-
 package dungeonsstructures.ColaPrioridad;
 
 /**
@@ -6,7 +5,6 @@ package dungeonsstructures.ColaPrioridad;
  * @author Guillermo Andrés Pereyra.
  */
 public class test {
-
 
     public static void main(String[] args) {
         ColaPrioridad colaPrioridad = new ColaPrioridad();
@@ -20,5 +18,5 @@ public class test {
         colaPrioridad.eliminarFrente();
         System.out.println(colaPrioridad.toString());
     }
-    
+
 }

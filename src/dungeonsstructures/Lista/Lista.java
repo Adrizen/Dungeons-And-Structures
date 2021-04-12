@@ -2,7 +2,10 @@ package dungeonsstructures.Lista;
 
 import dungeonsstructures.Nodo;
 
-
+/**
+ *
+ * @author Guillermo Andrés Pereyra.
+ */
 public class Lista {
 
     private Nodo cabecera;
@@ -51,16 +54,16 @@ public class Lista {
         }
         return bandera;
     }
-    
+
     // Método para eliminar un nodo dado un objeto, sin saber en qué posición está.
     // Si se puede eliminar el nodo, devuelve true. Si no devuelve false.
-    public boolean eliminar(Object obj){
+    public boolean eliminar(Object obj) {
         Nodo nodito = this.cabecera, padreNodito = null;
         boolean exito = false;
-        while (nodito != null && !exito){
-            if (nodito.getElemento().equals(obj)){
+        while (nodito != null && !exito) {
+            if (nodito.getElemento().equals(obj)) {
                 exito = true;
-                if (padreNodito == null){   // El nodo a eliminar es la cabecera de la lista.
+                if (padreNodito == null) {   // El nodo a eliminar es la cabecera de la lista.
                     this.cabecera = nodito.getEnlace();
                 } else {    // El nodo a eliminar no es la cabecera de la lista.
                     padreNodito.setEnlace(nodito.getEnlace());
@@ -72,18 +75,29 @@ public class Lista {
         }
         return exito;
     }
-    
+
     // Dado un objeto, devuelve true si el objeto está en la lista. De lo contrario devuelve false.
-    public boolean pertenece(Object obj){
+    public boolean pertenece(Object obj) {
         boolean exito = false;
         Nodo nodo = this.cabecera;
-        while (!exito && nodo != null){
-            if (nodo.getElemento().equals(obj)){
+        while (!exito && nodo != null) {
+            if (nodo.getElemento().equals(obj)) {
                 exito = true;
             }
             nodo = nodo.getEnlace();
         }
         return exito;
+    }
+
+    // Recorre la lista y devuelve su longitud.
+    public int longitud() {
+        int longitud = 0;
+        Nodo aux = this.cabecera;
+        while (aux != null) {
+            longitud++;
+            aux = aux.getEnlace();
+        }
+        return longitud;
     }
 
     // Dada una posición, devuelve el objeto en dicha posición.
@@ -116,14 +130,33 @@ public class Lista {
         return posicion;
     }
 
+    // Dado un objeto, recorre la lista y elimina las apariciones de ese objeto en la lista.
+    public void eliminarApariciones(Object x) {
+        Nodo aux = this.cabecera, aux2 = null;
+        while (aux != null) {
+            if (this.cabecera.getElemento().equals(x)) {
+                this.cabecera = this.cabecera.getEnlace();
+            } else {
+                if (aux.getElemento().equals(x)) {
+                    aux2.setEnlace(aux.getEnlace());
+                }
+            }
+            aux2 = aux;
+            aux = aux.getEnlace();
+        }
+    }
+    
+    // Vacia la lista.
     public void vaciar() {
         this.cabecera = null;
     }
 
+    // Si la lista está vacia devuelve true, si no devuelve false.
     public boolean esVacia() {
         return (this.cabecera == null);
     }
 
+    // Devuelve un clon de la lista.
     public Lista clone() {
         Lista clon = new Lista();
         if (this.cabecera != null) {
@@ -143,17 +176,6 @@ public class Lista {
         return clon;
     }
 
-    // Recorre la lista y devuelve su longitud.
-    public int longitud() {
-        int longitud = 0;
-        Nodo aux = this.cabecera;
-        while (aux != null) {
-            longitud++;
-            aux = aux.getEnlace();
-        }
-        return longitud;
-    }
-
     public String toString() {
         String cadenita = "";
         Nodo aux = this.cabecera;
@@ -168,19 +190,4 @@ public class Lista {
         return cadenita;
     }
 
-
-    public void eliminarApariciones(Object x) {
-        Nodo aux = this.cabecera, aux2 = null;
-        while (aux != null) {
-            if (this.cabecera.getElemento().equals(x)) {
-                this.cabecera = this.cabecera.getEnlace();
-            } else {
-                if (aux.getElemento().equals(x)) {
-                    aux2.setEnlace(aux.getEnlace());
-                }
-            }
-            aux2 = aux;
-            aux = aux.getEnlace();
-        }
-    }
 }

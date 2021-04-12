@@ -14,7 +14,10 @@ import java.util.Scanner;
 import java.util.HashMap;
 import java.util.Random;
 
-
+/**
+ *
+ * @author Guillermo Andrés Pereyra.
+ */
 public class Dungeons2019 {
     
     static PrintWriter LOG;
@@ -26,36 +29,10 @@ public class Dungeons2019 {
     static ArrayList localizaciones;
     static Scanner sc = new Scanner(System.in);
     
-    public static void main(String[] args) { //La idea es tener un .txt para cada elemento del proyecto. Jugadores, Items, Lugares, etc.
-        crearLog();   // Creo el archivo LOG.txt
+    public static void main(String[] args) {
         
-        armadoEquipos = new ColaPrioridad();  // "Cola de prioridad para los jugadores esperando entrar en un equipo."
-        jugadoresEsperandoEquipo = 0;    // Cantidad de jugadores a la espera de formar parte de un equipo.
+        crearYCargarEstructuras();
         
-        // Items.
-        Scanner datosItems = leerTxtItems();    // Leo el .txt de Items y devuelvo un tipo Scanner.
-        items = crearItems(datosItems);    // Creo los items y los coloco en el AVL.
-        
-        // Jugadores.
-        Scanner datosJugadores = leerTxtJugadores();    // Leo el .txt de Jugadores y devuelvo un tipo Scanner.
-        jugadores = crearJugadores(datosJugadores, armadoEquipos); // Creo los jugadores y los coloco en el AVL. También los pongo en la cola de prioridad.
-        
-        // Mapa.
-        Scanner datosMapa = leerTxtLocalizaciones();
-        localizaciones = new ArrayList(); // Para elegir aleatoriamente una localizacion al crear un equipo.
-        mapa = crearMapa(datosMapa);
-        
-        // Equipos.
-        Scanner nombreEquipos = leerTxtEquipos();
-        equipos = new HashMap();
-        crearEquipos(nombreEquipos);
-        
-        // Caminos.
-        Scanner datosCaminos = leerTxtCaminos();
-        crearCaminos(datosCaminos);
-        
-        LOG.flush();    // Flush luego de cargar los .txt
-
         for (int i = 0; i < 10; i++) {
             Equipo equipo1 = (Equipo) equipos.get("Mercedes AMG Petronas e-Sports");
             Equipo equipo2 = (Equipo) equipos.get("Scuderia Ferrari Sport Elettronici");
@@ -63,12 +40,52 @@ public class Dungeons2019 {
         }
 
         LOG.flush();
-        
         menu();
-        
+        System.out.println("-- Finalizando... gracias por jugar :) --");
+        LOG.println("-- Finalizando sistema --");
+        escribirEstructurasEnLOG();
         LOG.close();    // Cierro el LOG.txt
     }
     
+    // Crea y carga (a partir de los txt) las distintas estructuras del sistema (AVL, Grafo, etc).
+    // La idea es tener un .txt para cada elemento del proyecto. Jugadores, Items, Lugares, etc.
+    private static void crearYCargarEstructuras() {
+        crearLog();   // Creo el archivo LOG.txt
+        armadoEquipos = new ColaPrioridad();    // Cola de prioridad para los jugadores esperando entrar en un equipo."
+        jugadoresEsperandoEquipo = 0;           // Cantidad de jugadores a la espera de formar parte de un equipo.
+        // Items.
+        Scanner datosItems = leerTxtItems();    // Leo el .txt de Items y devuelvo un tipo Scanner.
+        items = crearItems(datosItems);         // Creo los items y los coloco en el AVL.
+        // Jugadores.
+        Scanner datosJugadores = leerTxtJugadores();                // Leo el .txt de Jugadores y devuelvo un tipo Scanner.
+        jugadores = crearJugadores(datosJugadores, armadoEquipos);  // Creo los jugadores y los coloco en el AVL. También los pongo en la cola de prioridad.
+        // Mapa.
+        Scanner datosMapa = leerTxtLocalizaciones();
+        localizaciones = new ArrayList();       // ArrayList usado para elegir aleatoriamente una localización al crear un equipo.
+        mapa = crearMapa(datosMapa);
+        // Equipos.
+        Scanner nombreEquipos = leerTxtEquipos();
+        equipos = new HashMap();
+        crearEquipos(nombreEquipos);
+        // Caminos.
+        Scanner datosCaminos = leerTxtCaminos();
+        crearCaminos(datosCaminos);
+        escribirEstructurasEnLOG();             // Escribír las estructuras (AVL, Grafo, etc) en el LOG.
+    }
+    
+    // Escribo (toString()) todas las estructuras en el LOG.
+    private static void escribirEstructurasEnLOG() {
+        LOG.println("");
+        LOG.println("-- ESTRUCTURAS DEL SISTEMA --");
+        LOG.println("AVL Items: \n" + items.toString());
+        LOG.println("AVL Jugadores: \n" + jugadores.toString());
+        LOG.println("HashMap Equipos: \n" + equipos.toString());
+        LOG.println("Grafo: \n" + mapa.toString());
+        LOG.println("-- FIN ESTRUCTURAS DEL SISTEMA --");
+        LOG.flush();
+    }
+
+    // Menú principal.
     public static void menu(){
         boolean seguir = true;
         sc.useDelimiter("\r?\n");   // Scanner acepta espacios como parte de la entrada.
@@ -78,7 +95,7 @@ public class Dungeons2019 {
             System.out.println("A. ABM de jugadores.");
             System.out.println("B. ABM de items.");
             System.out.println("C. ABM Locaciones.");
-            System.out.println("D. (Nope) Alta de un jugador en la cola de espera por un equipo.");
+            System.out.println("D. Alta de un jugador en la cola de espera por un equipo.");
             System.out.println("E. Creación automática de un equipo.");
             System.out.println("F. Crear una batalla entre dos equipos.");
             System.out.println("G. Consultar sobre un equipo.");
@@ -95,7 +112,7 @@ public class Dungeons2019 {
         }
     }
 
-    public static boolean seleccionarOpcion(char seleccion) {
+    private static boolean seleccionarOpcion(char seleccion) {
         boolean exito = false;
         switch (seleccion) {
             case 'A':
@@ -108,7 +125,7 @@ public class Dungeons2019 {
                 ABMLocaciones();
                 break;
             case 'D':
-                System.out.println("KJJJJJJJJJJJJJJJJJJJ");
+                System.out.println("TBD");
                 break;
             case 'E':
                 crearEquipos(null);
@@ -144,7 +161,7 @@ public class Dungeons2019 {
     }
     
     // Método para seleccionar qué se desea hacer a algún jugador/jugadores.
-    public static void ABMJugador() {
+    private static void ABMJugador() {
         boolean seguir = true;
         char seleccion;
         while (seguir) {
@@ -178,7 +195,7 @@ public class Dungeons2019 {
     }
     
     // Agregar manualmente a un jugador pidiendo sus datos individualmente.
-    public static void altaJugador(){
+    private static void altaJugador(){
         String nombre, tipo, categoria;
         System.out.println("Ingrese el nombre del jugador");
         nombre = sc.next();
@@ -186,8 +203,8 @@ public class Dungeons2019 {
         if (!jugadores.pertenece(nombre)){  // Si no existe en el AVL pido sus datos y lo agrego.
             tipo = elegirTipoDeJugador();
             categoria = elegirCategoriaDeJugador();
-            Jugador jugador = new Jugador(nombre,tipo,categoria);
-            jugadores.insertar(nombre,jugador); // Agrego al jugador al AVL.
+            Jugador jugador = new Jugador(nombre,tipo,categoria,null);
+            jugadores.insertar(nombre,jugador);         // Agrego al jugador al AVL.
             armadoEquipos.insertar(jugador, categoria); // Agrego al jugador a la cola de prioridad usada para armar los equipos.
             jugadoresEsperandoEquipo++;
             System.out.println("Jugador " + nombre + " agregado con éxito.");
@@ -197,7 +214,8 @@ public class Dungeons2019 {
         }
     }
     
-    public static String elegirTipoDeJugador(){
+    // Seleccionar el tipo de un jugador al darlo de alta.
+    private static String elegirTipoDeJugador(){
         String respuesta = "";
         boolean seguir = true;
         char seleccion;
@@ -223,7 +241,8 @@ public class Dungeons2019 {
         return respuesta;
     }
     
-    public static String elegirCategoriaDeJugador(){
+    // Seleccionar la categoría de un jugador al darlo de alta.
+    private static String elegirCategoriaDeJugador(){
         String respuesta = "";
         boolean seguir = true;
         char seleccion;
@@ -255,24 +274,24 @@ public class Dungeons2019 {
     }
 
     // Eliminar a un jugador del sistema.
-    public static void bajaJugador() {
+    private static void bajaJugador() {
         String nombre;
         System.out.println("Ingrese el nombre del jugador a eliminar.");
         nombre = sc.next();
         nombre = nombre.toUpperCase();
         Jugador jugador = (Jugador) jugadores.obtener(nombre);
-        if (jugador != null){
-            jugadores.eliminar(nombre); // Elimino al jugador del AVL.
-            Equipo equipoJugador = jugador.getEquipo(); // Obtengo el equipo del jugador.
-            if (equipoJugador != null) {    // Si el jugador eliminado tenía equipo.
-                equipos.remove(equipoJugador.getNombre()); // Su equipo ya no está completo y no puede pelear con otros equipos. Lo quito del HashMap.
+        if (jugador != null){   // Si no es nulo, el jugador existe.
+            jugadores.eliminar(nombre);                     // Elimino al jugador del AVL.
+            Equipo equipoJugador = jugador.getEquipo();     // Obtengo el equipo del jugador.
+            if (equipoJugador != null) {                    // Si el jugador eliminado tenía equipo.
+                equipos.remove(equipoJugador.getNombre());  // Su equipo ya no está completo y no puede pelear con otros equipos. Lo quito del HashMap.
                 Lista listaJugadores = equipoJugador.getJugadores();
-                for (int i = 1; i < 3; i++) {   // Los dos jugadores que quedaban se quedan sin equipo y vuelven a la cola de prioridad.
+                for (int i = 1; i < 3; i++) {               // Los dos jugadores que quedaban se quedan sin equipo y vuelven a la cola de prioridad.
                     Jugador auxJugador = (Jugador) listaJugadores.recuperar(i);
                     auxJugador.setEquipo(null);
                     jugadoresEsperandoEquipo++;
                     String categoria = auxJugador.getCategoria();
-                    armadoEquipos.insertar(auxJugador, categoria);  // Agrego al jugador a la cola de prioridad.
+                    armadoEquipos.insertar(auxJugador, categoria);  // Agrego al jugador a la cola de prioridad de armado de equipos.
                 }
             }
             System.out.println("Jugador " + nombre + " eliminado correctamente.");
@@ -282,7 +301,22 @@ public class Dungeons2019 {
         }
     }
     
-    public static void modificarJugador(){
+    // Menú para listar las modificaciones posibles a un jugador.
+    private static char menuModificarJugador(){
+        char seleccion;
+        System.out.println("A. Cambiar el tipo del jugador.");
+        System.out.println("B. Cambiar el dinero del jugador.");
+        System.out.println("C. Cambiar la categoria del jugador.");
+        System.out.println("D. Cambiar las veces derrotado del jugador.");
+        System.out.println("E. Cambiar las victorias del jugador.");
+        System.out.println("Z. Salir.");
+        seleccion = sc.next().charAt(0);
+        seleccion = Character.toUpperCase(seleccion);
+        return seleccion;
+    }
+
+    // Cambiar atributos a un jugador.
+    private static void modificarJugador(){
         String nombre;
         boolean seguir = true;
         System.out.println("Ingrese el nombre del jugador a modificar.");
@@ -338,22 +372,8 @@ public class Dungeons2019 {
         }
     }
     
-    // Menú para listar las modificaciones posibles a un jugador.
-    public static char menuModificarJugador(){
-        char seleccion;
-        System.out.println("A. Cambiar el tipo del jugador.");
-        System.out.println("B. Cambiar el dinero del jugador.");
-        System.out.println("C. Cambiar la categoria del jugador.");
-        System.out.println("D. Cambiar las veces derrotado del jugador.");
-        System.out.println("E. Cambiar las victorias del jugador.");
-        System.out.println("Z. Salir.");
-        seleccion = sc.next().charAt(0);
-        seleccion = Character.toUpperCase(seleccion);
-        return seleccion;
-    }
-
     // Método para seleccionar qué se desea hacer a algún item.
-    public static void ABMItem() {
+    private static void ABMItem() {
         boolean seguir = true;
         char seleccion;
         while (seguir) {
@@ -387,7 +407,7 @@ public class Dungeons2019 {
     }
 
     // Agregar manualmente un item pidiendo sus datos individualmente.
-    public static void altaItem() {
+    private static void altaItem() {
         String codigo, nombre;
         int precio, puntosAtaque, puntosDefensa, copias;
         System.out.println("Ingrese el código del item.");
@@ -406,7 +426,7 @@ public class Dungeons2019 {
             copias = sc.nextInt();
             Item item = new Item(codigo,nombre,precio,puntosAtaque,puntosDefensa,copias);
             Lista lista = (Lista) items.obtener(precio);
-            // Como los items se ordenan por precio y puede haber más de un item con el mismo valor, en cada nodo del AVL Items se guarda una lista...
+            // Como los items se ordenan por precio y puede haber más de un item con el mismo precio, en cada nodo del AVL Items se guarda una lista...
             // que contiene los items de dicho precio.
             if (lista == null) {    // No existe un item con ese precio. Creo una lista nueva.
                 lista = new Lista();
@@ -423,7 +443,8 @@ public class Dungeons2019 {
         }
     }
     
-    public static void bajaItem(){
+    // Eliminar un item del sistema.
+    private static void bajaItem(){
         String codigo;
         System.out.println("Ingrese el código del item a eliminar.");
         codigo = sc.next();
@@ -433,7 +454,7 @@ public class Dungeons2019 {
             int precio = item.getPrecio();
             Lista lista = (Lista) items.obtener(precio);
             lista.eliminar(item);
-            if (lista.esVacia()){   // No quedan items con ese precio, elimino la lista vacia.
+            if (lista.esVacia()){   // No quedan items con ese precio (acabo de eliminar el último), elimino la lista vacia.
                 items.eliminar(precio);
             }
             codigosItems.remove(codigo);    // Elimino el item del HashMap.
@@ -444,7 +465,8 @@ public class Dungeons2019 {
         }
     }
     
-    public static void modificarItem(){
+    // Cambiar atributos a un item.
+    private static void modificarItem(){
         String codigo;
         boolean seguir = true;
         System.out.println("Ingrese el código del item a modificar.");
@@ -494,7 +516,7 @@ public class Dungeons2019 {
     }
     
     // Menú para listar las modificaciones posibles a un item.
-    public static char menuModificarItem() {
+    private static char menuModificarItem() {
         char seleccion;
         System.out.println("A. Cambiar el nombre a un item.");
         System.out.println("B. Cambiar los puntos de ataque de un item.");
@@ -507,7 +529,7 @@ public class Dungeons2019 {
     }
     
     // Método para seleccionar qué se desea hacer con alguna locación.
-    public static void ABMLocaciones(){
+    private static void ABMLocaciones(){
         boolean seguir = true;
         char seleccion;
         while (seguir){
@@ -534,15 +556,15 @@ public class Dungeons2019 {
         }
     }
     
-    public static void altaLocacion(){
+    // Agregar manualmente una locación pidiendo sus datos individualmente.
+    private static void altaLocacion(){
         String nombre;
         System.out.println("Ingrese el nombre de la locación.");
-        
         nombre = sc.next();
         nombre = nombre.toUpperCase();
         if (!localizaciones.contains(nombre)){
-            mapa.insertarVertice(nombre);
-            localizaciones.add(nombre);
+            mapa.insertarVertice(nombre);    // Agrego la locación al grafo.
+            localizaciones.add(nombre);      // Agrego la locación al ArrayList
             System.out.println("Locación " + nombre + " agregada con éxito.");
             LOG.println("Agregada locación " + nombre + ".");
         } else {
@@ -550,14 +572,15 @@ public class Dungeons2019 {
         }
     }
     
-    public static void bajaLocacion(){
+    // Eliminar una locación del sistema.
+    private static void bajaLocacion(){
         String nombre;
         System.out.println("Ingrese el nombre de la locación a eliminar.");
         nombre = sc.next();
         nombre = nombre.toUpperCase();
         if (localizaciones.contains(nombre)){
-            localizaciones.remove(nombre);
-            mapa.eliminarVertice(nombre);
+            localizaciones.remove(nombre);  // Elimino la locación del ArrayList.
+            mapa.eliminarVertice(nombre);   // Elimino el vértice y sus caminos del grafo.
             System.out.println("Localización " + nombre + " removida con éxito.");
             LOG.println("Removida localización " + nombre + ".");
         } else {
@@ -565,11 +588,10 @@ public class Dungeons2019 {
         }
     }
     
-    // Debug.
-    public static void mostrarSistema() {
+    // Debug. Para ver las distintas estructuras del sistema en su estado actual.
+    private static void mostrarSistema() {
         char seleccion;
         boolean seguir = true;
-        //TO DO: Seguir agregando.
         while (seguir) {
         System.out.println("-- DEBUG --");
         System.out.println("A. Mostrar AVL de Jugadores.");
@@ -603,12 +625,12 @@ public class Dungeons2019 {
                     System.out.println("----------------");
                     break;
                 case 'E':
-                    System.out.println("HashMap Item");
+                    System.out.println("HashMap Item: ");
                     System.out.println(codigosItems.toString());
                     System.out.println("----------------");
                     break;
                 case 'F':
-                    System.out.println("ColaPrioridad de equipos.");
+                    System.out.println("ColaPrioridad de equipos: ");
                     System.out.println(armadoEquipos.toString());
                     System.out.println("----------------");
                     break;
@@ -622,7 +644,7 @@ public class Dungeons2019 {
     }
 
     // Creación del archivo LOG.
-    public static void crearLog(){
+    private static void crearLog(){
         try {
             LOG = new PrintWriter(new File(".\\src\\dungeonsstructures\\log.txt"));
         } catch (IOException e) {
@@ -630,7 +652,8 @@ public class Dungeons2019 {
         }
     }
     
-    public static void crearBatalla(){
+    // Crear una batalla entre dos equipos.
+    private static void crearBatalla(){
         String nombreEquipo1, nombreEquipo2;
         System.out.println("Escriba el nombre de ambos equipos a pelear.");
         System.out.println("Equipos en el sistema: " + equipos.keySet().toString());
@@ -638,16 +661,19 @@ public class Dungeons2019 {
         nombreEquipo1 = sc.next();
         System.out.println("Nombre del equipo2: ");
         nombreEquipo2 = sc.next();
+        // Los nombres de los equipos deben ser distintos. (No es válido que un equipo peleé contra él mismo)
         if (!nombreEquipo1.equals(nombreEquipo2)) {
+            // Obtengo ambos equipos del HashMap.
             Equipo equipo1 = (Equipo) equipos.get(nombreEquipo1);
             Equipo equipo2 = (Equipo) equipos.get(nombreEquipo2);
-            if (equipo1 != null && equipo2 != null) {
+            if (equipo1 != null && equipo2 != null) {   // Los equipos deben existir en el sistema. (ser distintos de null)
                 String localizacionEquipo1, localizacionEquipo2;
                 localizacionEquipo1 = equipo1.getLocalizacion();
                 localizacionEquipo2 = equipo2.getLocalizacion();
-                if (localizacionEquipo1.equals(localizacionEquipo2)) {
+                if (localizacionEquipo1.equals(localizacionEquipo2)) {  // Los equipos deben estar en la misma locación.
                     String categoriaEquipo1 = equipo1.getCategoria();
                     String categoriaEquipo2 = equipo1.getCategoria();
+                    // De acuerdo a la puntación de la categoría de cada equipo determino cual tiene mayor/menor categoría. (y ataca primero)
                     int puntuacionCategoriaEquipo1 = obtenerPuntuacionCategoria(categoriaEquipo1);
                     int puntuacionCategoriaEquipo2 = obtenerPuntuacionCategoria(categoriaEquipo2);
                     if (puntuacionCategoriaEquipo1 <= puntuacionCategoriaEquipo2) {  // El equipo1 tiene menor o igual categoría al equipo2. Equipo1 empieza la pelea.
@@ -666,7 +692,8 @@ public class Dungeons2019 {
         }
     }
     
-    public static int obtenerPuntuacionCategoria(String categoria){
+    // Devuelve un puntaje de acuerdo a la categoría ingresada. Utilizado para determinar qué equipo tiene menor/mayor categoría a otro.
+    private static int obtenerPuntuacionCategoria(String categoria){
         int puntuacion = -1;
         switch (categoria) {
             case "NOVATO":
@@ -682,38 +709,40 @@ public class Dungeons2019 {
         return puntuacion;
     }
     
-    // Método principal que controla la batalla entre dos equipos.
-    // Siempre comienza el 1° jugador del equipo1 (tiene <= categoria al equipo2).
-    public static void administrarBatalla(Equipo equipo1, Equipo equipo2) {  
+    // Administra la batalla entre dos equipos. Siempre comienza el 1° jugador del equipo1. (tiene menor o igual categoria al equipo2)
+    private static void administrarBatalla(Equipo equipo1, Equipo equipo2) {  
         String nombreEquipo1 = equipo1.getNombre(), nombreEquipo2 = equipo2.getNombre();
-        LOG.println();
+        LOG.println();  // Espacio en blanco en el LOG. Para separar el inicio y fin de una pelea.
         System.out.println("-- Comienza una batalla entre " + nombreEquipo1 + " y " + nombreEquipo2 + " --");
         LOG.println("-- Comienza una batalla entre " + nombreEquipo1 + " y " + nombreEquipo2 + " --");
         int cantidadAtaques = 0, derrotadosEquipo1 = 0, derrotadosEquipo2 = 0;
-        Lista listaJE1 = equipo1.getJugadores(), listaJE2 = equipo2.getJugadores(); // listaJE1 o listaJE2 = Lista de Jugadores del Equipo n.
+        Lista listaJE1 = equipo1.getJugadores(), listaJE2 = equipo2.getJugadores(); // listaJE1 o listaJE2 = Lista Jugadores del Equipo x.
         
         // Si un equipo es derrotado o si se llega a 4 instancias de ataques (que son 2 rondas), la pelea termina.
         while ((derrotadosEquipo1 != 3) && (derrotadosEquipo2 != 3) && cantidadAtaques < 4) { 
+            
             if (cantidadAtaques % 2 == 0) { // Ataca el equipo1 al equipo2.
                 LOG.println(">" + nombreEquipo1 + " ataca a " + nombreEquipo2 + "<");
                 derrotadosEquipo2 = pelear(listaJE1, listaJE2, derrotadosEquipo2);
-            } else {    // Ataca el equipo2 al equipo1.
+                
+            } else {                        // Ataca el equipo2 al equipo1.
                 LOG.println(">" + nombreEquipo2 + " ataca a " + nombreEquipo1 + "<");
                 derrotadosEquipo1 = pelear(listaJE2, listaJE1, derrotadosEquipo1); 
             }
             cantidadAtaques++;
         }
+        
         // Dependiendo del resultado de la pelea se reparten las distintas recompensas a los equipos.
-        if (derrotadosEquipo2 == 3) {
+        if (derrotadosEquipo2 == 3) {       // Ganó el equipo1.
             System.out.println("-- " + nombreEquipo1 + " GANA LA BATALLA." + " --");
             LOG.println("-- " + nombreEquipo1 + " GANA LA BATALLA." + " --");
             repartirRecompensas(listaJE1, listaJE2, 1000, -500);
-        } else {
-            if (derrotadosEquipo1 == 3) {
+        } else {                        
+            if (derrotadosEquipo1 == 3) {   // Ganó el equipo2.
                 System.out.println("-- " + nombreEquipo2 + " GANA LA BATALLA." + " --");
                 LOG.println("-- " + nombreEquipo2 + " GANA LA BATALLA." + " --");
                 repartirRecompensas(listaJE2, listaJE1, 1000, -500);
-            } else {
+            } else {                        // Empate.
                 System.out.println("-- " + "LA BATALLA TERMINA EN EMPATE" + " --");
                 LOG.println("-- " + "LA BATALLA TERMINA EN EMPATE" + " --");
                 repartirRecompensas(listaJE1, listaJE2, 500, 500);
@@ -722,23 +751,32 @@ public class Dungeons2019 {
         LOG.println("----------------- Fin de batalla -----------------");
     }
 
-    // listaJE1 ataca a la listaJE2 que se defiende. Devuelve la cantidad de jugadores que listaJE1 derrotó de listaJE2.
+    // listaJE1 (lista Jugadores del Equipo1) ataca a la listaJE2 (lista Jugadores del Equipo2) que se defiende. 
+    // El método devuelve la cantidad de jugadores que listaJE1 derrotó de listaJE2. Para así determinar al ganador. (Si lo hubiera)
     private static int pelear(Lista listaJE1, Lista listaJE2, int jugadoresEnemigosDerrotados) {
-        Random r = new Random();
-        for (int i = 1; i < 4; i++) {   // Tres ataques/defensas por equipo en cada ronda.
+        Random r = new Random();    // Valor aleatorio usado en los ataques.
+        
+        // Tres ataques/defensas por equipo en cada ronda.
+        for (int i = 1; i < 4; i++) {
+            // A continución se busca un jugador válido para atacar o defender, según corresponda.
+            // Los jugadores pertenecientes a listaJE1 atacaran y los de listaJE2 se defienden.
             Jugador jugadorEquipo1 = obtenerSiguienteJugador(listaJE1, i);
             Jugador jugadorEquipo2 = obtenerSiguienteJugador(listaJE2, i);
-            if (jugadorEquipo2 != null) {   // El jugadorEquipo2 aún no fue derrotado.
+            
+            if (jugadorEquipo2 != null) {   // Si jugadorEquipo2 no es nulo es porque el equipo2 aún tiene jugadores para defenderse. La batalla continúa.
                 int puntosAtaque = calcularPuntosAtaque(jugadorEquipo1);
-                int puntosDefensa = calcularPuntosDefensa(jugadorEquipo2);
+                int totalDefensa = calcularPuntosDefensa(jugadorEquipo2);
                 double valorAleatorio = 0.5 + (1.5 - 0.5) * r.nextDouble(); // Valor aleatorio para el ataque.
                 int totalAtaque = (int) (puntosAtaque * valorAleatorio);    // El ataque se ve afectado por un valor aleatorio entre 0,5 y 1,5.
-                LOG.println(" " + jugadorEquipo1.getNombre() + "(" + totalAtaque + ")" + " ataca a " + jugadorEquipo2.getNombre() + "(" + puntosDefensa + ")" + ". (" + (totalAtaque - puntosDefensa) + ") total ataque.");
-                if (totalAtaque > puntosDefensa) {  // Ataque exitoso.
-                    jugadorEquipo2.setSalud(jugadorEquipo2.getSalud() - (totalAtaque - puntosDefensa)); // Se resta la salud perdida al atacado.
-                    if (jugadorEquipo2.getSalud() <= 0) {    // jugadorEquipo1 derrotó al jugadorEquipo2.
+                LOG.println(" " + jugadorEquipo1.getNombre() + "(" + totalAtaque + ")" + " ataca a " + jugadorEquipo2.getNombre() + "(" + totalDefensa + ")" + ". (" + (totalAtaque - totalDefensa) + ") total ataque.");
+                
+                if (totalAtaque > totalDefensa) {  // Ataque exitoso.
+                    jugadorEquipo2.setSalud(jugadorEquipo2.getSalud() - (totalAtaque - totalDefensa)); // Se resta la salud perdida al atacado.
+                    
+                    // Si la salud del jugador atacado es menor a 0, ese jugador fue derrotado.
+                    if (jugadorEquipo2.getSalud() <= 0) {
                         LOG.println(jugadorEquipo1.getNombre() + " derrotó a " + jugadorEquipo2.getNombre());
-                        jugadoresEnemigosDerrotados++;  // Se derrotó a jugadorEquipo2.
+                        jugadoresEnemigosDerrotados++;                                              // Se derrotó a jugadorEquipo2.
                         jugadorEquipo1.setDinero(jugadorEquipo1.getDinero() + 1000);                // Bono de $1000 por derrotar a un jugador.
                         jugadorEquipo1.setBatallasGanadas(jugadorEquipo1.getBatallasGanadas() + 1); // Actualizar victorias.
                         jugadorEquipo2.setVecesDerrotado(jugadorEquipo2.getVecesDerrotado() + 1);   // Actualizar derrotas.
@@ -749,7 +787,27 @@ public class Dungeons2019 {
         return jugadoresEnemigosDerrotados;
     }
 
-    // Se reparten las recompensas a cada miembro de equipo. Si hay un ganador, siempre son los jugadores de "listaJE1".
+    // Dada una lista y un índice, devuelve el 1° jugador disponible para pelear buscando a partir de ese índice.
+    // Si no hay jugadores de la lista que puedan pelear, devuelve null. Se itera sobre la lista hasta un máximo de 3 veces para buscar. (son 3 jugadores por equipo)
+    private static Jugador obtenerSiguienteJugador(Lista listaJugadores, int indice) {
+        int i = 0;
+        Jugador jugador = null;
+        boolean encontrado = false;
+        // Mientras no se haya encontrado a un jugador o se haya llegado a iterar 3 veces.
+        while (!encontrado && i < 3) {
+            jugador = (Jugador) listaJugadores.recuperar(indice);
+            if (jugador.getSalud() > 0) {   // Encontró un jugador que puede pelear.
+                encontrado = true;
+            } else {                        // Seguír buscando jugador válido.  
+                indice = (indice % 3) + 1;  // Se controla que el índice no se salga del rango de la lista.
+                jugador = null;             // Se debe seguir buscando un jugador que pueda pelear.
+                i++;
+            }
+        }
+        return jugador;
+    }
+    
+    // Se reparten las recompensas a cada miembro de equipo. Si hay un ganador, siempre son los jugadores de "listaJE1" (por como se invoca a este método).
     // En caso de empate no importa el orden de las listas ya que reciben exactamente la misma recompensa.
     private static void repartirRecompensas(Lista listaJE1, Lista listaJE2, int cantidadGanador, int cantidadPerdedor){
         int longitud = listaJE1.longitud();
@@ -760,89 +818,90 @@ public class Dungeons2019 {
             LOG.println("Jugador " +jugadorPerdedor.getNombre() + " terminó la pelea con " + jugadorPerdedor.getSalud() + " puntos de salud.");
             jugadorGanador.setDinero(jugadorGanador.getDinero() + cantidadGanador);       // Actualizar dinero ganador.
             jugadorPerdedor.setDinero(jugadorPerdedor.getDinero() + cantidadPerdedor);    // Actualizar dinero perdedor.
-            jugadorGanador.setSalud(100);   // Luego de la pelea, todos los jugadores recuperan su salud.
+            // Luego de la pelea, todos los jugadores recuperan su salud.
+            jugadorGanador.setSalud(100);   
             jugadorPerdedor.setSalud(100);
         }
     }
-
-    // Dada una lista y un indice, devuelve el 1° jugador disponible para pelear.
-    // Si no hay jugadores de la lista que puedan pelear, devuelve null.
-    private static Jugador obtenerSiguienteJugador(Lista listaJugadores, int indice) {
-        int i = 0;
-        Jugador jugador = null;
-        boolean encontrado = false;
-        while (!encontrado && i < 3) {
-            jugador = (Jugador) listaJugadores.recuperar(indice);
-            if (jugador.getSalud() > 0) {   // Encontró un jugador que puede pelear.
-                encontrado = true;
-            } else {    // Debe seguir buscando un jugador que pueda pelear.
-                indice = (indice % 3) + 1;
-                //System.out.println( jugador.getNombre() + " " + indice);        // debug
-                jugador = null;
-                i++;
-            }
-        }
-        //System.out.println();   // debug
-        return jugador;
-    }
-
+    
+    // Calcula los puntos de ataque de un jugador teniendo en cuenta su tipo, categoría e items.
     private static int calcularPuntosAtaque(Jugador jugador) {
         int puntosAtaque = 0;
         Lista itemsDelJugador = jugador.getItems();
-        if (jugador.getTipo().equals("GUERRERO")) {
+        if (jugador.getTipo().equals("GUERRERO")) { // El jugador es guerrero.
             puntosAtaque = 100;
-        } else {    // El jugador es defensor.
+        } else {                                    // El jugador es defensor.
             puntosAtaque = 25;
         }
+        // Obtengo el multiplicador del jugador en base a su categoría y lo aplico al ataque final total.
         puntosAtaque = puntosAtaque + (puntosAtaque * devolverMultiplicador(jugador.getCategoria()));
+        // Obtengo los puntos de ataque otorgados por los items y los sumo al ataque final total.
         puntosAtaque = puntosAtaque + calcularStatsItems(itemsDelJugador,'A',jugador.getNombre());
         return puntosAtaque;
     }
     
+    // Calcula los puntos de defensa de un jugador teniendo en cuenta su tipo, categoría e items.
     private static int calcularPuntosDefensa(Jugador jugador) {
         int puntosDefensa = 0;
         Lista itemsDelJugador = jugador.getItems();
-        if (jugador.getTipo().equals("DEFENSOR")) {
+        if (jugador.getTipo().equals("DEFENSOR")) { // El jugador es defensor.
             puntosDefensa = 90;
-        } else {
+        } else {                                    // El jugador es guerrero.
             puntosDefensa = 25;
         }
+        // Obtengo el multiplicador del jugador en base a su categoría y lo aplico a la defensa final total.
         puntosDefensa = puntosDefensa + (puntosDefensa * devolverMultiplicador(jugador.getCategoria()));
+        // Obtengo los puntos de defensa otorgados por los items y los sumo a la defensa final total.
         puntosDefensa = puntosDefensa + calcularStatsItems(itemsDelJugador, 'D', jugador.getNombre());
         return puntosDefensa;
     }
+    
+        // Devuelve el multiplicador correspondiete a la categoría de un jugador.
+    private static int devolverMultiplicador(String categoria){
+        int multiplicador = 0;
+        switch (categoria){
+            case "NOVATO":
+                multiplicador = 3;
+                break;
+            case "AFICIONADO":
+                multiplicador = 4;
+                break;
+            case "PROFESIONAL":
+                multiplicador = 5;
+                break;
+        }
+        return multiplicador;
+    }
 
+    // Calcula ataque o defensa (depende del char) de una lista de items.
     private static int calcularStatsItems(Lista itemsDelJugador, char tipoStats, String nombreJugador) {
         int stats = 0;
         if (itemsDelJugador != null) {
-            int longitud = itemsDelJugador.longitud();
-            for (int i = 0; i < longitud; i++) {
+            for (int i = 1; i <= itemsDelJugador.longitud(); i++) {
                 if (tipoStats == 'A') {  // La estadistica de interés es el ataque que dan los items.
                     Item item = (Item) itemsDelJugador.recuperar(i);
                     stats = stats + item.getPuntosAtaque();
-                    desgastarItems(item,itemsDelJugador,nombreJugador);   // Desgastar items del jugador que ataca.
-                } else {    // La estadistica de interés es la defensa que dan los items.
+                    desgastarItem(item,itemsDelJugador,nombreJugador,i);   // Desgastar items del jugador que ataca.
+                } else {                 // La estadistica de interés es la defensa que dan los items.
                     stats = stats + ((Item) itemsDelJugador.recuperar(i)).getPuntosDefensa();
                 }
             }
         }
         return stats;
     }
-    
+
     // Utilizado para desgastar los items luego de atacar con ellos.
-    private static void desgastarItems(Item item, Lista itemsDelJugador, String nombreJugador){
-        int longitudLista = itemsDelJugador.longitud();
-        for (int i = 0; i < longitudLista; i++) {
-            item.setPuntosAtaque(item.getPuntosAtaque() - 10);
-            item.setPuntosDefensa(item.getPuntosDefensa() - 10);
-            if (item.getPuntosAtaque() <= 0 && item.getPuntosDefensa() <= 0){   // Si el item tiene 0 de ataque y defensa, debo quitarlo.
-                itemsDelJugador.eliminar(i); // Quito el item de la lista.
-                LOG.println(nombreJugador + " descartó " + item.getNombre());
-            }
+    private static void desgastarItem(Item item, Lista itemsDelJugador, String nombreJugador, int posicion) {
+        item.setPuntosAtaque(item.getPuntosAtaque() - 10);
+        item.setPuntosDefensa(item.getPuntosDefensa() - 10);
+        if (item.getPuntosAtaque() <= 0 && item.getPuntosDefensa() <= 0) {   // Si el item tiene 0 de ataque y defensa, debo quitarlo.
+            itemsDelJugador.eliminar(posicion); // Quito el item de la lista.
+            LOG.println(nombreJugador + " descartó " + item.getNombre());
         }
     }
-    
-    public static void consultarEquipo(){
+
+    // Mostrar los datos de un equipo a partir de su nombre.
+    private static void consultarEquipo(){
         String nombre;
         System.out.println("Equipos en el sistema: " + equipos.keySet().toString());
         System.out.println("Ingrese el nombre del equipo.");
@@ -855,7 +914,8 @@ public class Dungeons2019 {
         }
     }
     
-    public static void consultarItems(){
+    // Distintas consultas para realizar sobre items.
+    private static void consultarItems(){
         char seleccion;
         boolean seguir = true;
         Lista lista;
@@ -871,7 +931,7 @@ public class Dungeons2019 {
                 case 'A':
                     System.out.println("Ingrese el monto.");
                     int monto = sc.nextInt();
-                    lista = items.listarRango(0, monto);
+                    lista = items.listarRango(0, monto);    // Obtengo una lista de items de valor con un rango desde 0 hasta 'monto'.
                     System.out.println(lista.toString());
                     break;
                 case 'B':
@@ -879,7 +939,7 @@ public class Dungeons2019 {
                     int montoMinimo = sc.nextInt();
                     System.out.println("Ingrese el monto máximo.");
                     int montoMaximo = sc.nextInt();
-                    lista = items.listarRango(montoMinimo,montoMaximo);
+                    lista = items.listarRango(montoMinimo,montoMaximo);    // Obtengo una lista de items de valor con un rango desde 'montoMinimo' hasta 'montoMaximo'.
                     System.out.println(lista.toString());
                     break;
                 case 'C':
@@ -897,8 +957,9 @@ public class Dungeons2019 {
         }
     }
 
-    public static void mostrarAtributosItem(String codigo){
-        Item item = (Item) codigosItems.get(codigo);
+    // Dado el código de un item muestro sus datos por pantalla.
+    private static void mostrarAtributosItem(String codigo){
+        Item item = (Item) codigosItems.get(codigo);    // Obtengo el item desde el HashMap ingresando su código.
         if (item != null){
             System.out.println(item.toString());
         } else {
@@ -906,7 +967,8 @@ public class Dungeons2019 {
         }
     }
     
-    public static void consultarJugadores() {
+    // Distintas consultas para realizar sobre jugadores.
+    private static void consultarJugadores() {
         char seleccion;
         boolean seguir = true;
         String nombre;
@@ -939,16 +1001,19 @@ public class Dungeons2019 {
         }
     }
     
-    public static void mostrarAtributosJugador(String nombre){
-        Jugador jugador = (Jugador) jugadores.obtener(nombre);
+    // Dado el nombre de un jugador muestro sus datos por pantalla.
+    private static void mostrarAtributosJugador(String nombre){
+        Jugador jugador = (Jugador) jugadores.obtener(nombre);      // Obtengo el jugador desde el AVL ingresando su nombre.
         if (jugador != null){
             System.out.println(jugador.toString());
+            System.out.println("Items: " + jugador.getItems().toString());
         } else {
             System.out.println("Ese jugador no existe.");
         }
     }
     
-    public static void listarJugadoresSubcadena(String subcadena){
+    // Dada una subcadena muestro los jugadores cuyos nombres empiezan con esa dicha subcadena.
+    private static void listarJugadoresSubcadena(String subcadena){
         Lista lista = jugadores.listar();
         int longitud = lista.longitud();
         String respuesta = "";
@@ -966,7 +1031,8 @@ public class Dungeons2019 {
         }
     }
 
-    public static void consultarLocaciones() {
+    // Distintas consultas para realizar sobre locaciones.
+    private static void consultarLocaciones() {
         boolean seguir = true;
         char seleccion;
         String locacionA, locacionB;
@@ -1046,9 +1112,12 @@ public class Dungeons2019 {
         }
     }
     
-    public static void mostrarCamino(Lista lista, char letra){
+    // Dada una lista (de nombres de locaciones) y un char indicando: 'D' = distancia o 'L' = locaciones.
+    // Se muestran las locaciones recorridas y dependiendo del char distancia o número de locaciones recorridas.
+    private static void mostrarCamino(Lista lista, char letra){
         int longitud = lista.longitud();
         if (!lista.esVacia()) {
+            // La lista se recorre de atras hacia delante porque se insertó siempre en posición 1 y se generó recursivamente.
             for (int i = longitud; i > 1; i--) {
                 System.out.print(lista.recuperar(i) + " - ");
             }
@@ -1066,22 +1135,24 @@ public class Dungeons2019 {
         }
     }
 
-    public static void listarUbicacionesAdyacentes(String nombreLocacion) {
-        Lista lista = mapa.ubicacionesAdyacentes(nombreLocacion);
+    // Dado el nombre de una locación se muestran las locaciones adyacentes a ella.
+    private static void listarUbicacionesAdyacentes(String nombreLocacion) {
+        Lista lista = mapa.ubicacionesAdyacentes(nombreLocacion);   // Obtengo una lista de nodosVert.
         int longitud = lista.longitud();
         if (!lista.esVacia()) {
             System.out.print("Desde " + nombreLocacion + " se puede ir a: ");
             for (int i = 1; i <= longitud; i++) {
                 NodoVert nodo = (NodoVert) lista.recuperar(i);
-                System.out.print(nodo.getElem() + " - ");
+                System.out.print(nodo.getElem() + " - ");   // Concateno el nombre de las locaciones.
             }
-        } else {
+        } else {    // Si la locación no existe o no hay locaciones adyacentes.
             System.out.print("No hay locaciones adyacentes a " + nombreLocacion);
         }
         System.out.println();
     }
     
-    public static void consultasGenerales() {
+    // Distintas consultas generales.
+    private static void consultasGenerales() {
         char seleccion;
         boolean seguir = true;
         while (seguir) {
@@ -1107,7 +1178,8 @@ public class Dungeons2019 {
         }
     }
     
-    public static void rankingJugadores(){
+    // Muestra un top de jugadores con más victorias.
+    private static void rankingJugadores(){
         ArbolAVL ranking = jugadores.ranking();
         Lista lista = ranking.listar();
         System.out.println("Top 3 jugadores con más victorias: ");
@@ -1117,35 +1189,19 @@ public class Dungeons2019 {
         }
     }
     
-    public static void mostrarItemsCopia(){
+    // Muestra los items del sistema de los que solo queda una copia.
+    private static void mostrarItemsCopia(){
         Lista lista = items.listarItemsCopia();
         System.out.println("Listado items con una sola copia: ");
         System.out.println(lista.toString());
     }
-
-    // Devuelve el multiplicador correspondiete a la categoría de un jugador.
-    private static int devolverMultiplicador(String categoria){
-        int multiplicador = 0;
-        switch (categoria){
-            case "NOVATO":
-                multiplicador = 3;
-                break;
-            case "AFICIONADO":
-                multiplicador = 4;
-                break;
-            case "PROFESIONAL":
-                multiplicador = 5;
-                break;
-        }
-        return multiplicador;
-    }
     
-    // Lee el .txt de los jugadores y devuelve tipo Scanner.
-    public static Scanner leerTxtJugadores() {
+    // Lee el .txt de los jugadores y devuelve tipo Scanner. De aquí se obtienen los datos de los jugadores.
+    private static Scanner leerTxtJugadores() {
         Scanner datosJugadores = null;
         try {
             datosJugadores = new Scanner(new FileReader(".\\src\\dungeonsstructures\\jugadores.txt"));
-            datosJugadores.useDelimiter(";");
+            datosJugadores.useDelimiter(";");   // Separador de campos.
         } catch (FileNotFoundException e) {
             System.out.println("Ha ocurrido un error tipo: " + e.toString());
         }
@@ -1153,17 +1209,20 @@ public class Dungeons2019 {
     }
     
     // Toma el Scanner anterior y lo procesa para ir creando los jugadores del .txt
-    public static ArbolAVL crearJugadores(Scanner datosJugadores, ColaPrioridad armadoEquipos) {
+    private static ArbolAVL crearJugadores(Scanner datosJugadores, ColaPrioridad armadoEquipos) {
         jugadores = new ArbolAVL();
-        String nombre, tipo, categoria;
-        while (datosJugadores.hasNext()) { //Iterar hasta que no haya más lineas de datos.
+        String nombre, tipo, categoria, codigosItemsJugador;
+        Lista lista;
+        while (datosJugadores.hasNext()) {      //Iterar hasta que no haya más lineas de datos.
             nombre = datosJugadores.next();
             nombre = nombre.toUpperCase();
             tipo = datosJugadores.next();
             categoria = datosJugadores.next();
-            datosJugadores.nextLine();  // Bajo a la siguiente línea.
-            Jugador jugador = new Jugador(nombre,tipo,categoria);
-            jugadores.insertar(nombre,jugador);    // Agrego al jugador al árbol AVL.
+            codigosItemsJugador = datosJugadores.next();
+            datosJugadores.nextLine();  // Bajo a la siguiente línea (siguiente jugador).
+            lista = parserItems(codigosItemsJugador);
+            Jugador jugador = new Jugador(nombre, tipo, categoria, lista);
+            jugadores.insertar(nombre, jugador);    // Agrego al jugador al árbol AVL.
             armadoEquipos.insertar(jugador, categoria.toUpperCase());   // Agrego al jugador a la cola de espera para armar equipos.
             jugadoresEsperandoEquipo++;  // Contador que uso después, a la hora de crear equipos.
             LOG.println("Jugador cargado: " + nombre);
@@ -1171,41 +1230,64 @@ public class Dungeons2019 {
         return jugadores;
     }
     
+    // Analiza los códigos de item que tiene un jugador cuando es cargado desde el txt y crea una lista con esos items asignándosela.
+    private static Lista parserItems(String codigosItemsJugador){
+        Lista lista = new Lista();
+        codigosItemsJugador = codigosItemsJugador.substring(1); // Quito el "<".
+        while (codigosItemsJugador.length() > 1){
+            String codigo = codigosItemsJugador.substring(0,4);
+            Item item = (Item) codigosItems.get(codigo);        // Con el código puedo obtener el item desde el HashMap.
+            
+            // Necesito clonar el item, caso contrario todos los jugadores tendrían una referencia al mismo item y
+            // si realizan cambios a su durabilidad esta se vería reflejada en todas las referencias.
+            Item nuevoItem = item.clone();  
+            lista.insertar(nuevoItem, 1);
+            codigosItemsJugador = codigosItemsJugador.substring(5); // Recorto el código ya analizado y lo preparo para analizar el siguiente.
+        }
+        return lista;
+    }
+    
     // Lee el .txt de los equipos y devuelve tipo Scanner. De aquí se obtienen los nombres de los equipos.
-    public static Scanner leerTxtEquipos() {
+    private static Scanner leerTxtEquipos() {
         Scanner nombreEquipos = null;
         try {
             nombreEquipos = new Scanner(new FileReader(".\\src\\dungeonsstructures\\equipos.txt"));
-            nombreEquipos.useDelimiter(";");
+            nombreEquipos.useDelimiter(";");   // Separador de campos.
         } catch (FileNotFoundException e) {
             System.out.println("Ha ocurrido un error tipo: " + e.toString());
         }
         return nombreEquipos;
     }
     
-    public static void crearEquipos(Scanner nombreEquipos) {
+    // Al iniciar el sistema este método obtiene los nombres de los equipos del txt y crea cada equipo con los jugadores de la cola de espera para un equipo.
+    // También se usa al seleccionar la opción 'E' del menú principal. En ese caso primero verifica que haya 3 jugadores esperando por un equipo para poder armarlo.
+    private static void crearEquipos(Scanner nombreEquipos) {
         if (jugadoresEsperandoEquipo >= 3) {
             while (jugadoresEsperandoEquipo >= 3) { // Si hay 3 o más jugadores esperando, se arma un equipo.
                 Lista listaJugadores = new Lista();
                 String nombreEquipo, categoria = "", localizacion;
-                if (nombreEquipos != null) {    // Si aún no se acabaron los nombres del archivo equipos.txt, se ingresan automáticamente.
+                if (nombreEquipos != null) {    // Si aún no se acabaron los nombres del archivo equipos.txt, estos se ingresan automáticamente.
                     nombreEquipo = nombreEquipos.next();
                     nombreEquipos.nextLine();
-                } else {    // Si ya se acabaron los nombres del archivo equipos.txt, se ingresan manualmente.
+                } else {                        // Si ya se acabaron los nombres del archivo equipos.txt, estos se ingresan manualmente.
                     System.out.println("Ingrese el nombre del equipo.");
                     nombreEquipo = sc.next();
                     System.out.println("Equipo creado con éxito.");
                 }
                 localizacion = localizacionAleatoria();   // Se debe asignar una localización aleatoria al crear un equipo.
                 Equipo equipo = new Equipo(nombreEquipo, "", localizacion.toUpperCase(), listaJugadores);
-                equipos.put(nombreEquipo, equipo);
+                equipos.put(nombreEquipo, equipo);        // Agrego el equipo al HashMap.
+                
+                // Creo la lista de 3 jugadores y a medida que los agrego a ella reviso la categoría de cada uno para determinar la categoría del equipo.
                 for (int i = 0; i < 3; i++) {
-                    Jugador temp = (Jugador) armadoEquipos.obtenerFrente();
-                    temp.setEquipo(equipo);
-                    listaJugadores.insertar(temp, 1);
+                    Jugador temp = (Jugador) armadoEquipos.obtenerFrente(); // Obtengo al jugador de la cola de espera para un equipo.
+                    temp.setEquipo(equipo);                                 // Setteo el equipo al jugador.
+                    listaJugadores.insertar(temp, 1);                       // Agrego al jugadora la lista.
+                    // A continuación determino la categoría del equipo usando la categoría del jugador actual ('temp') y la categoría del jugador analizado antes.
+                    // De esta forma me aseguro que el equipo tenga la menor categoría de sus integrantes.
                     categoria = determinarCategoria(categoria, temp.getCategoria());
-                    jugadoresEsperandoEquipo--;  // Contador estático de jugadores esperando un equipo.
-                    armadoEquipos.eliminarFrente();
+                    jugadoresEsperandoEquipo--;         // Contador estático de jugadores esperando un equipo.
+                    armadoEquipos.eliminarFrente();     // Quito al jugador de la cola de espera para un equipo.
                 }
                 equipo.setCategoria(categoria);
                 LOG.println("Equipo cargado: " + nombreEquipo + " " + equipo.toString());
@@ -1217,7 +1299,7 @@ public class Dungeons2019 {
 
     // Método auxiliar para determinar la categoria de un equipo.
     // (basado en la menor categoria de sus integrantes)
-    public static String determinarCategoria(String categoriaEquipo, String categoriaJugador) {
+    private static String determinarCategoria(String categoriaEquipo, String categoriaJugador) {
         String categoriaNueva;
         if (!categoriaEquipo.equals("NOVATO")) {
             if (categoriaJugador.equals("NOVATO")) {
@@ -1235,8 +1317,8 @@ public class Dungeons2019 {
         return categoriaNueva;
     }
 
-    // Elige una localización aleatoria de todas las que están en el array.
-    public static String localizacionAleatoria(){
+    // Elige una localización aleatoria de todas las que están en el ArrayList.
+    private static String localizacionAleatoria(){
         Random random = new Random();
         int longitudArray = localizaciones.size();
         int resultado = random.nextInt(longitudArray);
@@ -1244,11 +1326,12 @@ public class Dungeons2019 {
         return localizacion;
     }
 
-    public static Scanner leerTxtItems(){
+    // Lee el .txt de los items y devuelve tipo Scanner. De aquí se obtienen los datos de los items.
+    private static Scanner leerTxtItems(){
         Scanner datosItems = null;
         try{
             datosItems = new Scanner (new FileReader (".\\src\\dungeonsstructures\\items.txt"));
-            datosItems.useDelimiter(";");
+            datosItems.useDelimiter(";");   // Separador de campos.
             
         } catch(FileNotFoundException e){
             System.out.println("Ha ocurrido un error tipo: " + e.toString());
@@ -1256,12 +1339,13 @@ public class Dungeons2019 {
         return datosItems;
     }
     
-    public static ArbolAVL crearItems(Scanner datosItems){
-        items = new ArbolAVL();
-        codigosItems = new HashMap();
+    // Toma el Scanner con los datos de los items y lo procesa para ir creando los items automáticamente.
+    private static ArbolAVL crearItems(Scanner datosItems){
+        items = new ArbolAVL();         // AVL que contiene los items. La clave es el precio.
+        codigosItems = new HashMap();   // HashMap que contiene la tupla (código,item). Usado para recuperar un item dado su código.
         String codigo, nombre;
         int precio, puntosAtaque, puntosDefensa, copias;
-        while (datosItems.hasNext()){
+        while (datosItems.hasNext()){   // Iterar hasta que no haya más lineas de datos.
             codigo = datosItems.next();
             nombre = datosItems.next();
             precio = Integer.parseInt(datosItems.next());
@@ -1269,6 +1353,9 @@ public class Dungeons2019 {
             puntosDefensa = Integer.parseInt(datosItems.next());
             copias = Integer.parseInt(datosItems.next());
             Item item = new Item(codigo,nombre,precio,puntosAtaque,puntosDefensa,copias);
+            
+            // Como los items se ordenan por precio y puede haber más de un item con el mismo precio, en cada nodo del AVL Items se guarda una lista...
+            // que contiene los items de dicho precio.
             Lista lista = (Lista) items.obtener(precio);
             if (lista == null) {    // No existe un item con ese precio.
                 lista = new Lista();
@@ -1278,63 +1365,65 @@ public class Dungeons2019 {
                 lista.insertar(item, 1);
             }
             codigosItems.put(codigo, item); // Agrego el item al HashMap.
-            datosItems.nextLine();  // Bajo a la siguiente línea.
-            LOG.println(item.toString());
+            datosItems.nextLine();          // Bajo a la siguiente línea. (siguiente item)
+            LOG.println("Item cargado: " + nombre);
         }
         return items;
     }
     
-    public static Scanner leerTxtLocalizaciones(){
+    // Lee el .txt de locaciones y devuelve tipo Scanner. De aquí se obtienen los nombres de las locaciones.
+    private static Scanner leerTxtLocalizaciones(){
         Scanner datosLocalizaciones = null;
         try{
             datosLocalizaciones = new Scanner (new FileReader (".\\src\\dungeonsstructures\\localizaciones.txt"));
-            datosLocalizaciones.useDelimiter(";");
+            datosLocalizaciones.useDelimiter(";");   // Separador de campos.
         } catch(FileNotFoundException e){
             System.out.println("Ha ocurrido un error tipo: " + e.toString());
         }
         return datosLocalizaciones;
     }
     
-    public static Grafo crearMapa(Scanner datosMapa){
+    // Toma el Scanner con los datos de las locaciones y lo procesa para ir armando el Grafo.
+    private static Grafo crearMapa(Scanner datosMapa){
         mapa = new Grafo();
         String nombre;
-        while (datosMapa.hasNext()){
+        while (datosMapa.hasNext()){       // Iterar hasta que no haya más lineas de datos.
             nombre = datosMapa.next();
             nombre = nombre.toUpperCase();
-            datosMapa.nextLine();
-            mapa.insertarVertice(nombre);
-            localizaciones.add(nombre);
+            datosMapa.nextLine();          // Bajo a la siguiente línea. (siguiente locación)
+            mapa.insertarVertice(nombre);  // Inserto el vértice (locación) en el grafo.
+            localizaciones.add(nombre);    // También agrego la locación al ArrayList.
             LOG.println("Localización cargada: " + nombre);
         }
         return mapa;
     }
-
-    public static Scanner leerTxtCaminos() {
+    
+    // Lee el .txt de los caminos y devuelve tipo Scanner. De aquí se obtienen los caminos del Grafo.
+    private static Scanner leerTxtCaminos() {
         Scanner datosCaminos = null;
         try {
             datosCaminos = new Scanner(new FileReader(".\\src\\dungeonsstructures\\caminos.txt"));
-            datosCaminos.useDelimiter(";");
+            datosCaminos.useDelimiter(";");   // Separador de campos.
         } catch (FileNotFoundException e) {
             System.out.println("Ha ocurrido un error tipo: " + e.toString());
         }
         return datosCaminos;
     }
     
-    public static void crearCaminos(Scanner datosCaminos){
+    // Toma el Scanner con los datos de los caminos y lo procesa para ir armando el Grafo.
+    private static void crearCaminos(Scanner datosCaminos){
         String desde, hasta;
         int distancia;
-        while (datosCaminos.hasNext()){
+        while (datosCaminos.hasNext()){       // Iterar hasta que no haya más lineas de datos.
             desde = datosCaminos.next();
             desde = desde.toUpperCase();
             hasta = datosCaminos.next();
             hasta = hasta.toUpperCase();
             distancia = Integer.parseInt(datosCaminos.next());
-            mapa.insertarArco(desde, hasta, distancia);
-            datosCaminos.nextLine();
+            mapa.insertarArco(desde, hasta, distancia); // Inserta el camino en el Grafo.
+            datosCaminos.nextLine();    // Bajo a la siguiente línea. (siguiente camino)
             LOG.println("Camino cargado: " + desde + " - " + hasta + " (" + distancia + "kms)");
         }
     }
     
 }
-
-

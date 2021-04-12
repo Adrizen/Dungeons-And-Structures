@@ -16,13 +16,14 @@ public class ArbolAVL {
         raiz = null;
     }
 
+    // Insertar un objeto en el árbol. Si tiene éxito devuelve true, si no devuelve false.
     public boolean insertar(Comparable clave, Object objeto) {
         boolean exito = false;
         if (this.raiz == null) {  // El árbol estaba vacio.
             this.raiz = new NodoAVL(clave, objeto, null, null);
             exito = true;
         } else {            // El árbol no estaba vacio.
-            exito = insertarAux(this.raiz, null, clave, objeto,this.raiz.getAltura());
+            exito = insertarAux(this.raiz, null, clave, objeto, this.raiz.getAltura());
         }
         return exito;
     }
@@ -36,7 +37,7 @@ public class ArbolAVL {
                 nodo.setIzquierdo(nuevo);
                 exito = true;
             } else {
-                exito = insertarAux(nodo.getIzquierdo(), nodo, clave, objeto,altura-1);
+                exito = insertarAux(nodo.getIzquierdo(), nodo, clave, objeto, altura - 1);
             }
         } else {
             if (clave.compareTo(nodo.getClave()) > 0) {
@@ -45,7 +46,7 @@ public class ArbolAVL {
                     nodo.setDerecho(nuevo);
                     exito = true;
                 } else {
-                    exito = insertarAux(nodo.getDerecho(), nodo, clave, objeto,altura-1);
+                    exito = insertarAux(nodo.getDerecho(), nodo, clave, objeto, altura - 1);
                 }
             }
         }
@@ -56,7 +57,7 @@ public class ArbolAVL {
         return exito;
     }
 
-    private void balancear (NodoAVL nodo, NodoAVL nodoPadre) {
+    private void balancear(NodoAVL nodo, NodoAVL nodoPadre) {
         int balance = calcularBalance(nodo);
         if (balance > 1) {  // 'nodo' está inclinado a la izquierda.
             int balanceHijo = calcularBalance(nodo.getIzquierdo());
@@ -104,12 +105,11 @@ public class ArbolAVL {
         if (nodo.getDerecho() != null) {
             alturaDer = nodo.getDerecho().getAltura();
         }
-        //System.out.println("BALANCE DE " + nodo.getElem() + " ES " + (alturaIzq-alturaDer));
         return (alturaIzq - alturaDer);
     }
-    
+
     // Se rota a derecha cuando el árbol está caido a la izquierda.
-    private NodoAVL rotarDerecha(NodoAVL nodo){
+    private NodoAVL rotarDerecha(NodoAVL nodo) {
         NodoAVL h, temp;
         h = nodo.getIzquierdo();
         temp = h.getDerecho();
@@ -118,9 +118,9 @@ public class ArbolAVL {
         nodo.recalcularAltura();
         return h;   // Devuelvo el nodo que va a subir.
     }
-    
+
     // Se rota a la izquierda cuando el árbol está caido a la derecha.
-    private NodoAVL rotarIzquierda(NodoAVL nodo){
+    private NodoAVL rotarIzquierda(NodoAVL nodo) {
         NodoAVL h, temp;
         h = nodo.getDerecho();
         temp = h.getIzquierdo();
@@ -134,7 +134,7 @@ public class ArbolAVL {
     private void cambiarRaiz(NodoAVL nodo, NodoAVL padreNodo, NodoAVL h) {
         if (nodo == this.raiz) { // El nodo a balancear (o sea, "bajar") es la raiz.
             this.raiz = h;
-        } else {
+        } else {    // No era la raíz.
             if (padreNodo.getDerecho() != null) {
                 if (padreNodo.getDerecho().getClave() == nodo.getClave()) {
                     padreNodo.setDerecho(h);
@@ -144,12 +144,12 @@ public class ArbolAVL {
             }
         }
     }
-    
+
     // Dada una clave, retorna el objeto que tenga esa clave. Si no existe en el AVL, devuelve null.
-    public Object obtener(Comparable elem){
+    public Object obtener(Comparable elem) {
         Object objeto = null;
-        if (this.raiz != null){
-            if (this.raiz.getClave().compareTo(elem) == 0){
+        if (this.raiz != null) {
+            if (this.raiz.getClave().compareTo(elem) == 0) {
                 objeto = this.raiz.getObjeto();
             } else {
                 objeto = obtenerAux(this.raiz, elem);
@@ -157,9 +157,9 @@ public class ArbolAVL {
         }
         return objeto;
     }
-    
+
     // Método privado auxiliar recursivo para buscar un objeto en el AVL dada una clave.
-    private Object obtenerAux(NodoAVL nodo, Comparable elem){
+    private Object obtenerAux(NodoAVL nodo, Comparable elem) {
         Object objeto = null;
         if (nodo != null) {
             if (nodo.getClave().compareTo(elem) == 0) {
@@ -175,6 +175,7 @@ public class ArbolAVL {
         return objeto;
     }
 
+    // Eliminar un objeto del árbol. Si tiene éxito devuelve true, si no devuelve false.
     public boolean eliminar(Comparable elem) {
         boolean exito = false;
         if (this.raiz != null) {
@@ -183,83 +184,88 @@ public class ArbolAVL {
         return exito;
     }
 
+    // Método auxiliar que es utilizado para llamar recursivamente a los nodos correspondientes (izquierda si es menor, derecha si es mayor).
+    // el char es utilizado para saber en qué lado del nodoPadre está el nodo a eliminar. 'I' = Izquierda o 'D' = Derecha.
     private boolean eliminarAux(NodoAVL nodo, NodoAVL nodoPadre, Comparable elem, char lado) {
         boolean exito = false;
         if (nodo != null) {
-            if (elem.compareTo(nodo.getClave()) == 0) {
+            if (elem.compareTo(nodo.getClave()) == 0) { // Se encontró el nodo a eliminar.
                 exito = true;
                 eliminarNodo(nodo, nodoPadre, lado);
-            } else {
+            } else {                                    // Hay que seguír buscando.
                 if (elem.compareTo(nodo.getClave()) < 0) {
-                    exito = eliminarAux(nodo.getIzquierdo(), nodo, elem, 'I');
+                    exito = eliminarAux(nodo.getIzquierdo(), nodo, elem, 'I');  // Moverse a la izquierda si es menor.
                 } else {
-                    exito = eliminarAux(nodo.getDerecho(), nodo, elem, 'D');
+                    exito = eliminarAux(nodo.getDerecho(), nodo, elem, 'D');    // Moverse a la derecha si es mayor.
                 }
             }
-            if (exito) {
+            if (exito) {    // Si hubo éxito al borrar el nodo, tengo que revisar los balances y realizar rotaciones si es necesario.
                 balancear(nodo, nodoPadre);
             }
         }
         return exito;
     }
 
+    // Una vez encontrado el nodo a eliminar (con el método anterior) se invoca a este para eliminarlo, recalcular alturas y rotar si fuera necesario.
     private void eliminarNodo(NodoAVL nodo, NodoAVL nodoPadre, char lado) {
-        if (nodo.getAltura() == 0) {    // El nodo a eliminar es una hoja.
+        if (nodo.getAltura() == 0) {            // El nodo a eliminar es una hoja.
             if (lado == 'I') {
                 nodoPadre.setIzquierdo(null);   // El nodo a eliminar es el hijo izquierdo de nodoPadre.
             } else {
-                nodoPadre.setDerecho(null); // El nodo a eliminar es el hijo derecho de nodoPadre.
+                nodoPadre.setDerecho(null);     // El nodo a eliminar es el hijo derecho de nodoPadre.
             }
-        } else {    //El nodo a eliminar no es una hoja.
-            if (nodo.getDerecho() == null && nodo.getIzquierdo() != null) { // El nodo tiene UN subarbol a la izquierda.
+        } else {    // El nodo a eliminar no es una hoja.
+            if (nodo.getDerecho() == null && nodo.getIzquierdo() != null) {         // El nodo tiene UN subarbol a la izquierda.
                 if (lado == 'I') {
                     nodoPadre.setIzquierdo(nodo.getIzquierdo());
                 } else {
                     nodoPadre.setDerecho(nodo.getIzquierdo());
                 }
             } else {
-                if (nodo.getDerecho() != null && nodo.getIzquierdo() == null) { // El nodo tiene UN subarbol a la derecha.
+                if (nodo.getDerecho() != null && nodo.getIzquierdo() == null) {     // El nodo tiene UN subarbol a la derecha.
                     if (lado == 'I') {
                         nodoPadre.setIzquierdo(nodo.getDerecho());
                     } else {
                         nodoPadre.setDerecho(nodo.getDerecho());
                     }
                 } else {    // El nodo tiene DOS subarboles.
-                    /*
-                        nodo = Nodo a eliminar.
-                        nodoASubir = Este nodo reemplaza al que voy a borrar.
-                        hiSubir = Hijo izquierdo de nodoASubir. (si no tiene es 'null')
-                     */
+                    
+                    // nodo = Nodo a eliminar.
+                    // nodoASubir = Este nodo reemplaza al que voy a borrar.
+                    // hiSubir = Hijo izquierdo de nodoASubir. (si no tiene es 'null')
+
                     NodoAVL nodoASubir, padreNodoASubir = null, hiSubir = null;
                     nodoASubir = nodo.getIzquierdo();
                     while (nodoASubir.getDerecho() != null) { // Busco el mayor valor de los que están a la Izq de 'nodo'. (o sea, busco el mayor menor a 'nodo').
                         padreNodoASubir = nodoASubir;
                         nodoASubir = nodoASubir.getDerecho();
                     }
+                    
                     // Si en el while anterior iteré, significa que el HI de nodo tenía subarbol derecho.
                     // Como tenía subarbol derecho, debo asegurarme de borrar nodoASubir antes de subirlo. (para evitar duplicados)
+                    
                     if (padreNodoASubir != null) {
-                        padreNodoASubir.setDerecho(null);  // "Borro" nodoASubir de la derecha (evitar duplicados).
+                        padreNodoASubir.setDerecho(null);   // "Borro" nodoASubir de la derecha (evitar duplicados).
                         padreNodoASubir.recalcularAltura(); // Recalculo la altura del padre. (ahora sin 'nodoASubir')
-                        // Hace falta balancear el padreNodoASubir aquí??
                         hiSubir = nodoASubir.getIzquierdo();
-                        if (hiSubir != null) {   // Si nodoASubir tiene HI e iteré en el while anterior.
+                        if (hiSubir != null) {  // Si nodoASubir tiene HI e iteré en el while anterior.
                             hiSubir.setIzquierdo(nodo.getIzquierdo());
-                            hiSubir.recalcularAltura(); // No debería existir subarbol derecho para hiSubir, entonces está bien recalcular la altura aquí.
+                            hiSubir.recalcularAltura();
                             nodoASubir.setIzquierdo(hiSubir);
                             balancear(hiSubir, nodoASubir);
-                        } else {    // Si nodoASubir no tiene HI e iteré en el while anterior.
+                        } else {                // Si nodoASubir no tiene HI e iteré en el while anterior.
                             nodoASubir.setIzquierdo(nodo.getIzquierdo());
                         }
                     }
+                    
                     if (nodoPadre == null) {    // El nodo a eliminar era la raíz del árbol.
                         nodoASubir.setDerecho(this.raiz.getDerecho());
                         this.raiz = nodoASubir;
-                    } else {    // El nodo a eliminar no era la raíz del árbol.
+                    } else {                    // El nodo a eliminar no era la raíz del árbol.
                         if (lado == 'I') {
                             nodoPadre.setIzquierdo(nodoASubir);   // Coloco el nodo que voy a subir a la izquierda de su padre.
                         } else {
-                            nodoPadre.setDerecho(nodoASubir);   // Coloco el nodo que voy a subir a la derecha de su padre.
+                            nodoPadre.setDerecho(nodoASubir);     // Coloco el nodo que voy a subir a la derecha de su padre.
                         }
                         nodoASubir.setDerecho(nodo.getDerecho());   // Al nodo que acabo de subir, le enlazo lo que estaba a la derecha del nodo que quité.
                         nodoASubir.recalcularAltura();  // Recalculo su altura.
@@ -281,7 +287,7 @@ public class ArbolAVL {
     private boolean auxPertenece(Comparable clave, NodoAVL nodo) {
         boolean exito = false;
         if (nodo != null) {
-            if (clave.compareTo(nodo.getClave()) == 0) {
+            if (clave.compareTo(nodo.getClave()) == 0) {    // Encontrado.
                 exito = true;
             } else {
                 if (clave.compareTo(nodo.getClave()) < 0) {
@@ -295,12 +301,14 @@ public class ArbolAVL {
         return exito;
     }
 
+    // Devuelve una lista de todos los elementos del árbol.
     public Lista listar() {
         Lista lista = new Lista();
         auxListar(lista, this.raiz);
         return lista;
     }
 
+    // Método auxiliar recursivo para visitar cada nodo e insertar el objeto en una lista.
     private void auxListar(Lista lista, NodoAVL nodo) {
         if (nodo != null) {
             auxListar(lista, nodo.getIzquierdo());
@@ -308,15 +316,17 @@ public class ArbolAVL {
             auxListar(lista, nodo.getDerecho());
         }
     }
-    
-    public ArbolAVL ranking(){
+
+    // Crear el ranking de jugadores de la opción del menú 'K' subopción 'A'.
+    public ArbolAVL ranking() {
         ArbolAVL ranking = new ArbolAVL();
         auxRanking(ranking, this.raiz);
         return ranking;
     }
-    
-    private void auxRanking(ArbolAVL arbol, NodoAVL nodo){
-        if (nodo != null){
+
+    // Método auxiliar recursivo para visitar cada nodo y obtener las victorias de cada jugador e insertarlas en el árbol.
+    private void auxRanking(ArbolAVL arbol, NodoAVL nodo) {
+        if (nodo != null) {
             Jugador jugador = (Jugador) nodo.getObjeto();
             int victorias = jugador.getBatallasGanadas();
             arbol.insertar(victorias, jugador);
@@ -324,28 +334,31 @@ public class ArbolAVL {
             auxRanking(arbol, nodo.getDerecho());
         }
     }
-    
-    public Lista listarItemsCopia(){
+
+    // Crear la lista de items de los que solo queda una copia de la opción del menú 'K' subopción 'B'.
+    public Lista listarItemsCopia() {
         Lista lista = new Lista();
-        auxListarItemsCopia(lista,this.raiz);
+        auxListarItemsCopia(lista, this.raiz);
         return lista;
     }
-    
-    private void auxListarItemsCopia(Lista lista, NodoAVL nodo){
-        if (nodo != null){
+
+    // Método auxiliar recursivo para visitar cada nodo y obtener la cantidad de copias de cada item, si tiene una sola lo inserto en la lista.
+    private void auxListarItemsCopia(Lista lista, NodoAVL nodo) {
+        if (nodo != null) {
             Lista listaAux = (Lista) nodo.getObjeto();
             int longitud = listaAux.longitud();
-            for (int i = 1; i <= longitud; i++) {
+            for (int i = 1; i <= longitud; i++) {   // Recorro la lista.
                 Item item = (Item) listaAux.recuperar(i);
                 if (item.getCopias() == 1) {
                     lista.insertar(item, 1);
                 }
             }
-            auxListarItemsCopia(lista,nodo.getIzquierdo());
-            auxListarItemsCopia(lista,nodo.getDerecho());
+            auxListarItemsCopia(lista, nodo.getIzquierdo());
+            auxListarItemsCopia(lista, nodo.getDerecho());
         }
     }
 
+    // Devuelve una lista con los objetos comprendidos entre un rango.
     public Lista listarRango(Comparable min, Comparable max) {
         Lista lista = new Lista();
         if (min == max) {
@@ -356,6 +369,7 @@ public class ArbolAVL {
         return lista;
     }
 
+    // Método auxiliar recursivo para visitar cada nodo y en caso de que esté en el rango, insertarlo en la lista.
     private void auxListarRango(Comparable min, Comparable max, NodoAVL nodo, Lista lista) {
         if (nodo != null) {
             if (nodo.getClave().compareTo(min) >= 0 && nodo.getClave().compareTo(max) <= 0) {
@@ -377,6 +391,7 @@ public class ArbolAVL {
         }
     }
 
+    // Devuelve el mínimo elemento del árbol.
     public Comparable minimoElem() {
         if (this.raiz != null) {
             NodoAVL aux = this.raiz;
@@ -390,6 +405,7 @@ public class ArbolAVL {
         return null;
     }
 
+    // Devuelve el máximo elemento del árbol.
     public Comparable maximoElem() {
         if (this.raiz != null) {
             NodoAVL aux = this.raiz;
@@ -403,10 +419,12 @@ public class ArbolAVL {
         return null;
     }
 
+    // Si el árbol está vacio devuelve true, si no devuelve false.
     public boolean esVacio() {
         return (this.raiz == null);
     }
 
+    // Vacia el árbol.
     public void vaciar() {
         this.raiz = null;
     }

@@ -1,17 +1,19 @@
-
 package dungeonsstructures;
 
-
+/**
+ *
+ * @author Guillermo Andrés Pereyra.
+ */
 public class Item {
+
     private String codigo;
     private String nombre;
     private int precio;
     private int puntosAtaque;
     private int puntosDefensa;
     private int copias;
-    
-    
-    public Item(String codigo, String nombre,int precio, int puntosAtaque,int puntosDefensa,int copias){
+
+    public Item(String codigo, String nombre, int precio, int puntosAtaque, int puntosDefensa, int copias) {
         this.codigo = codigo;
         this.nombre = nombre;
         this.precio = precio;
@@ -19,56 +21,55 @@ public class Item {
         this.puntosDefensa = puntosDefensa;
         this.copias = copias;
     }
-    
-    public String getClave(){
+
+    public String getClave() {
         return this.codigo;
     }
-    
-    public int getPrecio(){
+
+    public int getPrecio() {
         return this.precio;
     }
-    
-    public int getPuntosAtaque(){
+
+    public int getPuntosAtaque() {
         return this.puntosAtaque;
     }
-    
-    public String getNombre(){
+
+    public String getNombre() {
         return this.nombre;
     }
-    
-    public void setNombre(String n){
+
+    public void setNombre(String n) {
         this.nombre = n;
     }
-    
-    public void setPuntosAtaque(int p){
+
+    public void setPuntosAtaque(int p) {
         this.puntosAtaque = p;
     }
-    
-    public int getPuntosDefensa(){
+
+    public int getPuntosDefensa() {
         return puntosDefensa;
     }
-    
-    public void setPuntosDefensa(int p){
+
+    public void setPuntosDefensa(int p) {
         this.puntosDefensa = p;
     }
-    
-    public int getCopias(){
+
+    public int getCopias() {
         return copias;
     }
-    
-    public void setCopias(int c){
+
+    public void setCopias(int c) {
         this.copias = c;
     }
-    
-    public String toString(){
+
+    @Override
+    public Item clone() {
+        Item clonItem = new Item(this.codigo, this.nombre, this.precio, this.puntosAtaque, this.puntosDefensa, this.copias);
+        return clonItem;
+    }
+
+    public String toString() {
         return ("Código: " + codigo + " - Nombre: " + nombre + " - Precio: " + precio + " - Puntos Ataque: " + puntosAtaque + " - Punto Defensa: " + puntosDefensa + " - Copias: " + copias);
     }
-    
-    
-    
-    
-    
-    
-    
-    
+
 }

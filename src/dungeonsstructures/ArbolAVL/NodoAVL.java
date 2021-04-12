@@ -1,4 +1,3 @@
-
 package dungeonsstructures.ArbolAVL;
 
 /**
@@ -6,32 +5,34 @@ package dungeonsstructures.ArbolAVL;
  * @author Guillermo Andrés Pereyra.
  */
 public class NodoAVL {
+
     private Comparable clave;
     private Object objeto;
     private int altura;
     private NodoAVL izquierdo;
     private NodoAVL derecho;
-    
-    public NodoAVL(Comparable c, Object o, NodoAVL i, NodoAVL d){
+
+    public NodoAVL(Comparable c, Object o, NodoAVL i, NodoAVL d) {
         clave = c;
         objeto = o;
         izquierdo = i;
         derecho = d;
         altura = 0;
     }
-    
-    public Comparable getClave(){
+
+    public Comparable getClave() {
         return clave;
     }
-    
-    public Object getObjeto(){
+
+    public Object getObjeto() {
         return objeto;
     }
-    
-    public int getAltura(){
+
+    public int getAltura() {
         return altura;
     }
-    
+
+    // Recalcula la altura de este nodo a partir de la altura de sus hijos.
     public void recalcularAltura() {
         int altIzq = -1, altDer = -1;
         if (this.izquierdo != null) {
@@ -40,23 +41,22 @@ public class NodoAVL {
         if (this.derecho != null) {
             altDer = this.derecho.altura;
         }
-        //System.out.println(elem + " Altura izquierdo: " +altIzq +", " + "Altura derecho: " +altDer);
         this.altura = (Math.max(altIzq, altDer) + 1);
     }
 
-    public NodoAVL getIzquierdo(){
+    public NodoAVL getIzquierdo() {
         return izquierdo;
     }
-    
-    public void setIzquierdo(NodoAVL i){
+
+    public void setIzquierdo(NodoAVL i) {
         izquierdo = i;
     }
-    
-    public NodoAVL getDerecho(){
+
+    public NodoAVL getDerecho() {
         return derecho;
     }
-    
-    public void setDerecho(NodoAVL d){
+
+    public void setDerecho(NodoAVL d) {
         derecho = d;
     }
 }

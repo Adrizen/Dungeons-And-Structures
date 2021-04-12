@@ -1,6 +1,9 @@
 package dungeonsstructures;
 
-
+/**
+ *
+ * @author Guillermo Andrés Pereyra.
+ */
 public class Nodo {
 
     private Object elemento;
