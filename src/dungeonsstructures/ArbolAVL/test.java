@@ -8,21 +8,19 @@ public class test {
 
     public static void main(String[] args) {
         ArbolAVL arbolito = new ArbolAVL();
-        // Eliminar sin cambio de raíz y rotaciones: der-izq(26).
-        arbolito.insertar(15, null);
-        arbolito.insertar(6, null);
-        arbolito.insertar(50, null);
-        arbolito.insertar(4, null);
-        arbolito.insertar(7, null);
-        arbolito.insertar(71, null);
-        arbolito.insertar(23, null);
-        arbolito.insertar(1, null);
-        arbolito.insertar(5, null);
+        
+        //rotIzq-Der (sin cambio de raíz). done
+        arbolito.insertar(75,null);
+        arbolito.insertar(20,null);
+        arbolito.insertar(80,null);
+        arbolito.insertar(15,null);
+        
+        arbolito.insertar(77,null);
+        arbolito.insertar(93,null);
+        arbolito.insertar(11,null);
+        arbolito.insertar(18,null);
+        arbolito.insertar(19,null);
         System.out.println("Original: " + '\n' + arbolito.toString());
-        Comparable valorAEliminar = 6;
-        arbolito.eliminar(valorAEliminar);
-        System.out.println("Luego de eliminar el : " + valorAEliminar + '\n' + arbolito.toString());
-
     }
 
     /*

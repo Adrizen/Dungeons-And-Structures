@@ -35,5 +35,12 @@ public class NodoVert {
     public void setSigVertice(NodoVert siguiente) {
         this.sigVertice = siguiente;
     }
+    
+    @Override
+    public String toString(){
+        String cadenita = "";
+        cadenita = cadenita + elemento;
+        return cadenita;
+    }
 
 }

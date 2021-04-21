@@ -93,7 +93,22 @@ public class Jugador {
     public void setBatallasGanadas(int b) {
         this.batallasGanadas = b;
     }
-
+    
+    // Compara las victorias de dos jugadores. Si quien invoca el método tiene más victorias devuelve 1, si tiene menos devuelve -1 y si son iguales devuelve 0.
+    public int compararVictorias(Jugador j){
+        int rta;
+        if (this.batallasGanadas == j.getBatallasGanadas()){
+            rta = 0;
+        } else {
+            if (this.batallasGanadas > j.getBatallasGanadas()){
+                rta = 1;
+            } else {
+                rta = -1;
+            }
+        }
+        return rta;
+    }
+    
     @Override
     public String toString() {
         String salida = "Nombre: " + nombre + " - Tipo: " + tipo + " - Categoria: " + categoria + " - Victorias: " + batallasGanadas + " - Equipo: ";

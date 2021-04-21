@@ -1,8 +1,6 @@
 package dungeonsstructures.ArbolAVL;
 
-import dungeonsstructures.Item;
-import dungeonsstructures.Jugador;
-import dungeonsstructures.Lista.*;
+import dungeonsstructures.Lista.Lista;
 
 /**
  *
@@ -31,7 +29,7 @@ public class ArbolAVL {
     // Método auxiliar que es utilizado para llamar recursivamente a los nodos correspondientes (izquierdo si es menor, derecha si es mayor).
     private boolean insertarAux(NodoAVL nodo, NodoAVL nodoPadre, Comparable clave, Object objeto, int altura) {
         boolean exito = false;
-        if (clave.compareTo(nodo.getClave()) <= 0) {
+        if (clave.compareTo(nodo.getClave()) < 0) {
             if (nodo.getIzquierdo() == null) {
                 NodoAVL nuevo = new NodoAVL(clave, objeto, null, null);
                 nodo.setIzquierdo(nuevo);
@@ -272,7 +270,6 @@ public class ArbolAVL {
                         nodoPadre.recalcularAltura();   // Recalculo la altura del padre.
                         balancear(nodoASubir, nodoPadre);
                     }
-
                 }
             }
         }
@@ -316,48 +313,7 @@ public class ArbolAVL {
             auxListar(lista, nodo.getDerecho());
         }
     }
-
-    // Crear el ranking de jugadores de la opción del menú 'K' subopción 'A'.
-    public ArbolAVL ranking() {
-        ArbolAVL ranking = new ArbolAVL();
-        auxRanking(ranking, this.raiz);
-        return ranking;
-    }
-
-    // Método auxiliar recursivo para visitar cada nodo y obtener las victorias de cada jugador e insertarlas en el árbol.
-    private void auxRanking(ArbolAVL arbol, NodoAVL nodo) {
-        if (nodo != null) {
-            Jugador jugador = (Jugador) nodo.getObjeto();
-            int victorias = jugador.getBatallasGanadas();
-            arbol.insertar(victorias, jugador);
-            auxRanking(arbol, nodo.getIzquierdo());
-            auxRanking(arbol, nodo.getDerecho());
-        }
-    }
-
-    // Crear la lista de items de los que solo queda una copia de la opción del menú 'K' subopción 'B'.
-    public Lista listarItemsCopia() {
-        Lista lista = new Lista();
-        auxListarItemsCopia(lista, this.raiz);
-        return lista;
-    }
-
-    // Método auxiliar recursivo para visitar cada nodo y obtener la cantidad de copias de cada item, si tiene una sola lo inserto en la lista.
-    private void auxListarItemsCopia(Lista lista, NodoAVL nodo) {
-        if (nodo != null) {
-            Lista listaAux = (Lista) nodo.getObjeto();
-            int longitud = listaAux.longitud();
-            for (int i = 1; i <= longitud; i++) {   // Recorro la lista.
-                Item item = (Item) listaAux.recuperar(i);
-                if (item.getCopias() == 1) {
-                    lista.insertar(item, 1);
-                }
-            }
-            auxListarItemsCopia(lista, nodo.getIzquierdo());
-            auxListarItemsCopia(lista, nodo.getDerecho());
-        }
-    }
-
+    
     // Devuelve una lista con los objetos comprendidos entre un rango.
     public Lista listarRango(Comparable min, Comparable max) {
         Lista lista = new Lista();

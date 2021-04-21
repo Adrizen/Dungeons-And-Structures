@@ -1,6 +1,6 @@
 package dungeonsstructures.Grafo;
 
-import dungeonsstructures.Lista.*;
+import dungeonsstructures.Lista.Lista;
 
 /**
  *
@@ -77,7 +77,7 @@ public class Grafo {
             while (!encontrado) { // Este bucle se va a detener siempre.
                 if (adyacente.getEtiqueta() == ady.getEtiqueta()) {
                     encontrado = true;
-                    if (vertice.getPrimerAdy() == adyacente) { // Caso especial si es el 1° adyacente del vértice.
+                    if (vertice.getPrimerAdy().equals(adyacente)) { // Caso especial si es el 1° adyacente del vértice.
                         vertice.setPrimerAdy(adyacente.getSigAdyacente());
                     } else {     // Para cualquier otro caso.
                         anteriorAdyacente.setSiguienteAdy(adyacente.getSigAdyacente());
@@ -127,7 +127,7 @@ public class Grafo {
         while (!exito) {
             if (auxAdyacente.getEtiqueta() == etiqueta) {
                 exito = true;
-                if (nodoVert.getPrimerAdy() == auxAdyacente) {   // Si el arco a eliminar es el 1° adyacente del vértice.
+                if (nodoVert.getPrimerAdy().equals(auxAdyacente)) {   // Si el arco a eliminar es el 1° adyacente del vértice.
                     nodoVert.setPrimerAdy(auxAdyacente.getSigAdyacente());
                 } else {                                        // en cualquier otro caso.
                     anteriorAuxAdyacente.setSiguienteAdy(auxAdyacente.getSigAdyacente());
@@ -175,69 +175,150 @@ public class Grafo {
         }
         return exito;
     }
+    
+    // Dada una lista con un camino devuelve el peso (kms) recorridos.
+    public int calcularPeso(Lista lista){
+        int acumulador = 0;
+        for (int i = 1; i < lista.longitud(); i++) {
+            NodoVert nodo = (NodoVert) lista.recuperar(i);
+            NodoVert siguienteANodo = (NodoVert) lista.recuperar(i + 1);
+            NodoAdy adyNodo = nodo.getPrimerAdy();  // Obtengo el primer adyacente de nodo.
+            while (!siguienteANodo.equals(adyNodo.getVertice())){ // Itero 'adyNodo' hasta que coincida con 'siguienteANodo'.
+                adyNodo = adyNodo.getSigAdyacente();
+            }
+            acumulador = acumulador + adyNodo.getEtiqueta();    // Sumo la distancia al acumulador.
+        }
+        return acumulador;
+    }
+    
+    // Dada una lista con un camino devuelve la distancia (cantidad de locaciones) recorridas.
+    public int calcularDistancia(Lista lista) {
+        int acumulador = 0;
+        for (int i = 1; i < lista.longitud(); i++) {
+            NodoVert nodo = (NodoVert) lista.recuperar(i);
+            NodoVert siguienteANodo = (NodoVert) lista.recuperar(i + 1);
+            NodoAdy adyNodo = nodo.getPrimerAdy();  // Obtengo el primer adyacente de nodo.
+            while (!siguienteANodo.equals(adyNodo.getVertice())) { // Itero 'adyNodo' hasta que coincida con 'siguienteANodo'.
+                adyNodo = adyNodo.getSigAdyacente();
+            }
+            acumulador = acumulador + 1;    // Sumo la localización recorrida al acumulador.
+        }
+        return acumulador;
+    }
+    
+    // Dado el nombre de una locación devuelve una lista con las locaciones adyacentes a ella. J.a
+    public Lista ubicacionesAdyacentes(String nombre) {
+        Lista lista = new Lista();  // Esta será una lista de nodos vértices.
+        NodoVert nodoVertice = ubicarVertice(nombre);
+        if (nodoVertice != null) {  // Si nodo vértice es distinto de nulo, entonces existe en el grafo.
+            NodoAdy nodoAdyacente = nodoVertice.getPrimerAdy(); // Obtengo el primer adyacente del nodo vértice.
+            while (nodoAdyacente != null) {                     // Recorro los nodos adyacentes para obtener las locaciones adyacentes.
+                NodoVert auxNodoVert = nodoAdyacente.getVertice();
+                lista.insertar(auxNodoVert.getElem(), 1);
+                nodoAdyacente = nodoAdyacente.getSigAdyacente();
+            }
+        }
+        return lista;
+    }
 
-    // Usado en la opcion 'J' del menú principal. Dependiendo del 'char' se analiza una u otra cosa.
-    public Lista encontrarCamino(Object origen, Object destino, char letra, int maximo, Object locacionProhibida) {
-        NodoVert nodoVerticeOrigen = ubicarVertice(origen);
+    // Devuelve una lista con el camino con menor distancia (kms) para ir de origen a destino. J.b
+    public Lista encontrarCaminoMasLiviano(Object origen, Object destino) {
+        Lista camino = encontrarCamino(origen, destino, 'D', -1, null, true);
+        return camino;
+    }
+    
+    // Devuelve una lista con el camino más corto (menos locaciones) para ir desde origen a destino. J.c
+    public Lista encontrarCaminoMasCorto(Object origen, Object destino){
+        Lista camino = encontrarCamino(origen, destino, 'L', -1, null, true);
+        return camino;
+    }
+    
+    // Devuelve una lista de listas. Cada lista interna contiene un camino para ir de origen a destino con menos de unas distancia (kms) dada. J.d
+    public Lista encontrarCaminosConDistanciaMaxima(Object origen, Object destino, int maximo){
+        Lista camino = encontrarCamino(origen, destino, 'D', maximo, null, false);
+        return camino;
+    }
+    
+    // Devuelve una lista con el camino más corto (menos locaciones) para ir desde origen a destino que no pase por una locación. J.e
+    public Lista encontrarCaminoMasCortoLocacionProhibida(Object origen, Object destino, Object locacionProhibida){
+        Lista camino = encontrarCamino(origen, destino, 'L', -1, locacionProhibida, true);
+        return camino;
+    }
+    
+    // Todos los métodos para encontrar caminos convergen aquí. Este método ajusta los parámetros necesarios para buscar el camino deseado
+    // en el método recursivo debajo de este.
+    private Lista encontrarCamino(Object origen, Object destino, char letra, int maximo, Object locacionProhibida, boolean minimo) {
+        NodoVert nodoVerticeOrigen = ubicarVertice(origen), nodoLocacionProhibida = ubicarVertice(locacionProhibida);   // Checkear antes por null
         NodoVert nodoVerticeDestino = ubicarVertice(destino);
         Lista visitados = new Lista(), camino = new Lista();
         int[] valorMaximo = new int[1];
         if (nodoVerticeOrigen != null && nodoVerticeDestino != null) {  // Origen y destino existen en el grafo.
             if (maximo == -1) {     // No existe un valor máximo para la distancia o la cantidad de locaciones.
                 valorMaximo[0] = 999999999;
-            } else {                // Existe un valor máximo de distancia a recorrer o cantidad de locaciones a visitar.
+            } else {                // Existe un valor máximo de distancia a recorrer. Opción J.d
                 valorMaximo[0] = maximo;
             }
             
-            if (locacionProhibida != null) {    // Si es distinto de nulo, existe una locación prohibida por lo que no puedo pasar a la hora de recorrer el grafo.
-                visitados.insertar(locacionProhibida, 1);   // Si agrego la locación como "visitada", entonces me evito recorrerla.
+            if (nodoLocacionProhibida != null) {    // Si es distinto de nulo, existe una locación prohibida por lo que no puedo pasar a la hora de recorrer el grafo.
+                visitados.insertar(nodoLocacionProhibida, 1);   // Si agrego la locación como "visitada", entonces me evito recorrerla.
+                
             }
             
-            camino = auxEncontrarCamino(nodoVerticeOrigen, destino, camino, visitados, 0, valorMaximo, letra);
+            camino = auxEncontrarCamino(nodoVerticeOrigen, destino, camino, visitados, 0, valorMaximo, letra, minimo);
             
-            if (locacionProhibida != null) {
-                camino.eliminar(locacionProhibida);
-            }
-            if (!camino.esVacia()) {
-                camino.insertar(valorMaximo[0], 1);
+            if (nodoLocacionProhibida != null) {
+                camino.eliminar(nodoLocacionProhibida); // Eliminar primera aparición.
             }
         }
         return camino;
     }
-
+    
     // Método auxiliar recursivo que visita cada nodo y dependiendo de sus parámetros analiza una u otra cosa.
     // Usado en la opción 'J' del menú principal.
-    private Lista auxEncontrarCamino(NodoVert nodo, Object destino, Lista camino, Lista visitados, int acumulador, int[] valorMaximo, char letra) {
+    private Lista auxEncontrarCamino(NodoVert nodo, Object destino, Lista camino, Lista visitados, int acumulador, int[] valorMaximo, char letra, boolean minimo) {
         if (nodo != null) {
-            if (!visitados.pertenece(nodo.getElem())) {     // Si la locación actual no está en la lista de visitados.
-                if (nodo.getElem().equals(destino)) {       // Llegué a destino.
-                    if (acumulador < valorMaximo[0]) {      // Comprobar si los valores que fui acumulando al recorrer el grafo no superan el valor máximo provisto.
-                        
-                        // Como encontré un camino que cumple las condiciones dadas es necesario clonar la lista de visitados, porque si solo la "asigno" ...
-                        // solo señalo referencias y si llego a modificar la lista de visitados (por ejemplo, recorriendo otras posibilidades) también ...
-                        // estaría cambiando la lista 'camino'.
-                        camino = visitados.clone();             
-                        camino.insertar(nodo.getElem(), 1);
-                        valorMaximo[0] = acumulador;    // Ahora el valor máximo (sea distancia o cantidad de locaciones) es el camino que acabo de encontrar. El mejor actualmente.
-                    }
-                } else {    // Si no encontré mi 'destino'
-                    visitados.insertar(nodo.getElem(), 1);
-                    NodoAdy siguiente = nodo.getPrimerAdy();    // Tomo el primer adyacente del nodo actual.
-                    while (siguiente != null) {     // Recorro los nodos adyacentes llamando recursivamente y buscando caminos válidos.
-                        
-                        if (letra == 'D') { // El char es 'D' entonces el valor de interés es la distancia entre locaciones y 'acumulador' irá acumulando distancias.
-                            camino = auxEncontrarCamino(siguiente.getVertice(), destino, camino, visitados, acumulador + siguiente.getEtiqueta(), valorMaximo, letra);
-                        } else {            // El char es 'L' entonces el valor de interés es la cantidad de locaciones recorridas y 'acumulador' irá acumulando locaciones recorridas.
-                            camino = auxEncontrarCamino(siguiente.getVertice(), destino, camino, visitados, acumulador + 1, valorMaximo, letra);
+            if (acumulador < valorMaximo[0]) {  // Seguir preguntando solo si lo que llevo recorriendo es menor al máximo.
+                if (!visitados.pertenece(nodo)) {     // Si la locación actual no está en la lista de visitados.
+                    //System.out.println(tabs(visitados.longitud()) + nodo.getElem());  // Debug.
+                    if (nodo.getElem().equals(destino)) {       // Llegué a destino.
+                        if (minimo) {    // Busco un único camino con peso o distancia mínimo.
+                            camino = visitados.clone();
+                            //System.out.print(acumulador);   // Debug.
+                            //System.out.println();           // Debug.
+                            camino.insertar(nodo, 1);
+                            valorMaximo[0] = acumulador;    // Ahora el valor máximo (sea distancia o cantidad de locaciones) es el camino que acabo de encontrar. El mejor actualmente.
+                        } else {        // Busco varios caminos.
+                            Lista aux = visitados.clone();
+                            aux.insertar(nodo, 1);
+                            camino.insertar(aux, 1);
                         }
-                        siguiente = siguiente.getSigAdyacente();    // Obtengo el siguiente adyacente.
+                    } else {    // Si no encontré mi 'destino'
+                        visitados.insertar(nodo, 1);
+                        NodoAdy siguiente = nodo.getPrimerAdy();    // Tomo el primer adyacente del nodo actual.
+                        while (siguiente != null) {     // Recorro los nodos adyacentes llamando recursivamente y buscando caminos válidos.
+                            if (letra == 'D') { // El char es 'D' entonces el valor de interés es la distancia entre locaciones y 'acumulador' irá acumulando distancias.
+                                camino = auxEncontrarCamino(siguiente.getVertice(), destino, camino, visitados, acumulador + siguiente.getEtiqueta(), valorMaximo, letra, minimo);
+                            } else {            // El char es 'L' entonces el valor de interés es la cantidad de locaciones recorridas y 'acumulador' irá acumulando locaciones recorridas.
+                                camino = auxEncontrarCamino(siguiente.getVertice(), destino, camino, visitados, acumulador + 1, valorMaximo, letra, minimo);
+                            }
+                            siguiente = siguiente.getSigAdyacente();    // Obtengo el siguiente adyacente.
+                        }
+                        visitados.eliminar(nodo); // Elimino el nodo visitado de la lista en caso de que exista otro camino que me lleve a él.
                     }
-                    visitados.eliminar(nodo.getElem()); // Elimino el nodo visitado de la lista en caso de que exista otro camino que me lleve a él.
                 }
             }
         }
         return camino;
     }
+    
+        // Método auxiliar para debug. Dado un número devuelve un String con tantos espacios como el número recibido.
+//    private String tabs(int numero) {
+//        String espacio = "";
+//        for (int i = 0; i < numero; i++) {
+//            espacio = espacio + " ";
+//        }
+//        return espacio;
+//    }
 
     // Devuelve una lista en profundidad del grafo.
     public Lista listarEnProfundidad() {
@@ -317,21 +398,6 @@ public class Grafo {
     // Si el grafo está vacio devuelve true, si no devuelve false.
     public boolean esVacio() {
         return (this.inicio == null);
-    }
-
-    // Dado el nombre de una locación devuelve una lista con las locaciones adyacentes a ella.
-    public Lista ubicacionesAdyacentes(String nombre) {
-        Lista lista = new Lista();  // Esta será una lista de nodos vértices.
-        NodoVert nodoVertice = ubicarVertice(nombre);
-        if (nodoVertice != null) {  // Si nodo vértice es distinto de nulo, entonces existe en el grafo.
-            NodoAdy nodoAdyacente = nodoVertice.getPrimerAdy(); // Obtengo el primer adyacente del nodo vértice.
-            while (nodoAdyacente != null) {                     // Recorro los nodos adyacentes para obtener las locaciones adyacentes.
-                NodoVert auxNodoVert = nodoAdyacente.getVertice();
-                lista.insertar(auxNodoVert, 1);
-                nodoAdyacente = nodoAdyacente.getSigAdyacente();
-            }
-        }
-        return lista;
     }
 
     @Override

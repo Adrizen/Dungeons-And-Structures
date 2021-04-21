@@ -2,7 +2,7 @@ package dungeonsstructures;
 
 import dungeonsstructures.ArbolAVL.ArbolAVL;
 import dungeonsstructures.ColaPrioridad.ColaPrioridad;
-import dungeonsstructures.Grafo.*;
+import dungeonsstructures.Grafo.Grafo;
 import dungeonsstructures.Lista.Lista;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -12,6 +12,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.HashMap;
+import java.util.PriorityQueue;
 import java.util.Random;
 
 /**
@@ -30,14 +31,15 @@ public class Dungeons2019 {
     static Scanner sc = new Scanner(System.in);
     
     public static void main(String[] args) {
-        
         crearYCargarEstructuras();
         
-        for (int i = 0; i < 10; i++) {
-            Equipo equipo1 = (Equipo) equipos.get("Mercedes AMG Petronas e-Sports");
-            Equipo equipo2 = (Equipo) equipos.get("Scuderia Ferrari Sport Elettronici");
-            administrarBatalla(equipo1, equipo2);
-        }
+        // Utilizado para crear batallas bypasseando que ambos equipos deban estar en la misma locación. Solo para propósitos de DEBUG.
+//      for (int i = 0; i < 10; i++) {
+            // Obtengo los equipos desde el HashMap.
+//          Equipo equipo1 = (Equipo) equipos.get("Mercedes AMG Petronas e-Sports");
+//          Equipo equipo2 = (Equipo) equipos.get("Scuderia Ferrari Sport Elettronici");
+//          administrarBatalla(equipo1, equipo2);
+//      }
 
         LOG.flush();
         menu();
@@ -70,7 +72,7 @@ public class Dungeons2019 {
         // Caminos.
         Scanner datosCaminos = leerTxtCaminos();
         crearCaminos(datosCaminos);
-        escribirEstructurasEnLOG();             // Escribír las estructuras (AVL, Grafo, etc) en el LOG.
+        escribirEstructurasEnLOG();             // Escribir las estructuras (AVL, Grafo, etc) en el LOG.
     }
     
     // Escribo (toString()) todas las estructuras en el LOG.
@@ -125,7 +127,7 @@ public class Dungeons2019 {
                 ABMLocaciones();
                 break;
             case 'D':
-                System.out.println("TBD");
+                System.out.println("NN");
                 break;
             case 'E':
                 crearEquipos(null);
@@ -1048,11 +1050,13 @@ public class Dungeons2019 {
             seleccion = sc.next().charAt(0);
             seleccion = Character.toUpperCase(seleccion);
             switch (seleccion) {
-                case 'A':
+                case 'A':   // Darle un módulo a cada case quedaría más prolijo.
                     System.out.println("Ingrese el nombre de la locación.");
                     locacionA = sc.next();
                     locacionA = locacionA.toUpperCase();
-                    listarUbicacionesAdyacentes(locacionA);
+                    lista = mapa.ubicacionesAdyacentes(locacionA);
+                    System.out.println("Las locaciones adyacentes a " + locacionA + " son: ");
+                    mostrarCamino(lista);
                     break;
                 case 'B':
                     System.out.println("Ingrese el nombre de la locación A.");
@@ -1061,9 +1065,9 @@ public class Dungeons2019 {
                     System.out.println("Ingrese el nombre de la locación B.");
                     locacionB = sc.next();
                     locacionB = locacionB.toUpperCase();
-                    lista = mapa.encontrarCamino(locacionA, locacionB, 'D', -1, null);
-                    System.out.println("El camino más corto de " + locacionA + " hasta " + locacionB + " es: ");
-                    mostrarCamino(lista, 'D');
+                    lista = mapa.encontrarCaminoMasLiviano(locacionA, locacionB);
+                    System.out.println("El camino con la menor distancia posible de " + locacionA + " hasta " + locacionB + " es: ");
+                    mostrarCamino(lista);
                     break;
                 case 'C':
                     System.out.println("Ingrese el nombre de la locación A.");
@@ -1072,9 +1076,9 @@ public class Dungeons2019 {
                     System.out.println("Ingrese el nombre de la locación B.");
                     locacionB = sc.next();
                     locacionB = locacionB.toUpperCase();
-                    lista = mapa.encontrarCamino(locacionA, locacionB, 'L', -1, null);
+                    lista = mapa.encontrarCaminoMasCorto(locacionA, locacionB);
                     System.out.println("El camino de " + locacionA + " hasta " + locacionB + " que pasa por menos locaciones es: ");
-                    mostrarCamino(lista, 'L');
+                    mostrarCamino(lista);
                     break;
                 case 'D':
                     System.out.println("Ingrese el nombre de la locación A.");
@@ -1085,9 +1089,11 @@ public class Dungeons2019 {
                     locacionB = locacionB.toUpperCase();
                     System.out.println("Ingrese la cantidad máxima de kms.");
                     int maximo = sc.nextInt();
-                    lista = mapa.encontrarCamino(locacionA, locacionB, 'D', maximo,null);
-                    System.out.println("El camino más corto de " + locacionA + " hasta " + locacionB + " es: ");
-                    mostrarCamino(lista,'D');
+                    lista = mapa.encontrarCaminosConDistanciaMaxima(locacionA, locacionB, maximo);  // encontrarCaminosConPesoMaximo
+                    System.out.println("Los caminos de " + locacionA + " hasta " + locacionB + " con menos de " + maximo + " kms son: ");
+                    for (int i = 1; i <= lista.longitud(); i++) {
+                        mostrarCamino((Lista) lista.recuperar(i));
+                    }
                     break;
                 case 'E':
                     System.out.println("Ingrese el nombre de la locación A.");
@@ -1099,9 +1105,9 @@ public class Dungeons2019 {
                     System.out.println("Ingrese la locación prohibida.");
                     String locacionC = sc.next();
                     locacionC = locacionC.toUpperCase();
-                    lista = mapa.encontrarCamino(locacionA, locacionB, 'L', -1, locacionC);
-                    System.out.println("El camino de " + locacionA + " hasta " + locacionB + " que pasa por menos locaciones y no pasa por " + locacionC + " es: ");
-                    mostrarCamino(lista, 'L');
+                    lista = mapa.encontrarCaminoMasCortoLocacionProhibida(locacionA, locacionB, locacionC); // CaminoMasCortoSinPasarPor.
+                    System.out.println("El camino de " + locacionA + " hasta " + locacionB + " que pasa por menos locaciones y no pasa por "+ locacionC +" es: ");
+                    mostrarCamino(lista);
                     break;
                 case 'Z':
                     seguir = false;
@@ -1112,41 +1118,11 @@ public class Dungeons2019 {
         }
     }
     
-    // Dada una lista (de nombres de locaciones) y un char indicando: 'D' = distancia o 'L' = locaciones.
-    // Se muestran las locaciones recorridas y dependiendo del char distancia o número de locaciones recorridas.
-    private static void mostrarCamino(Lista lista, char letra){
+    // Imprime las locaciones de una lista.
+    private static void mostrarCamino(Lista lista){
         int longitud = lista.longitud();
-        if (!lista.esVacia()) {
-            // La lista se recorre de atras hacia delante porque se insertó siempre en posición 1 y se generó recursivamente.
-            for (int i = longitud; i > 1; i--) {
-                System.out.print(lista.recuperar(i) + " - ");
-            }
-            System.out.println();
-            switch (letra){
-                case 'D':
-                    System.out.println("Con una longitud total de: " + lista.recuperar(1) + " kms.");
-                    break;
-                case 'L':
-                    System.out.println("Pasando por: " + lista.recuperar(1) + " locaciones.");
-                    break;
-            }
-        } else {
-            System.out.println("No se pudo encontrar un camino que cumpla esa condición.");
-        }
-    }
-
-    // Dado el nombre de una locación se muestran las locaciones adyacentes a ella.
-    private static void listarUbicacionesAdyacentes(String nombreLocacion) {
-        Lista lista = mapa.ubicacionesAdyacentes(nombreLocacion);   // Obtengo una lista de nodosVert.
-        int longitud = lista.longitud();
-        if (!lista.esVacia()) {
-            System.out.print("Desde " + nombreLocacion + " se puede ir a: ");
-            for (int i = 1; i <= longitud; i++) {
-                NodoVert nodo = (NodoVert) lista.recuperar(i);
-                System.out.print(nodo.getElem() + " - ");   // Concateno el nombre de las locaciones.
-            }
-        } else {    // Si la locación no existe o no hay locaciones adyacentes.
-            System.out.print("No hay locaciones adyacentes a " + nombreLocacion);
+        for (int i = longitud; i > 0; i--) {   // La lista se recorre al revés, de atras hacia delante.
+            System.out.print(lista.recuperar(i) + " - ");
         }
         System.out.println();
     }
@@ -1167,7 +1143,7 @@ public class Dungeons2019 {
                     rankingJugadores();
                     break;
                 case 'B':
-                    mostrarItemsCopia();
+                    listarItemsCopia();
                     break;
                 case 'Z':
                     seguir = false;
@@ -1177,25 +1153,53 @@ public class Dungeons2019 {
             }
         }
     }
-    
+
     // Muestra un top de jugadores con más victorias.
     private static void rankingJugadores(){
-        ArbolAVL ranking = jugadores.ranking();
-        Lista lista = ranking.listar();
-        System.out.println("Top 3 jugadores con más victorias: ");
-        for (int i = 1; i <= 3; i++) {
-            Jugador jugador = (Jugador) lista.recuperar(i);
-            System.out.println(jugador.getNombre() + ": " + jugador.getBatallasGanadas());
+        Lista lista = jugadores.listar();
+        PriorityQueue cola = crearRanking(lista);
+        String cadena = "";
+        int longitud = cola.size();
+        for (int i = 0; i < longitud; i++) {    // Es necesario concatenar en orden inverso porque poll() va de menor a mayor.
+            cadena = cola.poll() + "\n" + cadena;
         }
+        System.out.println("Top jugadores con más victorias: ");
+        System.out.println(cadena);
     }
     
-    // Muestra los items del sistema de los que solo queda una copia.
-    private static void mostrarItemsCopia(){
-        Lista lista = items.listarItemsCopia();
+    // Crea una PriorityQueue con jugadores, ordenandolos por cantidad de victorias.
+    private static PriorityQueue crearRanking(Lista lista) {
+        PriorityQueue cola = new PriorityQueue(lista.longitud(), (Object j1, Object j2) -> {
+            Jugador jugador1 = (Jugador) j1;
+            Jugador jugador2 = (Jugador) j2;
+            return jugador1.compararVictorias(jugador2);
+        });
+        while (!lista.esVacia()) {
+            Jugador jugador = (Jugador) lista.recuperar(1);
+            cola.add(jugador);
+            lista.eliminar(1);
+        }
+        return cola;
+    }
+
+    // Crear y mostrar la lista de items de los que solo queda una copia de la opción del menú 'K' subopción 'B'.
+    private static void listarItemsCopia() {
+        Lista lista = items.listar();
+        Lista listaItemsUnaCopia = new Lista();
+        while(!lista.esVacia()){
+            Lista listaAux = (Lista) lista.recuperar(1);
+            for (int i = 1; i <= listaAux.longitud(); i++) {
+                Item item = (Item) listaAux.recuperar(i);
+                if (item.getCopias() == 1) {
+                    listaItemsUnaCopia.insertar(item, 1);
+                }
+            }
+            lista.eliminar(1);
+        }
         System.out.println("Listado items con una sola copia: ");
-        System.out.println(lista.toString());
+        System.out.println(listaItemsUnaCopia.toString());
     }
-    
+
     // Lee el .txt de los jugadores y devuelve tipo Scanner. De aquí se obtienen los datos de los jugadores.
     private static Scanner leerTxtJugadores() {
         Scanner datosJugadores = null;
